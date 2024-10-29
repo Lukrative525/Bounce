@@ -10,7 +10,7 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
-add_executable(Bounce)
+add_executable(Bounce resources.rc)
 
 target_sources(Bounce
     PRIVATE

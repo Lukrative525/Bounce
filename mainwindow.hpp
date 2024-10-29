@@ -18,7 +18,6 @@ signals:
 
 private:
     Ui::MainWindowForm* mainWindowUI;
-
 };
 
 #endif // MAINWINDOW_HPP

@@ -17,8 +17,8 @@ target_sources(Bounce
         main.cpp
         mainwindow.hpp
         mainwindow.cpp
-        mainwindowform.hpp
-        mainwindowform.cpp
+
+
         mainwindowform.ui
 )
 

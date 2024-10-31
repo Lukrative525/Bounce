@@ -10,14 +10,15 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
-add_executable(Bounce resources.rc)
+add_executable(Bounce)
 
 target_sources(Bounce
     PRIVATE
         main.cpp
-        mainwindow.hpp
         mainwindow.cpp
+        mainwindow.hpp
         mainwindowform.ui
+        resources.rc
 )
 
 target_compile_features(Bounce PUBLIC cxx_std_17)

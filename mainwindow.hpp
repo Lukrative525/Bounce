@@ -13,7 +13,6 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    void draw_triangle();
 
 signals:
 

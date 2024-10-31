@@ -23,39 +23,21 @@ void GraphicsViewer::initializeGL()
 {
     initializeOpenGLFunctions();
 
-    GLint success;
-    char infoLog[512];
-
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        qDebug() << "Vertex shader compilation failed:\n" << infoLog;
-    }
+    verify_shader_compilation(vertexShader);
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        qDebug() << "Fragment shader compilation failed:\n" << infoLog;
-    }
+    verify_shader_compilation(fragmentShader);
 
     shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        qDebug() << "Shader program linking failed:\n" << infoLog;
-    }
+    verify_program_linking(shaderProgram);
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -88,4 +70,30 @@ void GraphicsViewer::paintGL()
     glUseProgram(shaderProgram);
     glBindVertexArray(vertexArrayObject);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void GraphicsViewer::verify_shader_compilation(GLuint& shaderToVerify)
+{
+    GLint success;
+    char infoLog[512];
+
+    glGetShaderiv(shaderToVerify, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(shaderToVerify, 512, NULL, infoLog);
+        qDebug() << "Shader compilation failed:\n" << infoLog;
+    }
+}
+
+void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
+{
+    GLint success;
+    char infoLog[512];
+
+    glGetProgramiv(programToVerify, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(programToVerify, 512, NULL, infoLog);
+        qDebug() << "Program linking failed:\n" << infoLog;
+    }
 }

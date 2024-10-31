@@ -8,6 +8,9 @@ class GraphicsViewer : public QOpenGLWidget
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
+
+protected:
+    void initializeGL() override;
 };
 
-#endif // GRAPHICSVIEWER_H
+#endif // GRAPHICSVIEWER_HPP

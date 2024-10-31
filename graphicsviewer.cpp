@@ -5,3 +5,8 @@ GraphicsViewer::GraphicsViewer(QWidget *parent):
 {
 
 }
+
+void GraphicsViewer::initializeGL()
+{
+    qDebug() << "we\'re here!";
+}

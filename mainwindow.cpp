@@ -1,3 +1,4 @@
+#include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
 #include "ui_mainwindowform.h"
 
@@ -6,4 +7,6 @@ MainWindow::MainWindow(QWidget* parent):
     mainWindowUI{new Ui::MainWindowForm}
 {
     mainWindowUI->setupUi(this);
+    graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
+    mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
 }

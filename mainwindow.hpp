@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+class GraphicsViewer;
 
 namespace Ui
 {
@@ -14,10 +15,9 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
 
-signals:
-
 private:
     Ui::MainWindowForm* mainWindowUI;
+    GraphicsViewer* graphicsViewer;
 };
 
 #endif // MAINWINDOW_HPP

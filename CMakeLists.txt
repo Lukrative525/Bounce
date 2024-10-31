@@ -14,6 +14,8 @@ add_executable(Bounce)
 
 target_sources(Bounce
     PRIVATE
+        graphicsviewer.cpp
+        graphicsviewer.hpp
         main.cpp
         mainwindow.cpp
         mainwindow.hpp

@@ -54,11 +54,7 @@ target_sources(Bounce
         mainwindow.cpp
         mainwindow.hpp
         mainwindowform.ui
-        physicsfunctions.cpp
-        physicsfunctions.hpp
         resources.rc
-        vector3d.cpp
-        vector3d.hpp
 )
 target_compile_features(Bounce PUBLIC cxx_std_17)
 target_include_directories(Bounce PRIVATE)
@@ -68,4 +64,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::OpenGL
     Qt::OpenGLWidgets
     glm::glm
+    PhysicsLibrary
 )

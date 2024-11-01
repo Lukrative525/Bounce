@@ -1,16 +1,19 @@
 #ifndef SIMULATION_HPP
 #define SIMULATION_HPP
 
+#include <vector>
+#include "ball.hpp"
+
 class Simulation
 {
 public:
     Simulation();
+    Simulation(int maxNumberBalls);
+    int maxNumberBalls;
+    void add_ball();
+    void add_ball(double x, double y, double z, double radius);
+private:
+    std::vector<Ball> ballCollection;
 };
-
-// reserve - reserves the memory for how ever many elements in vector
-// emplace_back - constructs ball in the vector
-
-// balls.reserve(max_balls);
-// balls.emplace_back({x, y, z});
 
 #endif // SIMULATION_HPP

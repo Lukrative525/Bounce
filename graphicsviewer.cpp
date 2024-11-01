@@ -16,10 +16,7 @@ const char* fragmentShaderSource =
     "}\n\0";
 
 GraphicsViewer::GraphicsViewer(QWidget *parent):
-    QOpenGLWidget{parent}
-{
-
-}
+    QOpenGLWidget{parent} {}
 
 void GraphicsViewer::initializeGL()
 {

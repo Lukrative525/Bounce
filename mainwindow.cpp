@@ -9,4 +9,8 @@ MainWindow::MainWindow(QWidget* parent):
     mainWindowUI->setupUi(this);
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
+
+    simulation.add_ball();
+    simulation.add_ball(1, 0, 0, 0.1);
+    simulation.add_ball(1, 1, 0, 0.1);
 }

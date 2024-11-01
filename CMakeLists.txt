@@ -15,6 +15,7 @@ SET(CMAKE_AUTORCC ON)
 add_library(PhysicsLibrary STATIC)
 target_sources(PhysicsLibrary
     PRIVATE
+        ball.cpp
         physicsfunctions.cpp
         vector3d.cpp
         simulation.cpp
@@ -22,6 +23,7 @@ target_sources(PhysicsLibrary
         FILE_SET HEADERS
         BASE_DIRS ${PROJECT_SOURCE_DIR}
         FILES
+            ball.hpp
             physicsfunctions.hpp
             vector3d.hpp
             simulation.hpp

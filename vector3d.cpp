@@ -2,17 +2,13 @@
 #include <stdexcept>
 #include "vector3d.hpp"
 
-Vector3D::Vector3D():components{0, 0, 0}
-{
-}
+Vector3D::Vector3D():components{0, 0, 0} {}
 
-Vector3D::Vector3D(const double newX, const double newY, const double newZ):components{newX, newY, newZ}
-{
-}
+Vector3D::Vector3D(const double newX, const double newY, const double newZ):
+    components{newX, newY, newZ} {}
 
-Vector3D::Vector3D(const Vector3D& vectorToCopy):components{vectorToCopy[0], vectorToCopy[1], vectorToCopy[2]}
-{
-}
+Vector3D::Vector3D(const Vector3D& vectorToCopy):
+    components{vectorToCopy[0], vectorToCopy[1], vectorToCopy[2]} {}
 
 double Vector3D::get_x() const
 {

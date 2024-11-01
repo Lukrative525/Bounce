@@ -12,18 +12,19 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
 # Physics Library
-add_library(PhysicsLibrary STATIC
-    simulation.hpp simulation.cpp)
+add_library(PhysicsLibrary STATIC)
 target_sources(PhysicsLibrary
     PRIVATE
         physicsfunctions.cpp
         vector3d.cpp
+        simulation.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${PROJECT_SOURCE_DIR}
         FILES
             physicsfunctions.hpp
             vector3d.hpp
+            simulation.hpp
 )
 target_compile_features(PhysicsLibrary PUBLIC cxx_std_17)
 target_include_directories(PhysicsLibrary PRIVATE)

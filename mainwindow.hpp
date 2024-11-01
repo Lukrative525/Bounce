@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include "simulation.hpp"
 class GraphicsViewer;
 
 namespace Ui
@@ -18,6 +19,7 @@ public:
 private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
+    Simulation simulation;
 };
 
 #endif // MAINWINDOW_HPP

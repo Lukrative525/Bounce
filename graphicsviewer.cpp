@@ -1,4 +1,6 @@
+#include <iostream>
 #include "graphicsviewer.hpp"
+#include "ball.hpp"
 
 const char* vertexShaderSource =
     "#version 330 core\n"
@@ -21,11 +23,11 @@ GraphicsViewer::GraphicsViewer(QWidget *parent):
 void GraphicsViewer::initializeGL()
 {
     float vertices[] =
-        {
-            -1.0f, -1.0f, 0.0f,
-            1.0f, -1.0f, 0.0f,
-            1.0f, 1.0f, 0.0f
-        };
+    {
+        -1.0f, -1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,
+        1.0f, 1.0f, 0.0f
+    };
 
     initializeOpenGLFunctions();
 
@@ -69,6 +71,15 @@ void GraphicsViewer::paintGL()
     glUseProgram(shaderProgram);
     glBindVertexArray(vertexArrayObject);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void GraphicsViewer::update_graphics(const std::vector<Ball>& ballCollection)
+{
+    // need to update vertex array then call paintGL()
+    for (const Ball& ball: ballCollection)
+    {
+        std::cout << ball.position[0] << ball.position[1] << ball.position[2] << std::endl;
+    }
 }
 
 void GraphicsViewer::verify_shader_compilation(GLuint& shaderToVerify)

@@ -3,13 +3,15 @@
 
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLWidget>
+#include <vector>
+#include "ball.hpp"
 
 class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
 {
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-
+    void update_graphics(const std::vector<Ball>& ballCollection);
 protected:
     void initializeGL() override;
     void paintGL() override;

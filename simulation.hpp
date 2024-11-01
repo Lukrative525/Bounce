@@ -12,7 +12,6 @@ public:
     int maxNumberBalls;
     void add_ball();
     void add_ball(double x, double y, double z, double radius);
-private:
     std::vector<Ball> ballCollection;
 };
 

@@ -13,4 +13,11 @@ MainWindow::MainWindow(QWidget* parent):
     simulation.add_ball();
     simulation.add_ball(1, 0, 0, 0.1);
     simulation.add_ball(1, 1, 0, 0.1);
+
+    update();
+}
+
+void MainWindow::update()
+{
+    graphicsViewer->update_graphics(simulation.ballCollection);
 }

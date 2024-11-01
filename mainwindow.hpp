@@ -15,7 +15,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-
+    void update();
 private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;

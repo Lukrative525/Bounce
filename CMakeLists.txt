@@ -12,7 +12,8 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
 # Physics Library
-add_library(PhysicsLibrary STATIC)
+add_library(PhysicsLibrary STATIC
+    simulation.hpp simulation.cpp)
 target_sources(PhysicsLibrary
     PRIVATE
         physicsfunctions.cpp

@@ -16,6 +16,7 @@ add_library(PhysicsLibrary STATIC)
 target_sources(PhysicsLibrary
     PRIVATE
         ball.cpp
+        camera.cpp
         physicsfunctions.cpp
         vector3d.cpp
         simulation.cpp
@@ -24,12 +25,17 @@ target_sources(PhysicsLibrary
         BASE_DIRS ${PROJECT_SOURCE_DIR}
         FILES
             ball.hpp
+            camera.hpp
             physicsfunctions.hpp
             vector3d.hpp
             simulation.hpp
 )
 target_compile_features(PhysicsLibrary PUBLIC cxx_std_17)
 target_include_directories(PhysicsLibrary PRIVATE)
+target_link_libraries(PhysicsLibrary
+    PRIVATE
+        glm::glm
+)
 
 # Physics Library Unit Tests
 add_executable(PhysicsLibraryUnitTests)
@@ -41,9 +47,9 @@ target_sources(PhysicsLibraryUnitTests
 target_compile_features(PhysicsLibraryUnitTests PUBLIC cxx_std_17)
 target_link_libraries(PhysicsLibraryUnitTests
     PRIVATE
-    GTest::GTest
-    GTest::Main
-    PhysicsLibrary
+        GTest::GTest
+        GTest::Main
+        PhysicsLibrary
 )
 
 # Bounce Application

@@ -5,6 +5,7 @@
 #include <QOpenGLWidget>
 #include <vector>
 #include "ball.hpp"
+#include "camera.hpp"
 
 class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
 {
@@ -12,6 +13,7 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
     void update_graphics(const std::vector<Ball>& ballCollection);
+    Camera camera;
 protected:
     void initializeGL() override;
     void paintGL() override;

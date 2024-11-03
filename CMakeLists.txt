@@ -35,6 +35,7 @@ target_include_directories(PhysicsLibrary PRIVATE)
 target_link_libraries(PhysicsLibrary
     PRIVATE
         glm::glm
+        Qt6::Core
 )
 
 # Physics Library Unit Tests
@@ -43,12 +44,15 @@ target_sources(PhysicsLibraryUnitTests
     PRIVATE
         physicslibrary_unittests.cpp
         vector3d_unittests.cpp
+        camera_unittests.cpp
 )
 target_compile_features(PhysicsLibraryUnitTests PUBLIC cxx_std_17)
 target_link_libraries(PhysicsLibraryUnitTests
     PRIVATE
+        glm::glm
         GTest::GTest
         GTest::Main
+        Qt6::Core
         PhysicsLibrary
 )
 
@@ -66,11 +70,12 @@ target_sources(Bounce
 )
 target_compile_features(Bounce PUBLIC cxx_std_17)
 target_include_directories(Bounce PRIVATE)
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    Qt6::Widgets
-    Qt6::Gui
-    Qt6::OpenGL
-    Qt::OpenGLWidgets
-    glm::glm
-    PhysicsLibrary
+target_link_libraries(Bounce
+    PRIVATE
+        Qt6::Widgets
+        Qt6::Gui
+        Qt6::OpenGL
+        Qt::OpenGLWidgets
+        glm::glm
+        PhysicsLibrary
 )

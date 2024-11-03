@@ -1,4 +1,3 @@
-#include <glm/gtc/matrix_transform.hpp>
 #include "camera.hpp"
 
 Camera::Camera()
@@ -9,44 +8,6 @@ Camera::Camera()
 void Camera::recalculate_aspect_ratio()
 {
     aspectRatio = width / height;
-}
-
-void Camera::set_width(float newWidth)
-{
-    width = newWidth;
-}
-
-void Camera::set_height(float newHeight)
-{
-    height = newHeight;
-}
-
-void Camera::set_near_plane(float newNearPlane)
-{
-    nearPlane = newNearPlane;
-}
-
-void Camera::set_far_plane(float newFarPlane)
-{
-    farPlane = newFarPlane;
-}
-
-void Camera::build_projection_matrix()
-{
-    projectionMatrix = glm::ortho
-    (
-        -width / 2,
-        width / 2,
-        -height / 2,
-        height / 2,
-        nearPlane,
-        farPlane
-    );
-}
-
-glm::mat4 Camera::get_projection_matrix()
-{
-    return projectionMatrix;
 }
 
 void Camera::set_camera_position(float x, float y, float z)
@@ -70,12 +31,46 @@ void Camera::set_camera_up_direction(float dx, float dy, float dz)
     cameraUpDirection[2] = dz;
 }
 
-void Camera::build_view_matrix()
+void Camera::regenerate_projection_matrix()
+{
+    projectionMatrix = glm::ortho(
+        -width / 2,
+        width / 2,
+        -height / 2,
+        height / 2,
+        nearPlane,
+        farPlane
+    );
+}
+
+void Camera::regenerate_view_matrix()
 {
     viewMatrix = glm::lookAt(cameraPosition, cameraTarget, cameraUpDirection);
 }
 
-glm::mat4 Camera::get_view_matrix()
+void Camera::center_camera(
+    const QSize& frameSize,
+    double minimumX,
+    double minimumY,
+    double maximumX,
+    double maximumY
+)
 {
-    return viewMatrix;
+    double frameAspectRatio{static_cast<double>(frameSize.width()) / static_cast<double>(frameSize.height())};
+    double xSpan{maximumX - minimumX};
+    double ySpan{maximumY - minimumY};
+    double spanAspectRatio{xSpan / ySpan};
+
+    if (spanAspectRatio >= frameAspectRatio)
+    {
+        width = xSpan;
+        height = ySpan / frameAspectRatio;
+    }
+    else
+    {
+        height = ySpan;
+        width = xSpan * frameAspectRatio;
+    }
+    cameraPosition.x = minimumX + xSpan / 2;
+    cameraPosition.y = minimumY + ySpan / 2;
 }

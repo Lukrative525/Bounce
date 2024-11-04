@@ -67,6 +67,7 @@ target_sources(Bounce
         mainwindow.hpp
         mainwindowform.ui
         resources.rc
+        shaders.qrc
 )
 target_compile_features(Bounce PUBLIC cxx_std_17)
 target_include_directories(Bounce PRIVATE)

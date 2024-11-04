@@ -12,7 +12,8 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-    void update_graphics(const std::vector<Ball>& ballCollection);
+    void update_object_positions(const std::vector<Ball>& ballCollection);
+    QString read_shader_source(QString filepath);
     Camera camera;
 protected:
     void initializeGL() override;
@@ -23,6 +24,7 @@ protected:
     GLuint vertexArrayObject{0};
     GLuint vertexBufferObject{0};
     GLuint elementBufferObject{0};
+    GLuint instanceVertexBufferObject{0};
 };
 
 #endif // GRAPHICSVIEWER_HPP

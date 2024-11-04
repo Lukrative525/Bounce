@@ -8,14 +8,12 @@ GraphicsViewer::GraphicsViewer(QWidget *parent):
 
 void GraphicsViewer::initializeGL()
 {
-    this->makeCurrent();
-
     float boxVertices[] =
     {
-        1.0f, 1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f
+        1.0f, 0.0f, 1.0f,
+        -1.0f, 0.0f, 1.0f,
+        -1.0f, 0.0f, -1.0f,
+        1.0f, 0.0f, -1.0f
     };
 
     GLuint vertexIndices[] =
@@ -24,14 +22,14 @@ void GraphicsViewer::initializeGL()
         0, 3, 2
     };
 
+    initializeOpenGLFunctions();
+
     QString vertexSource = read_shader_source(":/shaders/vertex_shader.vert");
     QString fragmentSource = read_shader_source(":/shaders/fragment_shader.frag");
     QByteArray vertexSourceUtf8 = vertexSource.toUtf8();
     QByteArray fragmentSourceUtf8 = fragmentSource.toUtf8();
     const char* vertexSourceChar = vertexSourceUtf8.data();
     const char* fragmentSourceChar = fragmentSourceUtf8.data();
-
-    initializeOpenGLFunctions();
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexSourceChar, NULL);
@@ -76,24 +74,20 @@ void GraphicsViewer::initializeGL()
 
 void GraphicsViewer::paintGL()
 {
-    this->makeCurrent();
-
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderProgram);
 
-    GLuint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLuint projection = glGetUniformLocation(shaderProgram, "projection");
+    GLuint view = glGetUniformLocation(shaderProgram, "view");
 
     camera.regenerate_projection_matrix();
     camera.regenerate_view_matrix();
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
+    glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
+    glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
 
     glBindVertexArray(vertexArrayObject);
-    // GLsizei instanceCount = ballCollection.size();
-    GLsizei instanceCount = 1;
-    glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, instanceCount);
+    glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, ballCollectionSize);
 
     glBindVertexArray(0);
     glUseProgram(0);
@@ -101,7 +95,8 @@ void GraphicsViewer::paintGL()
 
 void GraphicsViewer::update_object_positions(const std::vector<Ball>& ballCollection)
 {
-    std::vector<glm::vec3> positions(ballCollection.size());
+    ballCollectionSize = ballCollection.size();
+    std::vector<glm::vec3> positions(ballCollectionSize);
     for (int i{0}; i < positions.size(); i++)
     {
         positions[i][0] = ballCollection[i].position[0];
@@ -109,7 +104,6 @@ void GraphicsViewer::update_object_positions(const std::vector<Ball>& ballCollec
         positions[i][2] = ballCollection[i].position[2];
     }
 
-    // throwing an error here: how do we make sure that this is never run before initializeGL?
     glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);
     glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

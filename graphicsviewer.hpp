@@ -20,6 +20,7 @@ protected:
     void paintGL() override;
     void verify_shader_compilation(GLuint& objectToVerify);
     void verify_program_linking(GLuint& objectToVerify);
+    GLuint ballCollectionSize{0};
     GLuint shaderProgram{0};
     GLuint vertexArrayObject{0};
     GLuint vertexBufferObject{0};

@@ -9,6 +9,7 @@ class Camera
 {
 public:
     Camera();
+    Camera(float x, float y, float z);
     void recalculate_aspect_ratio();
     void set_camera_position(float x, float y, float z);
     void set_camera_target(float dx, float dy, float dz);

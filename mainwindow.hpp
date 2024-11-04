@@ -16,7 +16,7 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     void update();
-private:
+// private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
     Simulation simulation;

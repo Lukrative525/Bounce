@@ -1,13 +1,12 @@
 #version 330 core
 
-layout(location = 0) in vec3 position; // Vertex position attribute
-layout(location = 1) in vec3 instancePosition; // Instance position attribute
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 instancePosition;
 
-uniform mat4 projection; // Projection matrix
-uniform mat4 view; // View matrix
+uniform mat4 projection;
+uniform mat4 view;
 
 void main()
 {
-    // Calculate the final vertex position
-    gl_Position = projection * view * vec4(position, 1.0);
+    gl_Position = projection * view * vec4(position + instancePosition, 1.0);
 }

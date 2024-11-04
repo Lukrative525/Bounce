@@ -1,8 +1,14 @@
+#include <qdebug.h>
 #include "camera.hpp"
 
 Camera::Camera()
 {
-    recalculate_aspect_ratio();
+    set_camera_position(0.0, 0.0, 0.0);
+}
+
+Camera::Camera(float x, float y, float z)
+{
+    set_camera_position(x, y, z);
 }
 
 void Camera::recalculate_aspect_ratio()
@@ -50,15 +56,15 @@ void Camera::regenerate_view_matrix()
 
 void Camera::center_camera(
     const QSize& frameSize,
-    double minimumX,
-    double minimumY,
-    double maximumX,
-    double maximumY
+    double minimumHorizontal,
+    double minimumVertical,
+    double maximumHorizontal,
+    double maximumVertical
 )
 {
     double frameAspectRatio{static_cast<double>(frameSize.width()) / static_cast<double>(frameSize.height())};
-    double xSpan{maximumX - minimumX};
-    double ySpan{maximumY - minimumY};
+    double xSpan{maximumHorizontal - minimumHorizontal};
+    double ySpan{maximumVertical - minimumVertical};
     double spanAspectRatio{xSpan / ySpan};
 
     if (spanAspectRatio >= frameAspectRatio)
@@ -71,6 +77,8 @@ void Camera::center_camera(
         height = ySpan;
         width = xSpan * frameAspectRatio;
     }
-    cameraPosition.x = minimumX + xSpan / 2;
-    cameraPosition.y = minimumY + ySpan / 2;
+    cameraPosition.x = minimumHorizontal + xSpan / 2;
+    cameraPosition.z = minimumVertical + ySpan / 2;
+    recalculate_aspect_ratio();
+    qDebug() << aspectRatio << '\n';
 }

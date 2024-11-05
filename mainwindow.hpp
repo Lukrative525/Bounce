@@ -14,11 +14,16 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    void testFunction();
+    void setup();
+    void start_timer();
+
+public slots:
+    void on_timer();
 
 private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
+    float framesPerSecond;
 };
 
 #endif // MAINWINDOW_HPP

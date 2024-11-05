@@ -9,8 +9,7 @@ private:
     std::vector<double> components;
 
 public:
-    Vector3D();
-    Vector3D(const double newX, const double newY, const double newZ);
+    Vector3D(const double newX = 0, const double newY = 0, const double newZ = 0);
     Vector3D(const Vector3D& vectorToCopy);
     double get_x() const;
     double get_y() const;

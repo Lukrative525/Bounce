@@ -1,4 +1,4 @@
-main()*
+main()
     MainWindow
         GraphicsViewer
             Camera

@@ -1,10 +1,11 @@
 #ifndef PHYSICSFUNCTIONS_HPP
 #define PHYSICSFUNCTIONS_HPP
 
-class physicsfunctions
+class Vector3D;
+
+namespace phys
 {
-public:
-    physicsfunctions();
-};
+    Vector3D calculate_function_change(double timeStep, const Vector3D& functionDerivative);
+}
 
 #endif // PHYSICSFUNCTIONS_HPP

@@ -6,7 +6,7 @@ class GraphicsViewer;
 
 namespace Ui
 {
-class MainWindowForm;
+    class MainWindowForm;
 }
 
 class MainWindow: public QMainWindow

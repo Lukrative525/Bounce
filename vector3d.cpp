@@ -2,8 +2,6 @@
 #include <stdexcept>
 #include "vector3d.hpp"
 
-Vector3D::Vector3D():components{0, 0, 0} {}
-
 Vector3D::Vector3D(const double newX, const double newY, const double newZ):
     components{newX, newY, newZ} {}
 

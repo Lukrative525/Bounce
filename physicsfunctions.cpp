@@ -1,12 +1,12 @@
 #include "physicsfunctions.hpp"
 #include "vector3d.hpp"
+#include "ball.hpp"
 
 namespace phys
 {
-    Vector3D calculate_function_change(double timeStep, const Vector3D& functionDerivative)
+    void update_next_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
     {
-        Vector3D functionChange{timeStep * functionDerivative};
-
-        return functionChange;
+        ball.nextVelocity = ball.velocity + acceleration * timeStep;
+        ball.nextPosition = ball.position + ball.nextVelocity * timeStep;
     }
 }

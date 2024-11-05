@@ -2,10 +2,11 @@
 #define PHYSICSFUNCTIONS_HPP
 
 class Vector3D;
+class Ball;
 
 namespace phys
 {
-    Vector3D calculate_function_change(double timeStep, const Vector3D& functionDerivative);
+void update_next_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration);
 }
 
 #endif // PHYSICSFUNCTIONS_HPP

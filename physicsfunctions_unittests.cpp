@@ -1,26 +1,20 @@
 #include "gtest/gtest.h"
+#include "ball.hpp"
 #include "physicsfunctions.hpp"
 #include "vector3d.hpp"
 
-TEST(calculateFunctionChange, givenZeroVector_WhenFunctionChangeCalculated_ExpectZeroVector)
+TEST(updateNextImplicitEuler, givenBallAtRestUnderAcceleration_WhenNextUpdated_ExpectAppropriateNextPositionAndVelocity)
 {
-    Vector3D zeroVector{};
-
-    Vector3D testVector = phys::calculate_function_change(0.1, zeroVector);
-
-    EXPECT_TRUE(testVector[0] == 0);
-    EXPECT_TRUE(testVector[1] == 0);
-    EXPECT_TRUE(testVector[2] == 0);
-}
-
-TEST(calculateFunctionChange, givenNonZeroVector_WhenFunctionChangeCalculated_ExpectAppropriateChange)
-{
-    Vector3D changeVector{1, 1, 1};
-
+    Vector3D acceleration{1, 1, 1};
+    Ball ball{};
     double timeStep{0.1};
-    Vector3D testVector = phys::calculate_function_change(timeStep, changeVector);
 
-    EXPECT_TRUE(testVector[0] == timeStep);
-    EXPECT_TRUE(testVector[1] == timeStep);
-    EXPECT_TRUE(testVector[2] == timeStep);
+    phys::update_next_implicit_euler(timeStep, ball, acceleration);
+
+    EXPECT_TRUE(ball.nextVelocity[0] == timeStep);
+    EXPECT_TRUE(ball.nextVelocity[1] == timeStep);
+    EXPECT_TRUE(ball.nextVelocity[2] == timeStep);
+    EXPECT_TRUE(ball.nextPosition[0] == timeStep * timeStep);
+    EXPECT_TRUE(ball.nextPosition[1] == timeStep * timeStep);
+    EXPECT_TRUE(ball.nextPosition[2] == timeStep * timeStep);
 }

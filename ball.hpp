@@ -7,6 +7,7 @@ class Ball
 {
 public:
     Ball(double x = 0, double y = 0, double z = 0, double radius = 1);
+    void confirmNext();
     Vector3D position;
     Vector3D nextPosition;
     Vector3D velocity;

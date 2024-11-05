@@ -6,3 +6,9 @@ Ball::Ball(double x, double y, double z, double radius):
     velocity{},
     nextVelocity{},
     radius{radius} {}
+
+void Ball::confirmNext()
+{
+    position = nextPosition;
+    velocity = nextVelocity;
+}

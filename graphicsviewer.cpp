@@ -54,11 +54,11 @@ void GraphicsViewer::initializeGL()
 
     glGenBuffers(1, &vertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_DYNAMIC_DRAW);
 
     glGenBuffers(1, &elementBufferObject);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -107,15 +107,17 @@ void GraphicsViewer::update_ball_positions()
 {
     ballCollectionSize = simulation.ballCollection.size();
     std::vector<glm::vec3> positions(ballCollectionSize);
+    std::vector<float> radii(ballCollectionSize);
     for (int i{0}; i < positions.size(); i++)
     {
         positions[i][0] = simulation.ballCollection[i].position[0];
         positions[i][1] = simulation.ballCollection[i].position[1];
         positions[i][2] = simulation.ballCollection[i].position[2];
+        radii[i] = simulation.ballCollection[i].radius;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

@@ -7,6 +7,7 @@ class Vector3D
 {
 private:
     std::vector<double> components;
+
 public:
     Vector3D();
     Vector3D(const double newX, const double newY, const double newZ);

@@ -11,15 +11,15 @@ SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
-# Physics Library
-add_library(PhysicsLibrary STATIC)
-target_sources(PhysicsLibrary
+# Bounce Library
+add_library(BounceLibrary STATIC)
+target_sources(BounceLibrary
     PRIVATE
         ball.cpp
         camera.cpp
         physicsfunctions.cpp
-        vector3d.cpp
         simulation.cpp
+        vector3d.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${PROJECT_SOURCE_DIR}
@@ -27,33 +27,33 @@ target_sources(PhysicsLibrary
             ball.hpp
             camera.hpp
             physicsfunctions.hpp
-            vector3d.hpp
             simulation.hpp
+            vector3d.hpp
 )
-target_compile_features(PhysicsLibrary PUBLIC cxx_std_17)
-target_include_directories(PhysicsLibrary PRIVATE)
-target_link_libraries(PhysicsLibrary
+target_compile_features(BounceLibrary PUBLIC cxx_std_17)
+target_include_directories(BounceLibrary PRIVATE)
+target_link_libraries(BounceLibrary
     PRIVATE
         glm::glm
         Qt6::Core
 )
 
 # Physics Library Unit Tests
-add_executable(PhysicsLibraryUnitTests)
-target_sources(PhysicsLibraryUnitTests
+add_executable(UnitTests)
+target_sources(UnitTests
     PRIVATE
-        physicslibrary_unittests.cpp
+        physicsfunctions_unittests.cpp
         vector3d_unittests.cpp
         camera_unittests.cpp
 )
-target_compile_features(PhysicsLibraryUnitTests PUBLIC cxx_std_17)
-target_link_libraries(PhysicsLibraryUnitTests
+target_compile_features(UnitTests PUBLIC cxx_std_17)
+target_link_libraries(UnitTests
     PRIVATE
         glm::glm
         GTest::GTest
         GTest::Main
         Qt6::Core
-        PhysicsLibrary
+        BounceLibrary
 )
 
 # Bounce Application
@@ -76,7 +76,7 @@ target_link_libraries(Bounce
         Qt6::Widgets
         Qt6::Gui
         Qt6::OpenGL
-        Qt::OpenGLWidgets
+        Qt6::OpenGLWidgets
         glm::glm
-        PhysicsLibrary
+        BounceLibrary
 )

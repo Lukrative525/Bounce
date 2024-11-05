@@ -9,31 +9,40 @@ class Camera
 {
 public:
     Camera();
-    Camera(float x, float y, float z);
-    void recalculate_aspect_ratio();
-    void set_camera_position(float x, float y, float z);
-    void set_camera_target(float dx, float dy, float dz);
-    void set_camera_up_direction(float dx, float dy, float dz);
+    void set_width(float width);
+    void set_height(float height);
+    void set_near_plane(float distance = 0);
+    void set_far_plane(float distance = 10);
+    void set_camera_position(float x = 0, float y = 0, float z = 0);
+    void set_camera_target(float dx = 0, float dy = 1, float dz = 0);
+    void set_camera_up_direction(float dx = 0, float dy = 0, float dz = 1);
     void regenerate_projection_matrix();
     void regenerate_view_matrix();
     void center_camera(
-        const QSize& frameSize,
+        QSize frameSize,
         double minimumX,
         double minimumY,
         double maximumX,
         double maximumY
         );
+    float get_width();
+    float get_height();
+    float get_near_plane();
+    float get_far_plane();
+    glm::mat4 get_projection_matrix();
+    glm::mat4 get_view_matrix();
 
-    float aspectRatio;
-    float width;
-    float height;
-    float nearPlane;
-    float farPlane;
+private:
+    float width{0};
+    float height{0};
+    float nearPlane{0};
+    float farPlane{0};
     glm::vec3 cameraPosition;
     glm::vec3 cameraTarget;
     glm::vec3 cameraUpDirection;
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
+    const QSize* frameSize;
 };
 
 #endif // CAMERA_HPP

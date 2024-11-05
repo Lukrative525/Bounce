@@ -1,6 +1,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <QFile>
+#include <vector>
 #include "ball.hpp"
+#include "camera.hpp"
 #include "graphicsviewer.hpp"
 
 GraphicsViewer::GraphicsViewer(QWidget *parent):
@@ -78,13 +80,16 @@ void GraphicsViewer::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderProgram);
 
-    GLuint projection = glGetUniformLocation(shaderProgram, "projection");
-    GLuint view = glGetUniformLocation(shaderProgram, "view");
+    projection = glGetUniformLocation(shaderProgram, "projection");
+    view = glGetUniformLocation(shaderProgram, "view");
 
+    camera.center_camera(frameSize, 0, 0, 10, 10);
+    camera.set_camera_target(0, 1, 0);
+    camera.set_camera_up_direction(0, 0, 1);
     camera.regenerate_projection_matrix();
     camera.regenerate_view_matrix();
-    glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.projectionMatrix));
-    glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(camera.viewMatrix));
+    glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix()));
+    glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(camera.get_view_matrix()));
 
     glBindVertexArray(vertexArrayObject);
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, ballCollectionSize);
@@ -93,15 +98,20 @@ void GraphicsViewer::paintGL()
     glUseProgram(0);
 }
 
-void GraphicsViewer::update_object_positions(const std::vector<Ball>& ballCollection)
+void GraphicsViewer::resizeGL(int width, int height)
 {
-    ballCollectionSize = ballCollection.size();
+    this->frameSize = QSize(width, height);
+}
+
+void GraphicsViewer::update_ball_positions()
+{
+    ballCollectionSize = simulation.ballCollection.size();
     std::vector<glm::vec3> positions(ballCollectionSize);
     for (int i{0}; i < positions.size(); i++)
     {
-        positions[i][0] = ballCollection[i].position[0];
-        positions[i][1] = ballCollection[i].position[1];
-        positions[i][2] = ballCollection[i].position[2];
+        positions[i][0] = simulation.ballCollection[i].position[0];
+        positions[i][1] = simulation.ballCollection[i].position[1];
+        positions[i][2] = simulation.ballCollection[i].position[2];
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);

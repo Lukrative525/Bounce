@@ -7,11 +7,9 @@
 class Simulation
 {
 public:
-    Simulation();
-    Simulation(int maxNumberBalls);
+    Simulation(int maxNumberBalls = 100);
+    void add_ball(double x = 0, double y = 0, double z = 0, double radius = 0.1);
     int maxNumberBalls;
-    void add_ball();
-    void add_ball(double x, double y, double z, double radius);
     std::vector<Ball> ballCollection;
 };
 

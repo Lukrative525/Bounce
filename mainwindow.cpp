@@ -7,11 +7,16 @@ MainWindow::MainWindow(QWidget* parent):
     mainWindowUI{new Ui::MainWindowForm}
 {
     mainWindowUI->setupUi(this);
+
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
 }
 
-void MainWindow::update()
+void MainWindow::testFunction()
 {
-    graphicsViewer->update_object_positions(simulation.ballCollection);
+    // test code here
+    graphicsViewer->simulation.add_ball(2, 0, 2);
+    graphicsViewer->simulation.add_ball(8, 0, 8);
+    graphicsViewer->update_ball_positions();
+    graphicsViewer->camera.set_camera_position(0, -1, 0);
 }

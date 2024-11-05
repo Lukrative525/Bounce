@@ -11,8 +11,8 @@ TEST(cameraCentering, givenWideWindowAndObjectExtrema_WhenCameraCentered_ExpectC
     double maximumX{10};
     double maximumY{10};
     camera.center_camera(frameSize, minimumX, minimumY, maximumX, maximumY);
-    float width = camera.width;
-    float height = camera.height;
+    float width = camera.get_width();
+    float height = camera.get_height();
 
     EXPECT_TRUE(width >= maximumX - minimumX);
     EXPECT_TRUE(height == maximumY - minimumY);
@@ -32,8 +32,8 @@ TEST(cameraCentering, givenTallWindowAndObjectExtrema_WhenCameraCentered_ExpectC
     double maximumX{10};
     double maximumY{10};
     camera.center_camera(frameSize, minimumX, minimumY, maximumX, maximumY);
-    float width = camera.width;
-    float height = camera.height;
+    float width = camera.get_width();
+    float height = camera.get_height();
 
     EXPECT_TRUE(width == maximumX - minimumX);
     EXPECT_TRUE(height >= maximumY - minimumY);

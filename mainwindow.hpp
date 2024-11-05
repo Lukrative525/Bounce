@@ -2,7 +2,6 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
-#include "simulation.hpp"
 class GraphicsViewer;
 
 namespace Ui
@@ -15,11 +14,11 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    void update();
-// private:
+    void testFunction();
+
+private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
-    Simulation simulation;
 };
 
 #endif // MAINWINDOW_HPP

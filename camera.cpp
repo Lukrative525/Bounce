@@ -3,17 +3,31 @@
 
 Camera::Camera()
 {
-    set_camera_position(0.0, 0.0, 0.0);
+    set_camera_position();
+    set_near_plane();
+    set_far_plane();
+    set_camera_target();
+    set_camera_up_direction();
 }
 
-Camera::Camera(float x, float y, float z)
+void Camera::set_width(float width)
 {
-    set_camera_position(x, y, z);
+    this->width = width;
 }
 
-void Camera::recalculate_aspect_ratio()
+void Camera::set_height(float height)
 {
-    aspectRatio = width / height;
+    this->height = height;
+}
+
+void Camera::set_near_plane(float nearPlane)
+{
+    this->nearPlane = nearPlane;
+}
+
+void Camera::set_far_plane(float farPlane)
+{
+    this->farPlane = farPlane;
 }
 
 void Camera::set_camera_position(float x, float y, float z)
@@ -55,16 +69,16 @@ void Camera::regenerate_view_matrix()
 }
 
 void Camera::center_camera(
-    const QSize& frameSize,
-    double minimumHorizontal,
-    double minimumVertical,
-    double maximumHorizontal,
-    double maximumVertical
-)
+    QSize frameSize,
+    double minimumX,
+    double minimumY,
+    double maximumX,
+    double maximumY
+    )
 {
     double frameAspectRatio{static_cast<double>(frameSize.width()) / static_cast<double>(frameSize.height())};
-    double xSpan{maximumHorizontal - minimumHorizontal};
-    double ySpan{maximumVertical - minimumVertical};
+    double xSpan{maximumX - minimumX};
+    double ySpan{maximumY - minimumY};
     double spanAspectRatio{xSpan / ySpan};
 
     if (spanAspectRatio >= frameAspectRatio)
@@ -77,8 +91,36 @@ void Camera::center_camera(
         height = ySpan;
         width = xSpan * frameAspectRatio;
     }
-    cameraPosition.x = minimumHorizontal + xSpan / 2;
-    cameraPosition.z = minimumVertical + ySpan / 2;
-    recalculate_aspect_ratio();
-    qDebug() << aspectRatio << '\n';
+    cameraPosition.x = minimumX + xSpan / 2;
+    cameraPosition.z = minimumY + ySpan / 2;
+}
+
+float Camera::get_width()
+{
+    return width;
+}
+
+float Camera::get_height()
+{
+    return height;
+}
+
+float Camera::get_near_plane()
+{
+    return nearPlane;
+}
+
+float Camera::get_far_plane()
+{
+    return farPlane;
+}
+
+glm::mat4 Camera::get_projection_matrix()
+{
+    return projectionMatrix;
+}
+
+glm::mat4 Camera::get_view_matrix()
+{
+    return viewMatrix;
 }

@@ -103,17 +103,17 @@ void GraphicsViewer::resizeGL(int width, int height)
     this->frameSize = QSize(width, height);
 }
 
-void GraphicsViewer::update_ball_positions()
+void GraphicsViewer::update_ball_positions(std::vector<Ball> ballCollection)
 {
-    ballCollectionSize = simulation.ballCollection.size();
+    ballCollectionSize = ballCollection.size();
     std::vector<glm::vec3> positions(ballCollectionSize);
     std::vector<float> radii(ballCollectionSize);
     for (int i{0}; i < positions.size(); i++)
     {
-        positions[i][0] = simulation.ballCollection[i].position[0];
-        positions[i][1] = simulation.ballCollection[i].position[1];
-        positions[i][2] = simulation.ballCollection[i].position[2];
-        radii[i] = simulation.ballCollection[i].radius;
+        positions[i][0] = ballCollection[i].position[0];
+        positions[i][1] = ballCollection[i].position[1];
+        positions[i][2] = ballCollection[i].position[2];
+        radii[i] = ballCollection[i].radius;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);

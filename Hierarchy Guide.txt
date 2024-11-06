@@ -2,5 +2,5 @@ main()
     MainWindow
         GraphicsViewer
             Camera
-            Simulation
-                vector<Ball>
+        Simulation
+            vector<Ball>

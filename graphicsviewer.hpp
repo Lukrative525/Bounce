@@ -4,7 +4,7 @@
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLWidget>
 #include "camera.hpp"
-#include "simulation.hpp"
+
 
 class Ball;
 class MainWindow;
@@ -14,9 +14,8 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-    void update_ball_positions();
+    void update_ball_positions(std::vector<Ball> ballCollection);
     Camera camera;
-    Simulation simulation;
 
 protected:
     void initializeGL() override;

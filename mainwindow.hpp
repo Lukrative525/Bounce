@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
 #include <QMainWindow>
+#include "simulation.hpp"
 class GraphicsViewer;
 
 namespace Ui
@@ -16,6 +17,7 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     void setup();
     void start_timer();
+    Simulation simulation;
 
 public slots:
     void on_timer();

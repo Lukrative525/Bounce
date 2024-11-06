@@ -14,7 +14,7 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-    void update_ball_positions(std::vector<Ball> ballCollection);
+    void refresh_ball_positions(std::vector<Ball> ballCollection);
     Camera camera;
 
 protected:
@@ -29,12 +29,13 @@ private:
     QString read_shader_source(QString filepath);
     GLuint ballCollectionSize{0};
     GLuint shaderProgram{0};
-    GLuint vertexArrayObject{0};
-    GLuint vertexBufferObject{0};
-    GLuint elementBufferObject{0};
-    GLuint instanceVertexBufferObject{0};
-    GLuint projection{0};
-    GLuint view{0};
+    GLuint vertexArray{0};
+    GLuint vertexBuffer{0};
+    GLuint elementBuffer{0};
+    GLuint instanceVertexBuffer{0};
+    GLuint instanceScaleBuffer;
+    GLint projection{0};
+    GLint view{0};
     QSize frameSize{0, 0};
 };
 

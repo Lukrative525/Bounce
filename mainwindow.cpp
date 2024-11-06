@@ -16,12 +16,12 @@ MainWindow::MainWindow(QWidget* parent):
 void MainWindow::setup()
 {
     framesPerSecond = 30;
-    simulation.set_time_step(1.0f / framesPerSecond);
-    simulation.set_gravity(Vector3D{0, 0, -1});
-    simulation.add_ball(2, 0, 2);
-    simulation.add_ball(8, 0, 8);
+    simulation.set_time_step(1.0 / framesPerSecond);
+    simulation.set_gravity(Vector3D{0, 0, -9.81});
+    simulation.add_ball(2, 0, 2, 1);
+    simulation.add_ball(8, 0, 8, 0.5);
     graphicsViewer->camera.set_camera_position(0, -1, 0);
-    graphicsViewer->update_ball_positions(simulation.ballCollection);
+    graphicsViewer->refresh_ball_positions(simulation.ballCollection);
     start_timer();
 }
 
@@ -38,6 +38,6 @@ void MainWindow::start_timer()
 void MainWindow::on_timer()
 {
     simulation.update();
-    graphicsViewer->update_ball_positions(simulation.ballCollection);
+    graphicsViewer->refresh_ball_positions(simulation.ballCollection);
     graphicsViewer->update();
 }

@@ -31,27 +31,40 @@ void GraphicsViewer::initializeGL()
     projection = glGetUniformLocation(shaderProgram, "projection");
     view = glGetUniformLocation(shaderProgram, "view");
 
-    glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
+    // all following code working on vertex array until vertex array unbound
+    glGenVertexArrays(1, &vertexArray);
+    glBindVertexArray(vertexArray);
 
-    glGenBuffers(1, &vertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_DYNAMIC_DRAW);
+    // loadingg vertex coordinates into buffer
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW);
 
-    glGenBuffers(1, &elementBufferObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_DYNAMIC_DRAW);
+    // loading vertex indices into element buffer
+    glGenBuffers(1, &elementBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-    glGenBuffers(1, &instanceVertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);
+    // setting up instance vertex buffer
+    glGenBuffers(1, &instanceVertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBuffer);
 
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glVertexAttribDivisor(1, 1);
 
+    // setting up instance scale buffer
+    glGenBuffers(1, &instanceScaleBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer);
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+    glVertexAttribDivisor(2, 1);
+
+    // unbinding buffers and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
@@ -60,6 +73,7 @@ void GraphicsViewer::paintGL()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
     glUseProgram(shaderProgram);
 
     camera.center_camera(frameSize, 0, 0, 10, 10);
@@ -70,7 +84,7 @@ void GraphicsViewer::paintGL()
     glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix()));
     glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(camera.get_view_matrix()));
 
-    glBindVertexArray(vertexArrayObject);
+    glBindVertexArray(vertexArray);
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, ballCollectionSize);
 
     glBindVertexArray(0);
@@ -82,7 +96,7 @@ void GraphicsViewer::resizeGL(int width, int height)
     this->frameSize = QSize(width, height);
 }
 
-void GraphicsViewer::update_ball_positions(std::vector<Ball> ballCollection)
+void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection)
 {
     ballCollectionSize = ballCollection.size();
     std::vector<glm::vec3> positions(ballCollectionSize);
@@ -95,11 +109,11 @@ void GraphicsViewer::update_ball_positions(std::vector<Ball> ballCollection)
         radii[i] = ballCollection[i].radius;
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer);
+    glBufferData(GL_ARRAY_BUFFER, radii.size() * sizeof(float), radii.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    // need to re-draw here
 }
 
 void GraphicsViewer::initialize_shader_program()

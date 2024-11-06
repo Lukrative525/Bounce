@@ -39,4 +39,5 @@ void MainWindow::on_timer()
 {
     simulation.update();
     graphicsViewer->update_ball_positions(simulation.ballCollection);
+    graphicsViewer->update();
 }

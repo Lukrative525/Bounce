@@ -17,7 +17,6 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     void setup();
     void start_timer();
-    Simulation simulation;
 
 public slots:
     void on_timer();
@@ -25,6 +24,7 @@ public slots:
 private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
+    Simulation simulation;
     float framesPerSecond;
 };
 

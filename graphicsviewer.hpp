@@ -23,6 +23,7 @@ protected:
     void resizeGL(int width, int height) override;
 
 private:
+    void initialize_shader_program();
     void verify_shader_compilation(GLuint& objectToVerify);
     void verify_program_linking(GLuint& objectToVerify);
     QString read_shader_source(QString filepath);

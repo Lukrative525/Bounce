@@ -24,6 +24,7 @@ protected:
 
 private:
     void initialize_shader_program();
+    void initialize_texture();
     void verify_shader_compilation(GLuint& objectToVerify);
     void verify_program_linking(GLuint& objectToVerify);
     QString read_shader_source(QString filepath);
@@ -34,8 +35,10 @@ private:
     GLuint elementBuffer{0};
     GLuint instanceVertexBuffer{0};
     GLuint instanceScaleBuffer;
+    GLuint textureBuffer;
     GLint projection{0};
     GLint view{0};
+    GLint textureMap{0};
     QSize frameSize{0, 0};
 };
 

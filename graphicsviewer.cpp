@@ -12,10 +12,10 @@ void GraphicsViewer::initializeGL()
 {
     float boxVertices[] =
     {
-        1.0f, 0.0f, 1.0f,
-        -1.0f, 0.0f, 1.0f,
-        -1.0f, 0.0f, -1.0f,
-        1.0f, 0.0f, -1.0f
+        1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, -1.0f, 1.0f, 0.0f
     };
 
     GLuint vertexIndices[] =
@@ -28,14 +28,17 @@ void GraphicsViewer::initializeGL()
 
     initialize_shader_program();
 
+    initialize_texture();
+
     projection = glGetUniformLocation(shaderProgram, "projection");
     view = glGetUniformLocation(shaderProgram, "view");
+    textureMap = glGetUniformLocation(shaderProgram, "textureMap");
 
     // all following code working on vertex array until vertex array unbound
     glGenVertexArrays(1, &vertexArray);
     glBindVertexArray(vertexArray);
 
-    // loadingg vertex coordinates into buffer
+    // loading vertex coordinates into buffer
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW);
@@ -45,24 +48,29 @@ void GraphicsViewer::initializeGL()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW);
 
+    // setting up vertex attribute array for the vertex coordinates
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+
+    // setting up vertex attribute array for the texture coordinates
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
     // setting up instance vertex buffer
     glGenBuffers(1, &instanceVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBuffer);
 
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glVertexAttribDivisor(1, 1);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribDivisor(2, 1);
 
     // setting up instance scale buffer
     glGenBuffers(1, &instanceScaleBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer);
 
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
-    glVertexAttribDivisor(2, 1);
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+    glVertexAttribDivisor(3, 1);
 
     // unbinding buffers and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -72,9 +80,13 @@ void GraphicsViewer::initializeGL()
 void GraphicsViewer::paintGL()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glUseProgram(shaderProgram);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureBuffer);
+    glUniform1i(textureMap, 0);
 
     camera.center_camera(frameSize, 0, 0, 10, 10);
     camera.set_camera_target(0, 1, 0);
@@ -140,6 +152,23 @@ void GraphicsViewer::initialize_shader_program()
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
     verify_program_linking(shaderProgram);
+}
+
+void GraphicsViewer::initialize_texture()
+{
+    QImage textureImage(":/textures/white_circle.png");
+    textureImage = textureImage.convertToFormat(QImage::Format_RGBA8888);
+
+    glGenTextures(1, &textureBuffer);
+    glBindTexture(GL_TEXTURE_2D, textureBuffer);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureImage.width(), textureImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImage.bits());
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 void GraphicsViewer::verify_shader_compilation(GLuint& shaderToVerify)

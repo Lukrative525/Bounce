@@ -3,6 +3,7 @@
 #include <vector>
 #include "ball.hpp"
 #include "camera.hpp"
+#include "extrema.hpp"
 #include "graphicsviewer.hpp"
 
 GraphicsViewer::GraphicsViewer(QWidget *parent):
@@ -56,12 +57,12 @@ void GraphicsViewer::initializeGL()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 
-    // setting up instance vertex buffer
-    glGenBuffers(1, &instanceVertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBuffer);
+    // setting up instance position buffer
+    glGenBuffers(1, &instancePositionBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, instancePositionBuffer);
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
     glVertexAttribDivisor(2, 1);
 
     // setting up instance scale buffer
@@ -71,6 +72,14 @@ void GraphicsViewer::initializeGL()
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
     glVertexAttribDivisor(3, 1);
+
+    // setting up instance color buffer
+    glGenBuffers(1, &instanceColorBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer);
+
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+    glVertexAttribDivisor(4, 1);
 
     // unbinding buffers and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -88,7 +97,7 @@ void GraphicsViewer::paintGL()
     glBindTexture(GL_TEXTURE_2D, textureBuffer);
     glUniform1i(textureMap, 0);
 
-    camera.center_camera(frameSize, 0, 0, 10, 10);
+    camera.center_camera(frameSize, viewerExtents);
     camera.set_camera_target(0, 1, 0);
     camera.set_camera_up_direction(0, 0, 1);
     camera.regenerate_projection_matrix();
@@ -108,23 +117,36 @@ void GraphicsViewer::resizeGL(int width, int height)
     this->frameSize = QSize(width, height);
 }
 
-void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection)
+void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ball container)
 {
-    ballCollectionSize = ballCollection.size();
+    ballCollectionSize = ballCollection.size() + 1;
     std::vector<glm::vec3> positions(ballCollectionSize);
     std::vector<float> radii(ballCollectionSize);
-    for (int i{0}; i < positions.size(); i++)
+    std::vector<glm::vec4> colors(ballCollectionSize);
+
+    positions[0][0] = container.position[0];
+    positions[0][1] = container.position[1];
+    positions[0][2] = container.position[2];
+    radii[0] = container.radius;
+    colors[0] = container.color;
+
+    for (int i{1}; i < ballCollectionSize; i++)
     {
-        positions[i][0] = ballCollection[i].position[0];
-        positions[i][1] = ballCollection[i].position[1];
-        positions[i][2] = ballCollection[i].position[2];
-        radii[i] = ballCollection[i].radius;
+        positions[i][0] = ballCollection[i - 1].position[0];
+        positions[i][1] = ballCollection[i - 1].position[1];
+        positions[i][2] = ballCollection[i - 1].position[2];
+        radii[i] = ballCollection[i - 1].radius;
+        colors[i] = ballCollection[i - 1].color;
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, instanceVertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_DYNAMIC_DRAW);
+    set_viewer_extents(container);
+
+    glBindBuffer(GL_ARRAY_BUFFER, instancePositionBuffer);
+    glBufferData(GL_ARRAY_BUFFER, ballCollectionSize * sizeof(glm::vec3), positions.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer);
-    glBufferData(GL_ARRAY_BUFFER, radii.size() * sizeof(float), radii.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, ballCollectionSize * sizeof(float), radii.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer);
+    glBufferData(GL_ARRAY_BUFFER, ballCollectionSize * sizeof(glm::vec4), colors.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -195,6 +217,14 @@ void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
         glGetShaderInfoLog(programToVerify, 512, NULL, infoLog);
         qDebug() << "Program linking failed:\n" << infoLog;
     }
+}
+
+void GraphicsViewer::set_viewer_extents(Ball container)
+{
+    viewerExtents.minimumX = container.position[0] - container.radius * 1.01;
+    viewerExtents.maximumX = container.position[0] + container.radius * 1.01;
+    viewerExtents.minimumY = container.position[2] - container.radius * 1.01;
+    viewerExtents.maximumY = container.position[2] + container.radius * 1.01;
 }
 
 QString GraphicsViewer::read_shader_source(QString filepath)

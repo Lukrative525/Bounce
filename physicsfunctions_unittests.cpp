@@ -35,3 +35,23 @@ TEST(ballConfirmNext, givenBallAtRestUnderAcceleration_WhenNextUpdatedAndConfirm
     EXPECT_TRUE(ball.position[1] == timeStep * timeStep);
     EXPECT_TRUE(ball.position[2] == timeStep * timeStep);
 }
+
+TEST(reflectVector, givenAVectorAndNormal_WhenVectorFlipped_ExpectCorrectResult)
+{
+    Vector3D vector{4, 3, 0};
+    Vector3D normal{1, 1, 0};
+
+    phys::reflect_vector(vector, normal);
+
+    EXPECT_NEAR(vector[0], -3, 0.000000001);
+    EXPECT_NEAR(vector[1], -4, 0.000000001);
+}
+
+TEST(calculateDistanceBetween, givenTwoVectors_WhenDistanceBetweenCalculated_ExpectCorrectResult)
+{
+    Vector3D point1{-1, 1, 0};
+    Vector3D point2{3, 4, 0};
+    double distance = phys::distance_between(point1, point2);
+
+    EXPECT_EQ(distance, 5);
+}

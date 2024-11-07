@@ -4,7 +4,7 @@
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLWidget>
 #include "camera.hpp"
-
+#include "extrema.hpp"
 
 class Ball;
 class MainWindow;
@@ -14,7 +14,7 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-    void refresh_ball_positions(std::vector<Ball> ballCollection);
+    void refresh_ball_positions(std::vector<Ball> ballCollection, Ball container);
     Camera camera;
 
 protected:
@@ -27,15 +27,18 @@ private:
     void initialize_texture();
     void verify_shader_compilation(GLuint& objectToVerify);
     void verify_program_linking(GLuint& objectToVerify);
+    void set_viewer_extents(Ball container);
     QString read_shader_source(QString filepath);
+    Extrema viewerExtents;
     GLuint ballCollectionSize{0};
     GLuint shaderProgram{0};
     GLuint vertexArray{0};
     GLuint vertexBuffer{0};
     GLuint elementBuffer{0};
-    GLuint instanceVertexBuffer{0};
-    GLuint instanceScaleBuffer;
-    GLuint textureBuffer;
+    GLuint instancePositionBuffer{0};
+    GLuint instanceScaleBuffer{0};
+    GLuint textureBuffer{0};
+    GLuint instanceColorBuffer{0};
     GLint projection{0};
     GLint view{0};
     GLint textureMap{0};

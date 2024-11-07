@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
+class Extrema;
+
 class Camera
 {
 public:
@@ -18,13 +20,7 @@ public:
     void set_camera_up_direction(float dx = 0, float dy = 0, float dz = 1);
     void regenerate_projection_matrix();
     void regenerate_view_matrix();
-    void center_camera(
-        QSize frameSize,
-        double minimumX,
-        double minimumY,
-        double maximumX,
-        double maximumY
-        );
+    void center_camera(QSize frameSize, Extrema viewerExtents);
     float get_width();
     float get_height();
     float get_near_plane();

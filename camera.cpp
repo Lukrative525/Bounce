@@ -1,5 +1,6 @@
 #include <qdebug.h>
 #include "camera.hpp"
+#include "extrema.hpp"
 
 Camera::Camera()
 {
@@ -68,17 +69,11 @@ void Camera::regenerate_view_matrix()
     viewMatrix = glm::lookAt(cameraPosition, cameraTarget, cameraUpDirection);
 }
 
-void Camera::center_camera(
-    QSize frameSize,
-    double minimumX,
-    double minimumY,
-    double maximumX,
-    double maximumY
-    )
+void Camera::center_camera(QSize frameSize, Extrema viewerExtents)
 {
     double frameAspectRatio{static_cast<double>(frameSize.width()) / static_cast<double>(frameSize.height())};
-    double xSpan{maximumX - minimumX};
-    double ySpan{maximumY - minimumY};
+    double xSpan{viewerExtents.maximumX - viewerExtents.minimumX};
+    double ySpan{viewerExtents.maximumY - viewerExtents.minimumY};
     double spanAspectRatio{xSpan / ySpan};
 
     if (spanAspectRatio >= frameAspectRatio)
@@ -91,8 +86,8 @@ void Camera::center_camera(
         height = ySpan;
         width = xSpan * frameAspectRatio;
     }
-    cameraPosition.x = minimumX + xSpan / 2;
-    cameraPosition.z = minimumY + ySpan / 2;
+    cameraPosition.x = viewerExtents.minimumX + xSpan / 2;
+    cameraPosition.z = viewerExtents.minimumY + ySpan / 2;
 }
 
 float Camera::get_width()

@@ -17,6 +17,7 @@ target_sources(BounceLibrary
     PRIVATE
         ball.cpp
         camera.cpp
+        extrema.cpp
         physicsfunctions.cpp
         simulation.cpp
         vector3d.cpp
@@ -26,6 +27,7 @@ target_sources(BounceLibrary
         FILES
             ball.hpp
             camera.hpp
+            extrema.hpp
             physicsfunctions.hpp
             simulation.hpp
             vector3d.hpp

@@ -99,7 +99,6 @@ void GraphicsViewer::paintGL()
 
     camera.center_camera(frameSize, viewerExtents);
     camera.set_camera_target(0, 1, 0);
-    camera.set_camera_up_direction(0, 0, 1);
     camera.regenerate_projection_matrix();
     camera.regenerate_view_matrix();
     glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix()));
@@ -127,7 +126,7 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
     positions[0][0] = container.position[0];
     positions[0][1] = container.position[1];
     positions[0][2] = container.position[2];
-    radii[0] = container.radius;
+    radii[0] = (256.0f / 254.0f) * container.radius;
     colors[0] = container.color;
 
     for (int i{1}; i < ballCollectionSize; i++)
@@ -135,7 +134,7 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
         positions[i][0] = ballCollection[i - 1].position[0];
         positions[i][1] = ballCollection[i - 1].position[1];
         positions[i][2] = ballCollection[i - 1].position[2];
-        radii[i] = ballCollection[i - 1].radius;
+        radii[i] = (256.0f / 254.0f) * ballCollection[i - 1].radius;
         colors[i] = ballCollection[i - 1].color;
     }
 
@@ -148,6 +147,15 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
     glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer);
     glBufferData(GL_ARRAY_BUFFER, ballCollectionSize * sizeof(glm::vec4), colors.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void GraphicsViewer::initialize_camera(Ball container)
+{
+    camera.set_camera_position(container.position[0], container.position[1] - container.radius * 1.01, container.position[2]);
+    camera.set_camera_target(0, 1, 0);
+    camera.set_camera_up_direction(0, 0, 1);
+    camera.set_near_plane(0);
+    camera.set_far_plane(2 * (container.radius * 1.01));
 }
 
 void GraphicsViewer::initialize_shader_program()

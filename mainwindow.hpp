@@ -15,7 +15,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    void setup();
+    void startup();
     void start_timer();
 
 public slots:
@@ -26,6 +26,7 @@ private:
     GraphicsViewer* graphicsViewer;
     Simulation simulation;
     float framesPerSecond;
+    int subSteps;
 };
 
 #endif // MAINWINDOW_HPP

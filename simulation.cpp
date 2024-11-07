@@ -23,9 +23,9 @@ void Simulation::set_container(double x, double y, double z, double radius)
     container.radius = radius;
 }
 
-void Simulation::set_gravity(Vector3D gravity)
+void Simulation::set_gravity(double x, double y, double z)
 {
-    this->gravity = gravity;
+    this->gravity = Vector3D{x, y, z};
 }
 
 void Simulation::set_time_step(double timeStep)
@@ -66,21 +66,13 @@ void Simulation::resolve_all_collisions_with_container()
 
 void Simulation::resolve_single_collision_with_container(Ball& ball)
 {
-    double initialDistance = phys::distance_between(ball.position, container.position);
-    double finalDistance = phys::distance_between(ball.nextPosition, container.position);
-    double traversalRatio = ((container.radius - ball.radius) - initialDistance) / (finalDistance - initialDistance);
-    Vector3D positionDelta = ball.nextPosition - ball.position;
-    ball.position = ball.position + traversalRatio * positionDelta;
-    positionDelta = ball.nextPosition - ball.position;
-    Vector3D normal = container.position - ball.position;
-    phys::reflect_vector(positionDelta, normal);
-    ball.nextPosition = ball.position + positionDelta;
-    phys::reflect_vector(ball.nextVelocity, normal);
-
-    // Vector3D normal = container.position - ball.nextPosition;
-    // normal = normal / normal.calculate_magnitude();
-    // ball.nextPosition = ball.nextPosition + normal * (container.radius - ball.radius) / phys::distance_between(ball.nextPosition, container.position);
-    // phys::reflect_vector(ball.nextVelocity, normal);
+    Vector3D contactNormal = container.position - ball.nextPosition;
+    contactNormal = contactNormal / contactNormal.calculate_magnitude();
+    double maximumAllowedDistanceFromCenter = container.radius - ball.radius;
+    double ballShiftAmount = phys::distance_between(ball.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
+    ball.nextPosition = ball.nextPosition + ballShiftAmount * contactNormal;
+    phys::reflect_vector(ball.nextVelocity, contactNormal);
+    ball.nextVelocity = ball.elasticity * ball.nextVelocity;
 }
 
 bool Simulation::detect_single_collision_with_container(Ball& ball)
@@ -88,9 +80,4 @@ bool Simulation::detect_single_collision_with_container(Ball& ball)
     bool collisionDetected = phys::distance_between(ball.nextPosition, container.position) >= (container.radius - ball.radius);
 
     return collisionDetected;
-}
-
-double Simulation::calculate_distance_to_container(Ball& ball)
-{
-    return 0;
 }

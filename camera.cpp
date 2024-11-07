@@ -2,14 +2,7 @@
 #include "camera.hpp"
 #include "extrema.hpp"
 
-Camera::Camera()
-{
-    set_camera_position();
-    set_near_plane();
-    set_far_plane();
-    set_camera_target();
-    set_camera_up_direction();
-}
+Camera::Camera() {}
 
 void Camera::set_width(float width)
 {

@@ -2,9 +2,6 @@
 
 Ball::Ball(double x, double y, double z, double radius):
     position{x, y, z},
-    nextPosition{},
-    velocity{},
-    nextVelocity{},
     radius{radius} {}
 
 void Ball::confirmNext()
@@ -23,7 +20,10 @@ void Ball::set_color(float brightness, float opacity)
     color[3] = opacity;
 }
 
-void Ball::set_color(glm::vec4 color)
+void Ball::set_color(float R, float G, float B, float a)
 {
-    this->color = color;
+    color[0] = R;
+    color[1] = G;
+    color[2] = B;
+    color[3] = a;
 }

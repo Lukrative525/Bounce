@@ -55,11 +55,11 @@ void Simulation::resolve_collisions()
 
 void Simulation::resolve_all_collisions_with_container()
 {
-    for (int i{0}; i < ballCollection.size(); i++)
+    for (Ball& ball: ballCollection)
     {
-        if (detect_single_collision_with_container(ballCollection[i]))
+        if (detect_single_collision_with_container(ball))
         {
-            resolve_single_collision_with_container(ballCollection[i]);
+            resolve_single_collision_with_container(ball);
         }
     }
 }

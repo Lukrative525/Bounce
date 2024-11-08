@@ -51,6 +51,7 @@ void Simulation::update()
 void Simulation::resolve_collisions()
 {
     resolve_all_collisions_with_container();
+    resolve_all_collisions_between_balls();
 }
 
 void Simulation::resolve_all_collisions_with_container()
@@ -60,6 +61,20 @@ void Simulation::resolve_all_collisions_with_container()
         if (detect_single_collision_with_container(ball))
         {
             resolve_single_collision_with_container(ball);
+        }
+    }
+}
+
+void Simulation::resolve_all_collisions_between_balls()
+{
+    for (int outer{0}; outer < ballCollection.size(); outer++)
+    {
+        for (int inner{outer + 1}; inner < ballCollection.size(); inner++)
+        {
+            if (detect_single_collision_between_balls(ballCollection[outer], ballCollection[inner]))
+            {
+                resolve_single_collision_between_balls(ballCollection[outer], ballCollection[inner]);
+            }
         }
     }
 }
@@ -75,9 +90,33 @@ void Simulation::resolve_single_collision_with_container(Ball& ball)
     ball.nextVelocity = ball.elasticity * ball.nextVelocity;
 }
 
+void Simulation::resolve_single_collision_between_balls(Ball& ball1, Ball& ball2)
+{
+    Vector3D contactNormal = ball2.nextPosition - ball1.nextPosition;
+    contactNormal = contactNormal / contactNormal.calculate_magnitude();
+    double maximumAllowedDistanceBetween = ball1.radius + ball2.radius;
+    double totalShiftAmount = maximumAllowedDistanceBetween - phys::distance_between(ball1.nextPosition, ball2.nextPosition);
+    // for now, move each away by half (later, make inversely proportional to radius^3)
+    ball1.nextPosition = ball1.nextPosition - (totalShiftAmount / 2) * contactNormal;
+    ball2.nextPosition = ball2.nextPosition + (totalShiftAmount / 2) * contactNormal;
+
+    // this is the wrong way to determine velocity (doesn't conserve momentum)
+    phys::reflect_vector(ball1.nextVelocity, contactNormal);
+    phys::reflect_vector(ball2.nextVelocity, contactNormal);
+    ball1.nextVelocity = ball1.elasticity * ball1.nextVelocity;
+    ball2.nextVelocity = ball2.elasticity * ball2.nextVelocity;
+}
+
 bool Simulation::detect_single_collision_with_container(Ball& ball)
 {
-    bool collisionDetected = phys::distance_between(ball.nextPosition, container.position) >= (container.radius - ball.radius);
+    bool collisionDetected = phys::distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
+
+    return collisionDetected;
+}
+
+bool Simulation::detect_single_collision_between_balls(Ball& ball1, Ball& ball2)
+{
+    bool collisionDetected = phys::distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
 
     return collisionDetected;
 }

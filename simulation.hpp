@@ -20,8 +20,11 @@ public:
 private:
     void resolve_collisions();
     void resolve_all_collisions_with_container();
+    void resolve_all_collisions_between_balls();
     void resolve_single_collision_with_container(Ball& ball);
+    void resolve_single_collision_between_balls(Ball& ball1, Ball& ball2);
     bool detect_single_collision_with_container(Ball& ball);
+    bool detect_single_collision_between_balls(Ball& ball1, Ball& ball2);
     Vector3D gravity;
     double timeStep;
 };

@@ -55,3 +55,61 @@ TEST(calculateDistanceBetween, givenTwoVectors_WhenDistanceBetweenCalculated_Exp
 
     EXPECT_EQ(distance, 5);
 }
+
+TEST(collisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunctionCalled_ExpectCorrectFinalPosition)
+{
+    Ball movingBall;
+    movingBall.position[0] = 0;
+    movingBall.position[1] = 0;
+    movingBall.position[2] = 0;
+    movingBall.radius = 1;
+    movingBall.nextPosition[0] = 0;
+    movingBall.nextPosition[1] = 0;
+    movingBall.nextPosition[2] = 0;
+    Ball container;
+    container.position[0] = 0;
+    container.position[1] = 0;
+    container.position[2] = 0;
+    container.radius = 5;
+    container.nextPosition[0] = 0;
+    container.nextPosition[1] = 0;
+    container.nextPosition[2] = 0;
+    double distanceToImpact = container.radius - movingBall.radius;
+
+    movingBall.nextPosition[0] = distanceToImpact + 1;
+
+    phys::resolve_collision_between_moving_ball_and_container(movingBall, container);
+
+    EXPECT_TRUE(movingBall.nextPosition[0] == distanceToImpact);
+}
+
+TEST(collisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunctionCalled_ExpectVelocityFlipped)
+{
+    double velocity{5};
+    Ball movingBall;
+    movingBall.position[0] = 0;
+    movingBall.position[1] = 0;
+    movingBall.position[2] = 0;
+    movingBall.radius = 1;
+    movingBall.elasticity = 1;
+    movingBall.nextPosition[0] = 0;
+    movingBall.nextPosition[1] = 0;
+    movingBall.nextPosition[2] = 0;
+    movingBall.nextVelocity[0] = velocity;
+    Ball container;
+    container.position[0] = 0;
+    container.position[1] = 0;
+    container.position[2] = 0;
+    container.radius = 5;
+    container.elasticity = 1;
+    container.nextPosition[0] = 0;
+    container.nextPosition[1] = 0;
+    container.nextPosition[2] = 0;
+    double distanceToImpact = container.radius - movingBall.radius;
+
+    movingBall.nextPosition[0] = distanceToImpact + 1;
+
+    phys::resolve_collision_between_moving_ball_and_container(movingBall, container);
+
+    EXPECT_TRUE(movingBall.nextVelocity[0] == -velocity);
+}

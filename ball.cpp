@@ -2,6 +2,7 @@
 
 Ball::Ball(double x, double y, double z, double radius):
     position{x, y, z},
+    nextPosition{x, y, z},
     radius{radius} {}
 
 void Ball::confirmNext()

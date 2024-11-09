@@ -126,7 +126,7 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
     positions[0][0] = container.position[0];
     positions[0][1] = container.position[1];
     positions[0][2] = container.position[2];
-    radii[0] = (256.0f / 254.0f) * container.radius;
+    radii[0] = (256.0f / 248.0f) * container.radius;
     colors[0] = container.color;
 
     for (int i{1}; i < ballCollectionSize; i++)

@@ -6,6 +6,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 class Extrema;
+class Vector3D;
 
 class Camera
 {
@@ -17,6 +18,7 @@ public:
     void set_far_plane(float distance = 10);
     void set_camera_position(float x = 0, float y = 0, float z = 0);
     void set_camera_target(float dx = 0, float dy = 1, float dz = 0);
+    void set_camera_target(Vector3D target);
     void set_camera_up_direction(float dx = 0, float dy = 0, float dz = 1);
     void regenerate_projection_matrix();
     void regenerate_view_matrix();

@@ -44,6 +44,8 @@ private:
     GLint view{0};
     GLint textureMap{0};
     QSize frameSize{0, 0};
+    float imageExpansionRatio;
+    float borderWidthAsFraction;
 };
 
 #endif // GRAPHICSVIEWER_HPP

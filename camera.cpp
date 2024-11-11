@@ -1,6 +1,7 @@
 #include <qdebug.h>
 #include "camera.hpp"
 #include "extrema.hpp"
+#include "vector3d.hpp"
 
 Camera::Camera() {}
 
@@ -36,6 +37,13 @@ void Camera::set_camera_target(float dx, float dy, float dz)
     cameraTarget[0] = cameraPosition[0] + dx;
     cameraTarget[1] = cameraPosition[1] + dy;
     cameraTarget[2] = cameraPosition[2] + dz;
+}
+
+void Camera::set_camera_target(Vector3D target)
+{
+    cameraTarget[0] = target[0];
+    cameraTarget[1] = target[1];
+    cameraTarget[2] = target[2];
 }
 
 void Camera::set_camera_up_direction(float dx, float dy, float dz)

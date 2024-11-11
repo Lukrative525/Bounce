@@ -25,7 +25,7 @@ private:
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
     Simulation simulation;
-    float framesPerSecond;
+    double framesPerSecond;
     int subSteps;
 };
 

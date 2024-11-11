@@ -26,7 +26,7 @@ TEST(ballConfirmNext, givenBallAtRestUnderAcceleration_WhenNextUpdatedAndConfirm
     double timeStep{0.1};
 
     phys::update_next_implicit_euler(timeStep, ball, acceleration);
-    ball.confirmNext();
+    ball.confirm_next();
 
     EXPECT_TRUE(ball.velocity[0] == timeStep);
     EXPECT_TRUE(ball.velocity[1] == timeStep);
@@ -51,7 +51,7 @@ TEST(calculateDistanceBetween, givenTwoVectors_WhenDistanceBetweenCalculated_Exp
 {
     Vector3D point1{-1, 1, 0};
     Vector3D point2{3, 4, 0};
-    double distance = phys::distance_between(point1, point2);
+    double distance = phys::calculate_distance_between(point1, point2);
 
     EXPECT_EQ(distance, 5);
 }

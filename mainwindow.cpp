@@ -43,8 +43,8 @@ void MainWindow::startup()
 void MainWindow::start_timer()
 {
     QTimer* timer = new QTimer(this);
-    float secToMilliSeconds{1000};
-    int timerInterval = (1.0f / framesPerSecond) * secToMilliSeconds;
+    double secToMilliSeconds{1000};
+    int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
     timer->setInterval(timerInterval);
     QObject::connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
     timer->start();

@@ -52,7 +52,7 @@ void Simulation::update()
 
     for (int i{0}; i < ballCollection.size(); i++)
     {
-        ballCollection[i].confirmNext();
+        ballCollection[i].confirm_next();
     }
 }
 
@@ -89,14 +89,14 @@ void Simulation::resolve_all_collisions_between_balls()
 
 bool Simulation::detect_single_collision_with_container(Ball& ball)
 {
-    bool collisionDetected = phys::distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
+    bool collisionDetected = phys::calculate_distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
 
     return collisionDetected;
 }
 
 bool Simulation::detect_single_collision_between_balls(Ball& ball1, Ball& ball2)
 {
-    bool collisionDetected = phys::distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
+    bool collisionDetected = phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
 
     return collisionDetected;
 }

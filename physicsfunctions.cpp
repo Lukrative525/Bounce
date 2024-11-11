@@ -15,7 +15,7 @@ namespace phys
         vectorToReflect = vectorToReflect - 2 * (vectorToReflect.dot(normal / normal.calculate_magnitude()) * normal / normal.calculate_magnitude());
     }
 
-    double distance_between(const Vector3D& point1, const Vector3D& point2)
+    double calculate_distance_between(const Vector3D& point1, const Vector3D& point2)
     {
         double distance = (point1 - point2).calculate_magnitude();
 
@@ -27,7 +27,7 @@ namespace phys
         Vector3D contactNormal = container.position - movingBall.nextPosition;
         contactNormal = contactNormal / contactNormal.calculate_magnitude();
         double maximumAllowedDistanceFromCenter = container.radius - movingBall.radius;
-        double ballShiftAmount = phys::distance_between(movingBall.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
+        double ballShiftAmount = phys::calculate_distance_between(movingBall.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
         movingBall.nextPosition = movingBall.nextPosition + ballShiftAmount * contactNormal;
         phys::reflect_vector(movingBall.nextVelocity, contactNormal);
         movingBall.nextVelocity = movingBall.elasticity * movingBall.nextVelocity;
@@ -38,7 +38,7 @@ namespace phys
         Vector3D contactNormal = ball2.nextPosition - ball1.nextPosition;
         contactNormal = contactNormal / contactNormal.calculate_magnitude();
         double maximumAllowedDistanceBetween = ball1.radius + ball2.radius;
-        double totalShiftAmount = maximumAllowedDistanceBetween - phys::distance_between(ball1.nextPosition, ball2.nextPosition);
+        double totalShiftAmount = maximumAllowedDistanceBetween - phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition);
         // for now, move each away by half (later, make inversely proportional to radius^3)
         ball1.nextPosition = ball1.nextPosition - (totalShiftAmount / 2) * contactNormal;
         ball2.nextPosition = ball2.nextPosition + (totalShiftAmount / 2) * contactNormal;

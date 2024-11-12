@@ -42,53 +42,55 @@ void GraphicsViewer::initializeGL()
     view = glGetUniformLocation(shaderProgram, "view");
     textureMap = glGetUniformLocation(shaderProgram, "textureMap");
 
-    // all following code working on vertex array until vertex array unbound
-    glGenVertexArrays(1, &vertexArray);
-    glBindVertexArray(vertexArray);
+    // create and bind vertex array
+    glGenVertexArrays(1, &vertexArray); // create vertex array and assign its ID to "vertexArray"
+    glBindVertexArray(vertexArray); // bind vertex array corresponding to "vertexArray" ID
 
-    // loading vertex coordinates into buffer
-    glGenBuffers(1, &vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW);
+    // loading vertex data into buffer
+    glGenBuffers(1, &vertexBuffer); // create buffer and assign its ID to "vertexBuffer"
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); // bind buffer corresponding to "vertexBuffer" ID to GL_ARRAY_BUFFER target
+    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW); // load "boxVertices" data into currently bound buffer
 
-    // loading vertex indices into element buffer
-    glGenBuffers(1, &elementBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW);
+    // loading vertex indices into buffer
+    glGenBuffers(1, &elementBuffer); // create buffer and assign its ID to "elementBuffer"
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer); // bind buffer corresponding to "elementBuffer" ID to GL_ELEMENT_ARRAY_BUFFER target
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW); // load "vertexIndices" data into currently bound buffer
+
+    // NOTE: the glVertexAttribPointer() function only applies to the buffer last bound to GL_ARRAY_BUFFER target
 
     // setting up vertex attribute array for the vertex coordinates
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0); // enable vertex attribute array at layout location 0 (position)
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // specify that the position attributes for the vertices are 3 floats long, not normalized, spaced 5 floats worth of bytes apart, and start at the first float in the currently bound buffer
 
     // setting up vertex attribute array for the texture coordinates
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1); // enable vertex attribute array at layout location 1 (textureCoordinates)
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // specify that the textureCoordinates attributes for the vertices are 2 floats long, not normalized, spaced 5 floats worth of bytes apart, and start at the fourth float in the currently bound buffer
 
-    // setting up instance position buffer
-    glGenBuffers(1, &instancePositionBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, instancePositionBuffer);
+    // setting up a buffer for instance position
+    glGenBuffers(1, &instancePositionBuffer); // create buffer and assign its ID to "instancePositionBuffer"
+    glBindBuffer(GL_ARRAY_BUFFER, instancePositionBuffer); // bind buffer corresponding to "instancePositionBuffer" ID to GL_ARRAY_BUFFER target
 
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glEnableVertexAttribArray(2); // enable vertex attribute array at layout location 2 (instancePosition)
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0); // specify that the instancePosition attributes for the vertices are 3 floats long, not normalized, spaced 3 floats worth of bytes apart, and start at the first float in the currently bound buffer
     glVertexAttribDivisor(2, 1);
 
-    // setting up instance scale buffer
-    glGenBuffers(1, &instanceScaleBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer);
+    // setting up a buffer for instance scale
+    glGenBuffers(1, &instanceScaleBuffer); // create buffer and assign its ID to "instanceScaleBuffer"
+    glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer); // bind buffer corresponding to "instanceScaleBuffer" ID to GL_ARRAY_BUFFER target
 
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
+    glEnableVertexAttribArray(3); // enable vertex attribute array at layout location 3 (instanceScale)
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0); // specify that the instanceScale attributes for the vertices are 1 float long, not normalized, spaced 1 float worth of bytes apart, and start at the first float in the currently bound buffer
     glVertexAttribDivisor(3, 1);
 
-    // setting up instance color buffer
-    glGenBuffers(1, &instanceColorBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer);
+    // setting up a buffer for instance color
+    glGenBuffers(1, &instanceColorBuffer); // create buffer and assign its ID to "instanceColorBuffer"
+    glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer); // bind buffer corresponding to "instanceColorBuffer" ID to GL_ARRAY_BUFFER target
 
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+    glEnableVertexAttribArray(4); // enable vertex attribute array at layout location 4 (instanceColor)
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0); // specify that the instanceColor attributes for the vertices are 4 floats long, not normalized, spaced 4 floats worth of bytes apart, and start at the first float in the currently bound buffer
     glVertexAttribDivisor(4, 1);
 
-    // unbinding buffers and vertex array
+    // unbinding all buffers and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }

@@ -27,30 +27,30 @@ void Camera::set_far_plane(float farPlane)
 
 void Camera::set_camera_position(float x, float y, float z)
 {
-    cameraPosition[0] = x;
-    cameraPosition[1] = y;
-    cameraPosition[2] = z;
+    cameraPosition.x = x;
+    cameraPosition.y = y;
+    cameraPosition.z = z;
 }
 
 void Camera::set_camera_target(float dx, float dy, float dz)
 {
-    cameraTarget[0] = cameraPosition[0] + dx;
-    cameraTarget[1] = cameraPosition[1] + dy;
-    cameraTarget[2] = cameraPosition[2] + dz;
+    cameraTarget.x = cameraPosition.x + dx;
+    cameraTarget.y = cameraPosition.y + dy;
+    cameraTarget.z = cameraPosition.z + dz;
 }
 
 void Camera::set_camera_target(Vector3D target)
 {
-    cameraTarget[0] = target[0];
-    cameraTarget[1] = target[1];
-    cameraTarget[2] = target[2];
+    cameraTarget.x = target[0];
+    cameraTarget.y = target[1];
+    cameraTarget.z = target[2];
 }
 
 void Camera::set_camera_up_direction(float dx, float dy, float dz)
 {
-    cameraUpDirection[0] = dx;
-    cameraUpDirection[1] = dy;
-    cameraUpDirection[2] = dz;
+    cameraUpDirection.x = dx;
+    cameraUpDirection.y = dy;
+    cameraUpDirection.z = dz;
 }
 
 void Camera::regenerate_projection_matrix()
@@ -70,25 +70,25 @@ void Camera::regenerate_view_matrix()
     viewMatrix = glm::lookAt(cameraPosition, cameraTarget, cameraUpDirection);
 }
 
-void Camera::center_camera(QSize frameSize, Extrema viewerExtents)
+void Camera::center_camera(const QSize& frameSize, const Extrema& viewerExtents)
 {
     double frameAspectRatio{static_cast<double>(frameSize.width()) / static_cast<double>(frameSize.height())};
-    double xSpan{viewerExtents.maximumX - viewerExtents.minimumX};
-    double ySpan{viewerExtents.maximumY - viewerExtents.minimumY};
-    double spanAspectRatio{xSpan / ySpan};
+    double screenXSpan{viewerExtents.maximumX - viewerExtents.minimumX};
+    double screenYSpan{viewerExtents.maximumY - viewerExtents.minimumY};
+    double spanAspectRatio{screenXSpan / screenYSpan};
 
     if (spanAspectRatio >= frameAspectRatio)
     {
-        width = xSpan;
-        height = ySpan / frameAspectRatio;
+        width = screenXSpan;
+        height = screenYSpan / frameAspectRatio;
     }
     else
     {
-        height = ySpan;
-        width = xSpan * frameAspectRatio;
+        height = screenYSpan;
+        width = screenXSpan * frameAspectRatio;
     }
-    cameraPosition.x = viewerExtents.minimumX + xSpan / 2;
-    cameraPosition.z = viewerExtents.minimumY + ySpan / 2;
+    cameraPosition.x = viewerExtents.minimumX + screenXSpan / 2;
+    cameraPosition.z = viewerExtents.minimumY + screenYSpan / 2;
 }
 
 float Camera::get_width()

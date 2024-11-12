@@ -40,8 +40,7 @@ private:
     GLuint instanceScaleBuffer{0};
     GLuint textureBuffer{0};
     GLuint instanceColorBuffer{0};
-    GLint projection{0};
-    GLint view{0};
+    GLint modelViewProjection{0};
     GLint textureMap{0};
     QSize frameSize{0, 0};
     float imageExpansionRatio;

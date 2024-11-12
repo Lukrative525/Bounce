@@ -22,7 +22,7 @@ namespace phys
         return distance;
     }
 
-    void resolve_collision_between_moving_ball_and_container(Ball& movingBall, Ball& container)
+    void resolve_collision_between_moving_ball_and_container(Ball& movingBall, const Ball& container)
     {
         Vector3D contactNormal = container.position - movingBall.nextPosition;
         contactNormal = contactNormal / contactNormal.calculate_magnitude();
@@ -39,15 +39,14 @@ namespace phys
         contactNormal = contactNormal / contactNormal.calculate_magnitude();
         double maximumAllowedDistanceBetween = ball1.radius + ball2.radius;
         double totalShiftAmount = maximumAllowedDistanceBetween - phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition);
-        // for now, move each away by half (later, make inversely proportional to radius^3)
-        ball1.nextPosition = ball1.nextPosition - (totalShiftAmount / 2) * contactNormal;
-        ball2.nextPosition = ball2.nextPosition + (totalShiftAmount / 2) * contactNormal;
-
-        Vector3D relativeVelocity = ball1.nextVelocity - ball2.nextVelocity;
         double mass1 = pow(ball1.radius, 3);
         double mass2 = pow(ball2.radius, 3);
-        double impulse = -(1 + (ball1.elasticity + ball2.elasticity) / 2) * relativeVelocity.dot(contactNormal) / (1 / mass1 + 1 / mass2);
-        ball1.nextVelocity = ball1.nextVelocity + impulse / mass1 * contactNormal;
-        ball2.nextVelocity = ball2.nextVelocity - impulse / mass2 * contactNormal;
+        ball1.nextPosition = ball1.nextPosition - (mass2 * totalShiftAmount / (mass1 + mass2)) * contactNormal;
+        ball2.nextPosition = ball2.nextPosition + (mass1 * totalShiftAmount / (mass1 + mass2)) * contactNormal;
+
+        Vector3D relativeVelocity = ball1.nextVelocity - ball2.nextVelocity;
+        double impulse = (1 + (ball1.elasticity + ball2.elasticity) / 2) * relativeVelocity.dot(contactNormal) / (1 / mass1 + 1 / mass2);
+        ball1.nextVelocity = ball1.nextVelocity - impulse / mass1 * contactNormal;
+        ball2.nextVelocity = ball2.nextVelocity + impulse / mass2 * contactNormal;
     }
 }

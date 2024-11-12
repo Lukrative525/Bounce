@@ -3,5 +3,6 @@
         <file>shaders/vertex_shader.vert</file>
         <file>shaders/fragment_shader.frag</file>
         <file>textures/white_circle.png</file>
+        <file>textures/shaded_circle.png</file>
     </qresource>
 </RCC>

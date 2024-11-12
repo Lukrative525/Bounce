@@ -9,12 +9,11 @@ layout(location = 4) in vec4 instanceColor;
 out vec2 TexCoord;
 out vec4 Color;
 
-uniform mat4 projection;
-uniform mat4 view;
+uniform mat4 modelViewProjection;
 
 void main()
 {
-    gl_Position = projection * view * vec4(instanceScale * position + instancePosition, 1.0);
+    gl_Position = modelViewProjection * vec4(instanceScale * position + instancePosition, 1.0);
     TexCoord = textureCoordinates;
     Color = instanceColor;
 }

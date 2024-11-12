@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget* parent):
 
 void MainWindow::startup()
 {
+    this->show();
+
     framesPerSecond = 60;
     subSteps = 10;
     float elasticity{1};

@@ -15,7 +15,7 @@ public:
     Vector3D nextPosition;
     Vector3D velocity;
     Vector3D nextVelocity;
-    double radius;
+    double radius{1};
     double elasticity{1};
     glm::vec4 color{1.0, 1.0, 1.0, 1.0};
 };

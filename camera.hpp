@@ -22,7 +22,7 @@ public:
     void set_camera_up_direction(float dx = 0, float dy = 0, float dz = 1);
     void regenerate_projection_matrix();
     void regenerate_view_matrix();
-    void center_camera(QSize frameSize, Extrema viewerExtents);
+    void center_camera(const QSize& frameSize, const Extrema& viewerExtents);
     float get_width();
     float get_height();
     float get_near_plane();
@@ -40,7 +40,6 @@ private:
     glm::vec3 cameraUpDirection;
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
-    const QSize* frameSize;
 };
 
 #endif // CAMERA_HPP

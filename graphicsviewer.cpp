@@ -38,8 +38,7 @@ void GraphicsViewer::initializeGL()
 
     initialize_texture();
 
-    projection = glGetUniformLocation(shaderProgram, "projection");
-    view = glGetUniformLocation(shaderProgram, "view");
+    modelViewProjection = glGetUniformLocation(shaderProgram, "modelViewProjection");
     textureMap = glGetUniformLocation(shaderProgram, "textureMap");
 
     // create and bind vertex array
@@ -90,7 +89,7 @@ void GraphicsViewer::initializeGL()
     glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0); // specify that the instanceColor attributes for the vertices are 4 floats long, not normalized, spaced 4 floats worth of bytes apart, and start at the first float in the currently bound buffer
     glVertexAttribDivisor(4, 1);
 
-    // unbinding all buffers and vertex array
+    // unbinding all array buffers and vertex array
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
@@ -109,8 +108,7 @@ void GraphicsViewer::paintGL()
     camera.center_camera(frameSize, viewerExtents);
     camera.regenerate_projection_matrix();
     camera.regenerate_view_matrix();
-    glUniformMatrix4fv(projection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix()));
-    glUniformMatrix4fv(view, 1, GL_FALSE, glm::value_ptr(camera.get_view_matrix()));
+    glUniformMatrix4fv(modelViewProjection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix() * camera.get_view_matrix()));
 
     glBindVertexArray(vertexArray);
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, ballCollectionSize);
@@ -121,7 +119,8 @@ void GraphicsViewer::paintGL()
 
 void GraphicsViewer::resizeGL(int width, int height)
 {
-    this->frameSize = QSize(width, height);
+    frameSize.setWidth(width);
+    frameSize.setHeight(height);
 }
 
 void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ball container)
@@ -194,7 +193,7 @@ void GraphicsViewer::initialize_shader_program()
 
 void GraphicsViewer::initialize_texture()
 {
-    QImage textureImage(":/textures/white_circle.png");
+    QImage textureImage(":/textures/shaded_circle.png");
     textureImage = textureImage.convertToFormat(QImage::Format_RGBA8888);
 
     glGenTextures(1, &textureBuffer);

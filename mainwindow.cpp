@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget* parent):
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
+
+    timer = new QTimer(this);
 }
 
 void MainWindow::startup()
@@ -41,17 +43,18 @@ void MainWindow::startup()
 
     graphicsViewer->initialize_camera(simulation.container);
     graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
-    start_timer();
+
+    setup_timer();
 }
 
 void MainWindow::start_timer()
 {
-    QTimer* timer = new QTimer(this);
-    double secToMilliSeconds{1000};
-    int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
-    timer->setInterval(timerInterval);
-    QObject::connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
     timer->start();
+}
+
+void MainWindow::stop_timer()
+{
+    timer->stop();
 }
 
 void MainWindow::on_timer()
@@ -64,3 +67,14 @@ void MainWindow::on_timer()
     graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
     graphicsViewer->update();
 }
+
+void MainWindow::setup_timer()
+{
+    double secToMilliSeconds{1000};
+    int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
+    timer->setInterval(timerInterval);
+    connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
+    connect(mainWindowUI->actionPause, SIGNAL(triggered()), this, SLOT(stop_timer()));
+    connect(mainWindowUI->actionStart, SIGNAL(triggered()), this, SLOT(start_timer()));
+}
+

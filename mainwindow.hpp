@@ -16,14 +16,17 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     void startup();
-    void start_timer();
 
-public slots:
+private slots:
     void on_timer();
+    void start_timer();
+    void stop_timer();
 
 private:
+    void setup_timer();
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
+    QTimer* timer;
     Simulation simulation;
     double framesPerSecond;
     int subSteps;

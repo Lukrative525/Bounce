@@ -56,7 +56,7 @@ void GraphicsViewer::initializeGL()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer); // bind buffer corresponding to "elementBuffer" ID to GL_ELEMENT_ARRAY_BUFFER target
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW); // load "vertexIndices" data into currently bound buffer
 
-    // NOTE: the glVertexAttribPointer() function only applies to the buffer last bound to GL_ARRAY_BUFFER target
+    // NOTE: the glVertexAttribPointer function only applies to the buffer last bound to GL_ARRAY_BUFFER target
 
     // setting up vertex attribute array for the vertex coordinates
     glEnableVertexAttribArray(0); // enable vertex attribute array at layout location 0 (position)
@@ -237,10 +237,10 @@ void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
 
 void GraphicsViewer::set_viewer_extents(Ball container)
 {
-    viewerExtents.minimumX = container.position[0] - container.radius * 1.01;
-    viewerExtents.maximumX = container.position[0] + container.radius * 1.01;
-    viewerExtents.minimumY = container.position[2] - container.radius * 1.01;
-    viewerExtents.maximumY = container.position[2] + container.radius * 1.01;
+    viewerExtents.minimumX = container.position[0] - container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.maximumX = container.position[0] + container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.minimumY = container.position[2] - container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.maximumY = container.position[2] + container.radius * (1 + borderWidthAsFraction);
 }
 
 QString GraphicsViewer::read_shader_source(QString filepath)

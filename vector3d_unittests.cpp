@@ -4,9 +4,9 @@
 TEST(defaultConstructor, givenInitializedWithoutParameters_WhenComponentsAccessed_ExpectAccessedComponentsEqualToZero)
 {
     Vector3D testVector{};
-    EXPECT_TRUE(testVector.get_x() == 0);
-    EXPECT_TRUE(testVector.get_y() == 0);
-    EXPECT_TRUE(testVector.get_z() == 0);
+    EXPECT_TRUE(testVector.x == 0);
+    EXPECT_TRUE(testVector.y == 0);
+    EXPECT_TRUE(testVector.z == 0);
 }
 
 TEST(parameterizedConstructor, givenInitializedWithParameters_WhenComponentsAccessed_ExpectAccessedComponentsEqualToInputParameters)
@@ -15,9 +15,9 @@ TEST(parameterizedConstructor, givenInitializedWithParameters_WhenComponentsAcce
     double yComponent{5};
     double zComponent{99999};
     Vector3D testVector{xComponent, yComponent, zComponent};
-    EXPECT_TRUE(testVector.get_x() == xComponent);
-    EXPECT_TRUE(testVector.get_y() == yComponent);
-    EXPECT_TRUE(testVector.get_z() == zComponent);
+    EXPECT_TRUE(testVector.x == xComponent);
+    EXPECT_TRUE(testVector.y == yComponent);
+    EXPECT_TRUE(testVector.z == zComponent);
 }
 
 TEST(copyConstructor, givenInitializedByCopy_WhenComponentsAccessed_ExpectAccessedComponentsEqualToComponentsOfOriginal)
@@ -27,9 +27,9 @@ TEST(copyConstructor, givenInitializedByCopy_WhenComponentsAccessed_ExpectAccess
     double zComponent{99999};
     Vector3D originalTestVector{xComponent, yComponent, zComponent};
     Vector3D copiedTestVector{originalTestVector};
-    EXPECT_TRUE(copiedTestVector.get_x() == xComponent);
-    EXPECT_TRUE(copiedTestVector.get_y() == yComponent);
-    EXPECT_TRUE(copiedTestVector.get_z() == zComponent);
+    EXPECT_TRUE(copiedTestVector.x == xComponent);
+    EXPECT_TRUE(copiedTestVector.y == yComponent);
+    EXPECT_TRUE(copiedTestVector.z == zComponent);
 }
 
 TEST(copyConstructor, givenVector_WhenAssigningNewVectorValuesOfVector_ExpectNewVectorToHaveSameComponents)
@@ -51,7 +51,7 @@ TEST(copyConstructor, givenVector_WhenAssigningNewVectorValuesOfVectorAndChangin
     double zComponent{99999};
     Vector3D testVector1{xComponent, yComponent, zComponent};
     Vector3D testVector2 = testVector1;
-    testVector1.set_x(testVector1[0] + 1);
+    testVector1.x = testVector1[0] + 1;
     EXPECT_FALSE(testVector1[0] == testVector2[0]);
 }
 
@@ -61,12 +61,12 @@ TEST(setters, givenInitializedWithoutParameters_WhenComponentsSet_ExpectAccessed
     double xComponent{1.5};
     double yComponent{5};
     double zComponent{99999};
-    testVector.set_x(xComponent);
-    testVector.set_y(yComponent);
-    testVector.set_z(zComponent);
-    EXPECT_TRUE(testVector.get_x() == xComponent);
-    EXPECT_TRUE(testVector.get_y() == yComponent);
-    EXPECT_TRUE(testVector.get_z() == zComponent);
+    testVector.x = xComponent;
+    testVector.y = yComponent;
+    testVector.z = zComponent;
+    EXPECT_TRUE(testVector.x == xComponent);
+    EXPECT_TRUE(testVector.y == yComponent);
+    EXPECT_TRUE(testVector.z == zComponent);
 }
 
 TEST(calculateMagnitudeSquaredClassMethod, givenVector_WhenMethodCalled_ExpectScalarEqualToSquareOfMagnitude)

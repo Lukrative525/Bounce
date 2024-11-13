@@ -18,13 +18,13 @@ void Ball::set_color(float brightness, float opacity)
         color[i] = brightness;
     }
 
-    color[3] = opacity;
+    color.a = opacity;
 }
 
 void Ball::set_color(float R, float G, float B, float a)
 {
-    color[0] = R;
-    color[1] = G;
-    color[2] = B;
-    color[3] = a;
+    color.r = R;
+    color.g = G;
+    color.b = B;
+    color.a = a;
 }

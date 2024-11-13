@@ -25,9 +25,9 @@ void Simulation::add_ball(double x, double y, double z, double radius)
 
 void Simulation::set_container(double x, double y, double z, double radius)
 {
-    container.position[0] = x;
-    container.position[1] = y;
-    container.position[2] = z;
+    container.position.x = x;
+    container.position.y = y;
+    container.position.z = z;
     container.radius = radius;
 }
 

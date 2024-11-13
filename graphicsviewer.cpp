@@ -130,17 +130,17 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
     std::vector<float> radii(ballCollectionSize);
     std::vector<glm::vec4> colors(ballCollectionSize);
 
-    positions[0][0] = container.position[0];
-    positions[0][1] = container.position[1];
-    positions[0][2] = container.position[2];
+    positions[0].x = container.position.x;
+    positions[0].y = container.position.y;
+    positions[0].z = container.position.z;
     radii[0] = imageExpansionRatio * container.radius;
     colors[0] = container.color;
 
     for (int i{1}; i < ballCollectionSize; i++)
     {
-        positions[i][0] = ballCollection[i - 1].position[0];
-        positions[i][1] = ballCollection[i - 1].position[1];
-        positions[i][2] = ballCollection[i - 1].position[2];
+        positions[i].x = ballCollection[i - 1].position.x;
+        positions[i].y = ballCollection[i - 1].position.y;
+        positions[i].z = ballCollection[i - 1].position.z;
         radii[i] = imageExpansionRatio * ballCollection[i - 1].radius;
         colors[i] = ballCollection[i - 1].color;
     }
@@ -158,7 +158,7 @@ void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ba
 
 void GraphicsViewer::initialize_camera(Ball container)
 {
-    camera.set_camera_position(container.position[0], container.position[1] - container.radius * (1 + borderWidthAsFraction), container.position[2]);
+    camera.set_camera_position(container.position.x, container.position.y - container.radius * (1 + borderWidthAsFraction), container.position.z);
     camera.set_camera_target(container.position);
     camera.set_camera_up_direction(0, 0, 1);
     camera.set_near_plane(0);
@@ -236,10 +236,10 @@ void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
 
 void GraphicsViewer::set_viewer_extents(Ball container)
 {
-    viewerExtents.minimumX = container.position[0] - container.radius * (1 + borderWidthAsFraction);
-    viewerExtents.maximumX = container.position[0] + container.radius * (1 + borderWidthAsFraction);
-    viewerExtents.minimumY = container.position[2] - container.radius * (1 + borderWidthAsFraction);
-    viewerExtents.maximumY = container.position[2] + container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.minimumX = container.position.x - container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.maximumX = container.position.x + container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.minimumY = container.position.z - container.radius * (1 + borderWidthAsFraction);
+    viewerExtents.maximumY = container.position.z + container.radius * (1 + borderWidthAsFraction);
 }
 
 QString GraphicsViewer::read_shader_source(QString filepath)

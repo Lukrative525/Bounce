@@ -21,9 +21,11 @@ private slots:
     void start_timer();
     void stop_timer();
     void open_file();
+    void save_as_file();
 
 private:
     void setup_timer();
+    void setup_menu();
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
     QTimer* timer;

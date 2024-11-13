@@ -123,7 +123,7 @@ void GraphicsViewer::resizeGL(int width, int height)
     frameSize.setHeight(height);
 }
 
-void GraphicsViewer::refresh_ball_positions(std::vector<Ball> ballCollection, Ball container)
+void GraphicsViewer::refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container)
 {
     ballCollectionSize = ballCollection.size() + 1;
     std::vector<glm::vec3> positions(ballCollectionSize);

@@ -52,7 +52,7 @@ void Simulation::update()
 
     for (int i{0}; i < ballCollection.size(); i++)
     {
-        ballCollection[i].confirm_next();
+        ballCollection[i].make_next_state_current();
     }
 }
 

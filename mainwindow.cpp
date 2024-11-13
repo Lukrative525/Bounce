@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent):
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
 
     setup_timer();
+    setup_menu();
 }
 
 void MainWindow::start_timer()
@@ -61,6 +62,11 @@ void MainWindow::open_file()
     mainWindowUI->actionStart->setEnabled(true);
 }
 
+void MainWindow::save_as_file()
+{
+
+}
+
 void MainWindow::on_timer()
 {
     for (int i{0}; i < subSteps; i++)
@@ -79,9 +85,13 @@ void MainWindow::setup_timer()
     int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
     timer->setInterval(timerInterval);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
+}
 
+void MainWindow::setup_menu()
+{
     connect(mainWindowUI->actionPause, SIGNAL(triggered()), this, SLOT(stop_timer()));
     connect(mainWindowUI->actionStart, SIGNAL(triggered()), this, SLOT(start_timer()));
     connect(mainWindowUI->actionOpen, SIGNAL(triggered()), this, SLOT(open_file()));
+    connect(mainWindowUI->actionSaveAs, SIGNAL(triggered()), this, SLOT(save_as_file()));
 }
 

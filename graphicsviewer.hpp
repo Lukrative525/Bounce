@@ -14,7 +14,7 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
     Q_OBJECT
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
-    void refresh_ball_positions(std::vector<Ball> ballCollection, Ball container);
+    void refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container);
     void initialize_camera(Ball container);
     Camera camera;
 

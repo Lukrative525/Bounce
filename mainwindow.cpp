@@ -1,3 +1,4 @@
+#include <QFileDialog>
 #include <QTimer>
 #include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
@@ -5,22 +6,34 @@
 
 MainWindow::MainWindow(QWidget* parent):
     QMainWindow{parent},
-    mainWindowUI{new Ui::MainWindowForm}
+    mainWindowUI{new Ui::MainWindowForm},
+    framesPerSecond{60},
+    subSteps{10}
 {
     mainWindowUI->setupUi(this);
+    mainWindowUI->actionPause->setEnabled(false);
+    mainWindowUI->actionStart->setEnabled(false);
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
 
-    timer = new QTimer(this);
+    setup_timer();
 }
 
-void MainWindow::startup()
+void MainWindow::start_timer()
 {
-    this->show();
+    timer->start();
+}
 
-    framesPerSecond = 60;
-    subSteps = 10;
+void MainWindow::stop_timer()
+{
+    timer->stop();
+}
+
+void MainWindow::open_file()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open Simulation File", "", ".sim");
+
     float elasticity{1};
     simulation.set_time_step(1.0 / framesPerSecond / subSteps);
     simulation.set_gravity(0, 0, -9.81);
@@ -44,17 +57,8 @@ void MainWindow::startup()
     graphicsViewer->initialize_camera(simulation.container);
     graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
 
-    setup_timer();
-}
-
-void MainWindow::start_timer()
-{
-    timer->start();
-}
-
-void MainWindow::stop_timer()
-{
-    timer->stop();
+    mainWindowUI->actionPause->setEnabled(true);
+    mainWindowUI->actionStart->setEnabled(true);
 }
 
 void MainWindow::on_timer()
@@ -70,11 +74,14 @@ void MainWindow::on_timer()
 
 void MainWindow::setup_timer()
 {
+    timer = new QTimer(this);
     double secToMilliSeconds{1000};
     int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
     timer->setInterval(timerInterval);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
+
     connect(mainWindowUI->actionPause, SIGNAL(triggered()), this, SLOT(stop_timer()));
     connect(mainWindowUI->actionStart, SIGNAL(triggered()), this, SLOT(start_timer()));
+    connect(mainWindowUI->actionOpen, SIGNAL(triggered()), this, SLOT(open_file()));
 }
 

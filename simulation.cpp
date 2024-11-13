@@ -1,10 +1,43 @@
 #include <QDebug>
+#include <QJsonArray>
 #include "physicsfunctions.hpp"
 #include "simulation.hpp"
 
 Simulation::Simulation(int maxNumberBalls):maxNumberBalls{maxNumberBalls}
 {
     ballCollection.reserve(maxNumberBalls);
+}
+
+QJsonObject Simulation::write_to_json() const
+{
+    QJsonObject json;
+    QJsonArray ballsArray;
+    for (const Ball& ball: ballCollection)
+    {
+        ballsArray.append(ball.write_to_json());
+    }
+    json["ballCollection"] = ballsArray;
+    json["container"] = container.write_to_json();
+    json["maxNumberBalls"] = maxNumberBalls;
+    json["gravity"] = gravity.write_to_json();
+    json["timeStep"] = timeStep;
+    return json;
+}
+
+void Simulation::read_from_json(const QJsonObject& json)
+{
+    QJsonArray ballCollectionArray = json["ballCollection"].toArray();
+    for (const QJsonValue& jsonValue: ballCollectionArray)
+    {
+        QJsonObject ballJsonObject = jsonValue.toObject();
+        Ball newBall;
+        newBall.read_from_json(ballJsonObject);
+        add_ball(newBall);
+    }
+    container.read_from_json(json["container"].toObject());
+    maxNumberBalls = json["maxNumberBalls"].toDouble();
+    gravity.read_from_json(json["gravity"].toObject());
+    timeStep = json["timeStep"].toDouble();
 }
 
 void Simulation::add_ball(Ball newBall)

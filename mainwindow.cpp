@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QJsonDocument>
 #include <QTimer>
 #include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
@@ -33,27 +34,19 @@ void MainWindow::stop_timer()
 
 void MainWindow::open_file()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open Simulation File", "", ".sim");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open Simulation File", "", "*.sim");
 
-    float elasticity{1};
-    simulation.set_time_step(1.0 / framesPerSecond / subSteps);
-    simulation.set_gravity(0, 0, -9.81);
-    simulation.set_container(0, 0, 10, 10);
-    simulation.container.set_color(0, 1);
-    simulation.container.elasticity = elasticity;
+    reset_simulation();
 
-    Ball ball1{2, 0, 6, 1};
-    ball1.set_color(1, 0, 0, 1);
-    ball1.elasticity = elasticity;
-    Ball ball2{2, 0, 12, 0.5};
-    ball2.set_color(0, 1, 0, 1);
-    ball2.elasticity = elasticity;
-    Ball ball3{-2, 0, 12, 0.75};
-    ball3.set_color(0, 0, 1, 1);
-    ball3.elasticity = elasticity;
-    simulation.add_ball(ball1);
-    simulation.add_ball(ball2);
-    simulation.add_ball(ball3);
+    QFile fileToOpen(fileName);
+    if (fileToOpen.open(QIODevice::ReadOnly))
+    {
+        QJsonDocument jsonDocument = QJsonDocument::fromJson(fileToOpen.readAll());
+        if (!jsonDocument.isNull()) {
+            simulation.read_from_json(jsonDocument.object());
+        }
+        fileToOpen.close();
+    }
 
     graphicsViewer->initialize_camera(simulation.container);
     graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
@@ -64,7 +57,17 @@ void MainWindow::open_file()
 
 void MainWindow::save_as_file()
 {
+    QString fileName = QFileDialog::getSaveFileName(this, "Save Simulation File As", "", "*.sim");
 
+    QFile fileToSave(fileName);
+
+    if (fileToSave.open(QIODevice::WriteOnly))
+    {
+        QJsonObject jsonObject = simulation.write_to_json();
+        QJsonDocument jsonDocument(jsonObject);
+        fileToSave.write(jsonDocument.toJson());
+        fileToSave.close();
+    }
 }
 
 void MainWindow::on_timer()
@@ -95,3 +98,7 @@ void MainWindow::setup_menu()
     connect(mainWindowUI->actionSaveAs, SIGNAL(triggered()), this, SLOT(save_as_file()));
 }
 
+void MainWindow::reset_simulation()
+{
+    simulation = Simulation();
+}

@@ -26,6 +26,8 @@ private slots:
 private:
     void setup_timer();
     void setup_menu();
+    void reset_simulation();
+
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
     QTimer* timer;

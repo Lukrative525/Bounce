@@ -4,13 +4,16 @@
 #include <glm/glm.hpp>
 #include "vector3d.hpp"
 
-class Ball
+class Ball: public ISaveableObject
 {
 public:
     Ball(double x = 0, double y = 0, double z = 0, double radius = 1);
+    QJsonObject write_to_json() const override;
+    void read_from_json(const QJsonObject& json) override;
     void make_next_state_current();
     void set_color(float brightness, float opacity);
     void set_color(float R, float G, float B, float a);
+
     Vector3D position;
     Vector3D nextPosition;
     Vector3D velocity;

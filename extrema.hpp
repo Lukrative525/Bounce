@@ -6,6 +6,7 @@ class Extrema
 public:
     Extrema();
     Extrema(double minimumX, double minimumY, double maximumX, double maximumY);
+
     double minimumX;
     double minimumY;
     double maximumX;

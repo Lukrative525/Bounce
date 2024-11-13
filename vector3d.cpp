@@ -16,6 +16,22 @@ Vector3D::Vector3D(const Vector3D& vectorToCopy):
 {
 }
 
+QJsonObject Vector3D::write_to_json() const
+{
+    QJsonObject json;
+    json["x"] = x;
+    json["y"] = y;
+    json["z"] = z;
+    return json;
+}
+
+void Vector3D::read_from_json(const QJsonObject& json)
+{
+    x = json["x"].toDouble();
+    y = json["y"].toDouble();
+    z = json["z"].toDouble();
+}
+
 double Vector3D::calculate_magnitude_squared() const
 {
     double magnitudeSquared = pow(x, 2) + pow(y, 2) + pow(z, 2);

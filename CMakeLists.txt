@@ -19,6 +19,7 @@ target_sources(BounceLibrary
         camera.cpp
         chain.cpp
         extrema.cpp
+        jsonreadwritefunctions.cpp
         physicsfunctions.cpp
         simulation.cpp
         vector3d.cpp
@@ -30,6 +31,8 @@ target_sources(BounceLibrary
             camera.hpp
             chain.hpp
             extrema.hpp
+            isaveableobject.hpp
+            jsonreadwritefunctions.hpp
             physicsfunctions.hpp
             simulation.hpp
             vector3d.hpp

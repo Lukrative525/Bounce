@@ -1,14 +1,15 @@
 #ifndef VECTOR3D_H
 #define VECTOR3D_H
 
-class Vector3D
+#include "isaveableobject.hpp"
+
+class Vector3D: public ISaveableObject
 {
 public:
     Vector3D(const double newX = 0, const double newY = 0, const double newZ = 0);
     Vector3D(const Vector3D& vectorToCopy);
-    double x{0};
-    double y{0};
-    double z{0};
+    QJsonObject write_to_json() const override;
+    void read_from_json(const QJsonObject &json) override;
     double calculate_magnitude_squared() const;
     double calculate_magnitude() const;
     void normalize();
@@ -19,6 +20,10 @@ public:
     bool operator!=(const Vector3D& secondVector) const;
     double& operator[](const int index);
     double operator[](const int index) const;
+
+    double x{0};
+    double y{0};
+    double z{0};
 };
 
 Vector3D operator+(const Vector3D& firstVectorToAdd, const Vector3D& secondVectorToAdd);

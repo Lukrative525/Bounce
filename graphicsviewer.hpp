@@ -16,6 +16,7 @@ public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
     void refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container);
     void initialize_camera(Ball container);
+
     Camera camera;
 
 protected:
@@ -30,6 +31,7 @@ private:
     void verify_program_linking(GLuint& objectToVerify);
     void set_viewer_extents(Ball container);
     QString read_shader_source(QString filepath);
+
     Extrema viewerExtents;
     GLuint ballCollectionSize{0};
     GLuint shaderProgram{0};

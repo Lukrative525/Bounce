@@ -1,0 +1,131 @@
+{
+    "ballCollection": [
+        {
+            "color": {
+                "w": 1,
+                "x": 1,
+                "y": 0,
+                "z": 0
+            },
+            "elasticity": 1,
+            "nextPosition": {
+                "x": 2,
+                "y": 0,
+                "z": 6
+            },
+            "nextVelocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "position": {
+                "x": 2,
+                "y": 0,
+                "z": 6
+            },
+            "radius": 1,
+            "velocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        {
+            "color": {
+                "w": 1,
+                "x": 0,
+                "y": 1,
+                "z": 0
+            },
+            "elasticity": 1,
+            "nextPosition": {
+                "x": 2,
+                "y": 0,
+                "z": 12
+            },
+            "nextVelocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "position": {
+                "x": 2,
+                "y": 0,
+                "z": 12
+            },
+            "radius": 0.5,
+            "velocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        {
+            "color": {
+                "w": 1,
+                "x": 0,
+                "y": 0,
+                "z": 1
+            },
+            "elasticity": 1,
+            "nextPosition": {
+                "x": -2,
+                "y": 0,
+                "z": 12
+            },
+            "nextVelocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "position": {
+                "x": -2,
+                "y": 0,
+                "z": 12
+            },
+            "radius": 0.75,
+            "velocity": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        }
+    ],
+    "container": {
+        "color": {
+            "w": 1,
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "elasticity": 1,
+        "nextPosition": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "nextVelocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        },
+        "position": {
+            "x": 0,
+            "y": 0,
+            "z": 10
+        },
+        "radius": 10,
+        "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        }
+    },
+    "gravity": {
+        "x": 0,
+        "y": 0,
+        "z": -9.81
+    },
+    "maxNumberBalls": 100,
+    "timeStep": 0.0016666666666666666
+}

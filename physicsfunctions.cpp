@@ -8,8 +8,11 @@ namespace phys
 {
     void update_next_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
     {
-        ball.nextVelocity = ball.velocity + acceleration * timeStep;
-        ball.nextPosition = ball.position + ball.nextVelocity * timeStep;
+        if (ball.isMovable)
+        {
+            ball.nextVelocity = ball.velocity + acceleration * timeStep;
+            ball.nextPosition = ball.position + ball.nextVelocity * timeStep;
+        }
     }
 
     void reflect_vector(Vector3D& vectorToReflect, const Vector3D& normal)
@@ -38,7 +41,7 @@ namespace phys
         return collisionDetected;
     }
 
-    void resolve_collision_between_moving_ball_and_container(Ball& movingBall, const Ball& container)
+    void resolve_collision_between_ball_and_container(Ball& movingBall, const Ball& container)
     {
         Vector3D contactNormal = container.position - movingBall.nextPosition;
         contactNormal.normalize();
@@ -49,7 +52,23 @@ namespace phys
         movingBall.nextVelocity = movingBall.elasticity * movingBall.nextVelocity;
     }
 
-    void resolve_collision_between_moving_balls(Ball& ball1, Ball& ball2)
+    void resolve_collision_between_balls(Ball& ball1, Ball& ball2)
+    {
+        if (ball1.isMovable && ball2.isMovable)
+        {
+            resolve_collision_between_movable_balls(ball1, ball2);
+        }
+        else if (ball1.isMovable)
+        {
+            resolve_collision_between_with_immovable_ball(ball1, ball2);
+        }
+        else if (ball2.isMovable)
+        {
+            resolve_collision_between_with_immovable_ball(ball2, ball1);
+        }
+    }
+
+    void resolve_collision_between_movable_balls(Ball& ball1, Ball& ball2)
     {
         Vector3D contactNormal = ball2.nextPosition - ball1.nextPosition;
         contactNormal.normalize();
@@ -64,5 +83,16 @@ namespace phys
         double impulse = (1 + (ball1.elasticity + ball2.elasticity) / 2) * relativeVelocity.dot(contactNormal) / (1 / mass1 + 1 / mass2);
         ball1.nextVelocity = ball1.nextVelocity - impulse / mass1 * contactNormal;
         ball2.nextVelocity = ball2.nextVelocity + impulse / mass2 * contactNormal;
+    }
+
+    void resolve_collision_between_with_immovable_ball(Ball& movableBall, const Ball& immovableBall)
+    {
+        Vector3D contactNormal = immovableBall.position - movableBall.nextPosition;
+        contactNormal.normalize();
+        double maximumAllowedDistanceBetween = immovableBall.radius + movableBall.radius;
+        double ballShiftAmount = calculate_distance_between(movableBall.nextPosition, immovableBall.position) - maximumAllowedDistanceBetween;
+        movableBall.nextPosition = movableBall.nextPosition + ballShiftAmount * contactNormal;
+        reflect_vector(movableBall.nextVelocity, contactNormal);
+        movableBall.nextVelocity = movableBall.elasticity * movableBall.nextVelocity;
     }
 }

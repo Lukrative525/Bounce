@@ -18,6 +18,7 @@ QJsonObject Ball::write_to_json() const
     json["radius"] = radius;
     json["elasticity"] = elasticity;
     json["color"] = jsonrw::write_to_json(color);
+    json["isMovable"] = isMovable;
     return json;
 }
 
@@ -30,6 +31,7 @@ void Ball::read_from_json(const QJsonObject& json)
     radius = json["radius"].toDouble();
     elasticity = json["elasticity"].toDouble();
     jsonrw::read_from_json(json["color"].toObject(), color);
+    isMovable = json["isMovable"].toBool();
 }
 
 void Ball::make_next_state_current()

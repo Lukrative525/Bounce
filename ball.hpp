@@ -21,6 +21,7 @@ public:
     double radius{1};
     double elasticity{1};
     glm::vec4 color{1.0, 1.0, 1.0, 1.0};
+    bool isMovable{true};
 };
 
 #endif // BALL_HPP

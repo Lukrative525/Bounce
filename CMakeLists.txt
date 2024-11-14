@@ -17,9 +17,9 @@ target_sources(BounceLibrary
     PRIVATE
         ball.cpp
         camera.cpp
-        chain.cpp
         extrema.cpp
         jsonreadwritefunctions.cpp
+        link.cpp
         physicsfunctions.cpp
         simulation.cpp
         vector3d.cpp
@@ -29,10 +29,10 @@ target_sources(BounceLibrary
         FILES
             ball.hpp
             camera.hpp
-            chain.hpp
             extrema.hpp
             isaveableobject.hpp
             jsonreadwritefunctions.hpp
+            link.hpp
             physicsfunctions.hpp
             simulation.hpp
             vector3d.hpp

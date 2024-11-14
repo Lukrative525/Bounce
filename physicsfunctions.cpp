@@ -22,6 +22,20 @@ namespace phys
         return distance;
     }
 
+    bool detect_single_collision_with_container(const Ball& ball, const Ball& container)
+    {
+        bool collisionDetected = phys::calculate_distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
+
+        return collisionDetected;
+    }
+
+    bool detect_single_collision_between_balls(const Ball& ball1, const Ball& ball2)
+    {
+        bool collisionDetected = phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
+
+        return collisionDetected;
+    }
+
     void resolve_collision_between_moving_ball_and_container(Ball& movingBall, const Ball& container)
     {
         Vector3D contactNormal = container.position - movingBall.nextPosition;

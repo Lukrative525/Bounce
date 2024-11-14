@@ -9,9 +9,9 @@
             },
             "elasticity": 1,
             "nextPosition": {
-                "x": 2,
+                "x": 0,
                 "y": 0,
-                "z": 6
+                "z": 8
             },
             "nextVelocity": {
                 "x": 0,
@@ -19,9 +19,9 @@
                 "z": 0
             },
             "position": {
-                "x": 2,
+                "x": 0,
                 "y": 0,
-                "z": 6
+                "z": 8
             },
             "radius": 1,
             "velocity": {

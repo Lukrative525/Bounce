@@ -48,8 +48,8 @@ void MainWindow::open_file()
         fileToOpen.close();
     }
 
-    graphicsViewer->initialize_camera(simulation.container);
-    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+    graphicsViewer->initialize_camera(simulation.readContainer());
+    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
 
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionStart->setEnabled(true);
@@ -77,7 +77,7 @@ void MainWindow::on_timer()
         simulation.update();
     }
 
-    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
     graphicsViewer->update();
 }
 

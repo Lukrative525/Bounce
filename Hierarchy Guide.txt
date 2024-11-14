@@ -1,6 +1,0 @@
-main()
-    MainWindow
-        GraphicsViewer
-            Camera
-        Simulation
-            vector<Ball>

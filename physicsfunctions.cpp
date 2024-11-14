@@ -2,6 +2,8 @@
 #include "vector3d.hpp"
 #include "ball.hpp"
 
+// TODO: finish unit tests for these functions
+
 namespace phys
 {
     void update_next_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
@@ -24,14 +26,14 @@ namespace phys
 
     bool detect_single_collision_with_container(const Ball& ball, const Ball& container)
     {
-        bool collisionDetected = phys::calculate_distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
+        bool collisionDetected = calculate_distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
 
         return collisionDetected;
     }
 
     bool detect_single_collision_between_balls(const Ball& ball1, const Ball& ball2)
     {
-        bool collisionDetected = phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
+        bool collisionDetected = calculate_distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
 
         return collisionDetected;
     }
@@ -39,20 +41,20 @@ namespace phys
     void resolve_collision_between_moving_ball_and_container(Ball& movingBall, const Ball& container)
     {
         Vector3D contactNormal = container.position - movingBall.nextPosition;
-        contactNormal = contactNormal / contactNormal.calculate_magnitude();
+        contactNormal.normalize();
         double maximumAllowedDistanceFromCenter = container.radius - movingBall.radius;
-        double ballShiftAmount = phys::calculate_distance_between(movingBall.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
+        double ballShiftAmount = calculate_distance_between(movingBall.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
         movingBall.nextPosition = movingBall.nextPosition + ballShiftAmount * contactNormal;
-        phys::reflect_vector(movingBall.nextVelocity, contactNormal);
+        reflect_vector(movingBall.nextVelocity, contactNormal);
         movingBall.nextVelocity = movingBall.elasticity * movingBall.nextVelocity;
     }
 
     void resolve_collision_between_moving_balls(Ball& ball1, Ball& ball2)
     {
         Vector3D contactNormal = ball2.nextPosition - ball1.nextPosition;
-        contactNormal = contactNormal / contactNormal.calculate_magnitude();
+        contactNormal.normalize();
         double maximumAllowedDistanceBetween = ball1.radius + ball2.radius;
-        double totalShiftAmount = maximumAllowedDistanceBetween - phys::calculate_distance_between(ball1.nextPosition, ball2.nextPosition);
+        double totalShiftAmount = maximumAllowedDistanceBetween - calculate_distance_between(ball1.nextPosition, ball2.nextPosition);
         double mass1 = pow(ball1.radius, 3);
         double mass2 = pow(ball2.radius, 3);
         ball1.nextPosition = ball1.nextPosition - (mass2 * totalShiftAmount / (mass1 + mass2)) * contactNormal;

@@ -10,26 +10,22 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 8
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 8
             },
             "radius": 1,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -45,26 +41,22 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 2,
                 "y": 0,
                 "z": 12
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 2,
                 "y": 0,
                 "z": 12
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -80,26 +72,22 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": -2,
                 "y": 0,
                 "z": 12
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": -2,
                 "y": 0,
                 "z": 12
             },
             "radius": 0.75,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -115,26 +103,22 @@
             "elasticity": 1,
             "isMovable": false,
             "nextPosition": {
-                "isLocked": true,
                 "x": -1,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": true,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": true,
                 "x": -1,
                 "y": 0,
                 "z": 14
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": true,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -150,26 +134,22 @@
             "elasticity": 0.99,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 14
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -185,26 +165,22 @@
             "elasticity": 0.99,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 1,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 1,
                 "y": 0,
                 "z": 14
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -220,26 +196,22 @@
             "elasticity": 0.99,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 2,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 2,
                 "y": 0,
                 "z": 14
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -255,26 +227,22 @@
             "elasticity": 0.99,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 3,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 3,
                 "y": 0,
                 "z": 14
             },
             "radius": 0.5,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -290,26 +258,22 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "isLocked": false,
                 "x": 4.5,
                 "y": 0,
                 "z": 14
             },
             "nextVelocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
             "position": {
-                "isLocked": false,
                 "x": 4.5,
                 "y": 0,
                 "z": 14
             },
             "radius": 1,
             "velocity": {
-                "isLocked": false,
                 "x": 0,
                 "y": 0,
                 "z": 0
@@ -323,36 +287,31 @@
             "y": 0,
             "z": 0
         },
-        "elasticity": 0.99,
+        "elasticity": 1,
         "isMovable": false,
         "nextPosition": {
-            "isLocked": true,
             "x": 0,
             "y": 0,
             "z": 0
         },
         "nextVelocity": {
-            "isLocked": true,
             "x": 0,
             "y": 0,
             "z": 0
         },
         "position": {
-            "isLocked": true,
             "x": 0,
             "y": 0,
             "z": 10
         },
         "radius": 10,
         "velocity": {
-            "isLocked": true,
             "x": 0,
             "y": 0,
             "z": 0
         }
     },
     "gravity": {
-        "isLocked": false,
         "x": 0,
         "y": 0,
         "z": -9.81

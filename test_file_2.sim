@@ -8,6 +8,7 @@
                 "z": 0
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": 0,
                 "y": 0,
@@ -38,6 +39,7 @@
                 "z": 0
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": 2,
                 "y": 0,
@@ -68,6 +70,7 @@
                 "z": 1
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": -2,
                 "y": 0,
@@ -98,6 +101,7 @@
                 "z": 0
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": -2,
                 "y": 0,
@@ -128,6 +132,7 @@
                 "z": 0
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": 0,
                 "y": 0,
@@ -158,6 +163,7 @@
                 "z": 0
             },
             "elasticity": 1,
+            "isMovable": true,
             "nextPosition": {
                 "x": 2,
                 "y": 0,
@@ -189,6 +195,7 @@
             "z": 0
         },
         "elasticity": 1,
+        "isMovable": false,
         "nextPosition": {
             "x": 0,
             "y": 0,
@@ -216,6 +223,8 @@
         "y": 0,
         "z": -9.81
     },
+    "linkCollection": [
+    ],
     "maxNumberBalls": 100,
     "timeStep": 0.0016666666666666666
 }

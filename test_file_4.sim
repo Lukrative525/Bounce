@@ -7,7 +7,7 @@
                 "y": 1,
                 "z": 0
             },
-            "elasticity": 0.99,
+            "elasticity": 1,
             "isMovable": false,
             "nextPosition": {
                 "x": -1,
@@ -38,7 +38,7 @@
                 "y": 1,
                 "z": 0
             },
-            "elasticity": 0.99,
+            "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
                 "x": 0,
@@ -69,7 +69,7 @@
                 "y": 1,
                 "z": 0
             },
-            "elasticity": 0.99,
+            "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
                 "x": 1,
@@ -100,7 +100,7 @@
                 "y": 1,
                 "z": 0
             },
-            "elasticity": 0.99,
+            "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
                 "x": 2,
@@ -131,7 +131,7 @@
                 "y": 1,
                 "z": 0
             },
-            "elasticity": 0.99,
+            "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
                 "x": 3,
@@ -194,7 +194,7 @@
             "y": 0,
             "z": 0
         },
-        "elasticity": 0.99,
+        "elasticity": 1,
         "isMovable": false,
         "nextPosition": {
             "x": 0,

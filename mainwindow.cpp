@@ -50,6 +50,7 @@ void MainWindow::open_file()
 
     graphicsViewer->initialize_camera(simulation.readContainer());
     graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
+    graphicsViewer->update();
 
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionStart->setEnabled(true);

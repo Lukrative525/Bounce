@@ -36,6 +36,11 @@ void MainWindow::open_file()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Open Simulation File", "", "*.sim");
 
+    if (fileName == "")
+    {
+        return;
+    }
+
     reset_simulation();
 
     QFile fileToOpen(fileName);

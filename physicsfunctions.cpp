@@ -27,21 +27,37 @@ namespace phys
         return distance;
     }
 
-    bool detect_single_collision_with_container(const Ball& ball, const Ball& container)
+    bool detect_collision_with_container(const Ball& ball, const Ball& container)
     {
         bool collisionDetected = calculate_distance_between(ball.nextPosition, container.position) > (container.radius - ball.radius);
 
         return collisionDetected;
     }
 
-    bool detect_single_collision_between_balls(const Ball& ball1, const Ball& ball2)
+    bool detect_collision_between_balls(const Ball& ball1, const Ball& ball2)
     {
         bool collisionDetected = calculate_distance_between(ball1.nextPosition, ball2.nextPosition) < (ball1.radius + ball2.radius);
 
         return collisionDetected;
     }
 
-    void resolve_collision_between_ball_and_container(Ball& movingBall, const Ball& container)
+    void resolve_collision(Ball& ball1, Ball& ball2)
+    {
+        if (ball1.isMovable && ball2.isMovable)
+        {
+            resolve_collision_between_movable_balls(ball1, ball2);
+        }
+        else if (ball1.isMovable)
+        {
+            resolve_collision_with_immovable_ball(ball1, ball2);
+        }
+        else if (ball2.isMovable)
+        {
+            resolve_collision_with_immovable_ball(ball2, ball1);
+        }
+    }
+
+    void resolve_collision_with_container(Ball& movingBall, const Ball& container)
     {
         Vector3D contactNormal = container.position - movingBall.nextPosition;
         contactNormal.normalize();
@@ -50,22 +66,6 @@ namespace phys
         movingBall.nextPosition = movingBall.nextPosition + ballShiftAmount * contactNormal;
         reflect_vector(movingBall.nextVelocity, contactNormal);
         movingBall.nextVelocity = movingBall.elasticity * movingBall.nextVelocity;
-    }
-
-    void resolve_collision_between_balls(Ball& ball1, Ball& ball2)
-    {
-        if (ball1.isMovable && ball2.isMovable)
-        {
-            resolve_collision_between_movable_balls(ball1, ball2);
-        }
-        else if (ball1.isMovable)
-        {
-            resolve_collision_between_with_immovable_ball(ball1, ball2);
-        }
-        else if (ball2.isMovable)
-        {
-            resolve_collision_between_with_immovable_ball(ball2, ball1);
-        }
     }
 
     void resolve_collision_between_movable_balls(Ball& ball1, Ball& ball2)
@@ -85,7 +85,7 @@ namespace phys
         ball2.nextVelocity = ball2.nextVelocity + impulse / mass2 * contactNormal;
     }
 
-    void resolve_collision_between_with_immovable_ball(Ball& movableBall, const Ball& immovableBall)
+    void resolve_collision_with_immovable_ball(Ball& movableBall, const Ball& immovableBall)
     {
         Vector3D contactNormal = immovableBall.position - movableBall.nextPosition;
         contactNormal.normalize();

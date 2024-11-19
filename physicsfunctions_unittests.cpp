@@ -78,7 +78,7 @@ TEST(collisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunctionCa
 
     movingBall.nextPosition[0] = distanceToImpact + 1;
 
-    phys::resolve_collision_between_ball_and_container(movingBall, container);
+    phys::resolve_collision_with_container(movingBall, container);
 
     EXPECT_TRUE(movingBall.nextPosition[0] == distanceToImpact);
 }
@@ -109,7 +109,7 @@ TEST(collisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunctionCa
 
     movingBall.nextPosition[0] = distanceToImpact + 1;
 
-    phys::resolve_collision_between_ball_and_container(movingBall, container);
+    phys::resolve_collision_with_container(movingBall, container);
 
     EXPECT_TRUE(movingBall.nextVelocity[0] == -velocity);
 }

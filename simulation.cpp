@@ -167,9 +167,9 @@ void Simulation::resolve_all_collisions_with_container()
 {
     for (Ball& ball: ballCollection)
     {
-        if (phys::detect_single_collision_with_container(ball, container))
+        if (phys::detect_collision_with_container(ball, container))
         {
-            phys::resolve_collision_between_ball_and_container(ball, container);
+            phys::resolve_collision_with_container(ball, container);
         }
     }
 }
@@ -180,9 +180,9 @@ void Simulation::resolve_all_collisions_between_balls()
     {
         for (int inner{outer + 1}; inner < ballCollection.size(); inner++)
         {
-            if (phys::detect_single_collision_between_balls(ballCollection[outer], ballCollection[inner]))
+            if (phys::detect_collision_between_balls(ballCollection[outer], ballCollection[inner]))
             {
-                phys::resolve_collision_between_balls(ballCollection[outer], ballCollection[inner]);
+                phys::resolve_collision(ballCollection[outer], ballCollection[inner]);
             }
         }
     }
@@ -194,7 +194,7 @@ void Simulation::resolve_links()
     {
         if (phys::calculate_distance_between(ballCollection[link.index1].nextPosition, ballCollection[link.index2].nextPosition) > (ballCollection[link.index1].radius + ballCollection[link.index2].radius))
         {
-            phys::resolve_collision_between_balls(ballCollection[link.index1], ballCollection[link.index2]);
+            phys::resolve_collision(ballCollection[link.index1], ballCollection[link.index2]);
         }
     }
 }

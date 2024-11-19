@@ -13,7 +13,7 @@ GraphicsViewer::GraphicsViewer(QWidget *parent):
     float imageCircleDiameter{248};
     imageExpansionRatio = imageWidth / imageCircleDiameter;
 
-    borderWidthAsFraction = 0.01;
+    borderWidthAsFraction = 0.02;
 }
 
 void GraphicsViewer::initializeGL()

@@ -6,7 +6,7 @@
 
 namespace phys
 {
-    void update_next_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
+    void update_next_state_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
     {
         if (ball.isMovable)
         {

@@ -9,7 +9,7 @@ TEST(updateNextImplicitEuler, givenBallAtRestUnderAcceleration_WhenNextUpdated_E
     Ball ball{};
     double timeStep{0.1};
 
-    phys::update_next_implicit_euler(timeStep, ball, acceleration);
+    phys::update_next_state_implicit_euler(timeStep, ball, acceleration);
 
     EXPECT_TRUE(ball.nextVelocity[0] == timeStep);
     EXPECT_TRUE(ball.nextVelocity[1] == timeStep);
@@ -25,7 +25,7 @@ TEST(ballConfirmNext, givenBallAtRestUnderAcceleration_WhenNextUpdatedAndConfirm
     Ball ball{};
     double timeStep{0.1};
 
-    phys::update_next_implicit_euler(timeStep, ball, acceleration);
+    phys::update_next_state_implicit_euler(timeStep, ball, acceleration);
     ball.make_next_state_current();
 
     EXPECT_TRUE(ball.velocity[0] == timeStep);

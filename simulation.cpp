@@ -145,7 +145,7 @@ void Simulation::update()
 {
     for (int i{0}; i < ballCollection.size(); i++)
     {
-        phys::update_next_implicit_euler(timeStep, ballCollection[i], gravity);
+        phys::update_next_state_implicit_euler(timeStep, ballCollection[i], gravity);
     }
 
     resolve_links();

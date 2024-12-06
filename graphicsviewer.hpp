@@ -1,6 +1,7 @@
 #ifndef GRAPHICSVIEWER_HPP
 #define GRAPHICSVIEWER_HPP
 
+#include <array>
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLWidget>
 #include "camera.hpp"
@@ -27,10 +28,16 @@ protected:
 private:
     void initialize_shader_program();
     void initialize_texture();
-    void verify_shader_compilation(GLuint& objectToVerify);
-    void verify_program_linking(GLuint& objectToVerify);
-    void set_viewer_extents(Ball container);
-    QString read_shader_source(QString filepath);
+    void initialize_vertex_array(GLuint& vertexArray);
+    void initialize_vertex_attribute_array(GLuint layout_location, GLuint length, GLuint stride, GLuint offset);
+    void initialize_instance_attribute_array(GLuint& instancePropertyBuffer, GLuint layout_location, GLuint length, GLuint stride, GLuint offset);
+    void unbind_all_buffers_and_vertex_arrays();
+    void load_vertex_data_into_vertex_buffer(GLuint& vertexBuffer);
+    void load_vertex_indices_into_element_buffer(GLuint& elementBuffer);
+    void verify_shader_compilation(const GLuint& objectToVerify);
+    void verify_program_linking(const GLuint& objectToVerify);
+    void set_viewer_extents(const Ball &container);
+    QString read_shader_source(const QString &filepath);
 
     Extrema viewerExtents;
     GLuint ballCollectionSize{0};
@@ -47,6 +54,8 @@ private:
     QSize frameSize{0, 0};
     float imageExpansionRatio;
     float borderWidthAsFraction;
+    const std::array<float, 20> boxVertices;
+    const std::array<GLuint, 6> vertexIndices;
 };
 
 #endif // GRAPHICSVIEWER_HPP

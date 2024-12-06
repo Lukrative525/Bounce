@@ -7,7 +7,19 @@
 #include "graphicsviewer.hpp"
 
 GraphicsViewer::GraphicsViewer(QWidget *parent):
-    QOpenGLWidget{parent}
+    QOpenGLWidget{parent},
+    boxVertices
+    {
+        1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+        -1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, -1.0f, 1.0f, 0.0f
+    },
+    vertexIndices
+    {
+        0, 1, 2,
+        0, 3, 2
+    }
 {
     float imageWidth{256};
     float imageCircleDiameter{248};
@@ -18,80 +30,27 @@ GraphicsViewer::GraphicsViewer(QWidget *parent):
 
 void GraphicsViewer::initializeGL()
 {
-    float boxVertices[] =
-    {
-        1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        -1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-        -1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, -1.0f, 1.0f, 0.0f
-    };
-
-    GLuint vertexIndices[] =
-    {
-        0, 1, 2,
-        0, 3, 2
-    };
-
     initializeOpenGLFunctions();
 
     initialize_shader_program();
-
     initialize_texture();
 
     modelViewProjection = glGetUniformLocation(shaderProgram, "modelViewProjection");
     textureMap = glGetUniformLocation(shaderProgram, "textureMap");
 
-    // create and bind vertex array
-    glGenVertexArrays(1, &vertexArray); // create vertex array and assign its ID to "vertexArray"
-    glBindVertexArray(vertexArray); // bind vertex array corresponding to "vertexArray" ID
+    initialize_vertex_array(vertexArray);
 
-    // loading vertex data into buffer
-    glGenBuffers(1, &vertexBuffer); // create buffer and assign its ID to "vertexBuffer"
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); // bind buffer corresponding to "vertexBuffer" ID to GL_ARRAY_BUFFER target
-    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices, GL_STATIC_DRAW); // load "boxVertices" data into currently bound buffer
+    load_vertex_data_into_vertex_buffer(vertexBuffer);
+    load_vertex_indices_into_element_buffer(elementBuffer);
 
-    // loading vertex indices into buffer
-    glGenBuffers(1, &elementBuffer); // create buffer and assign its ID to "elementBuffer"
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer); // bind buffer corresponding to "elementBuffer" ID to GL_ELEMENT_ARRAY_BUFFER target
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices, GL_STATIC_DRAW); // load "vertexIndices" data into currently bound buffer
+    initialize_vertex_attribute_array(0, 3, 5 * sizeof(float), 0);
+    initialize_vertex_attribute_array(1, 2, 5 * sizeof(float), 3 * sizeof(float));
 
-    // NOTE: the glVertexAttribPointer function only applies to the buffer last bound to GL_ARRAY_BUFFER target
+    initialize_instance_attribute_array(instancePositionBuffer, 2, 3, sizeof(glm::vec3), 0);
+    initialize_instance_attribute_array(instanceScaleBuffer, 3, 1, sizeof(float), 0);
+    initialize_instance_attribute_array(instanceColorBuffer, 4, 4, sizeof(glm::vec4), 0);
 
-    // setting up vertex attribute array for the vertex coordinates
-    glEnableVertexAttribArray(0); // enable vertex attribute array at layout location 0 (position)
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0); // specify that the position attributes for the vertices are 3 floats long, not normalized, spaced 5 floats worth of bytes apart, and start at the first float in the currently bound buffer
-
-    // setting up vertex attribute array for the texture coordinates
-    glEnableVertexAttribArray(1); // enable vertex attribute array at layout location 1 (textureCoordinates)
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float))); // specify that the textureCoordinates attributes for the vertices are 2 floats long, not normalized, spaced 5 floats worth of bytes apart, and start at the fourth float in the currently bound buffer
-
-    // setting up a buffer for instance position
-    glGenBuffers(1, &instancePositionBuffer); // create buffer and assign its ID to "instancePositionBuffer"
-    glBindBuffer(GL_ARRAY_BUFFER, instancePositionBuffer); // bind buffer corresponding to "instancePositionBuffer" ID to GL_ARRAY_BUFFER target
-
-    glEnableVertexAttribArray(2); // enable vertex attribute array at layout location 2 (instancePosition)
-    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0); // specify that the instancePosition attributes for the vertices are 3 floats long, not normalized, spaced 3 floats worth of bytes apart, and start at the first float in the currently bound buffer
-    glVertexAttribDivisor(2, 1);
-
-    // setting up a buffer for instance scale
-    glGenBuffers(1, &instanceScaleBuffer); // create buffer and assign its ID to "instanceScaleBuffer"
-    glBindBuffer(GL_ARRAY_BUFFER, instanceScaleBuffer); // bind buffer corresponding to "instanceScaleBuffer" ID to GL_ARRAY_BUFFER target
-
-    glEnableVertexAttribArray(3); // enable vertex attribute array at layout location 3 (instanceScale)
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0); // specify that the instanceScale attributes for the vertices are 1 float long, not normalized, spaced 1 float worth of bytes apart, and start at the first float in the currently bound buffer
-    glVertexAttribDivisor(3, 1);
-
-    // setting up a buffer for instance color
-    glGenBuffers(1, &instanceColorBuffer); // create buffer and assign its ID to "instanceColorBuffer"
-    glBindBuffer(GL_ARRAY_BUFFER, instanceColorBuffer); // bind buffer corresponding to "instanceColorBuffer" ID to GL_ARRAY_BUFFER target
-
-    glEnableVertexAttribArray(4); // enable vertex attribute array at layout location 4 (instanceColor)
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0); // specify that the instanceColor attributes for the vertices are 4 floats long, not normalized, spaced 4 floats worth of bytes apart, and start at the first float in the currently bound buffer
-    glVertexAttribDivisor(4, 1);
-
-    // unbinding all array buffers and vertex array
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    unbind_all_buffers_and_vertex_arrays();
 }
 
 void GraphicsViewer::paintGL()
@@ -208,7 +167,48 @@ void GraphicsViewer::initialize_texture()
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void GraphicsViewer::verify_shader_compilation(GLuint& shaderToVerify)
+void GraphicsViewer::initialize_vertex_array(GLuint& vertexArray)
+{
+    glGenVertexArrays(1, &vertexArray);
+    glBindVertexArray(vertexArray);
+}
+
+void GraphicsViewer::initialize_vertex_attribute_array(GLuint layout_location, GLuint length, GLuint stride, GLuint offset)
+{
+    glEnableVertexAttribArray(layout_location);
+    glVertexAttribPointer(layout_location, length, GL_FLOAT, GL_FALSE, stride, (void*)(uintptr_t)(offset));
+}
+
+void GraphicsViewer::initialize_instance_attribute_array(GLuint& instancePropertyBuffer, GLuint layout_location, GLuint length, GLuint stride, GLuint offset)
+{
+    glGenBuffers(1, &instancePropertyBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, instancePropertyBuffer);
+
+    initialize_vertex_attribute_array(layout_location, length, stride, offset);
+    glVertexAttribDivisor(layout_location, 1);
+}
+
+void GraphicsViewer::unbind_all_buffers_and_vertex_arrays()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void GraphicsViewer::load_vertex_data_into_vertex_buffer(GLuint& vertexBuffer)
+{
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(boxVertices), boxVertices.data(), GL_STATIC_DRAW);
+}
+
+void GraphicsViewer::load_vertex_indices_into_element_buffer(GLuint& elementBuffer)
+{
+    glGenBuffers(1, &elementBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertexIndices), vertexIndices.data(), GL_STATIC_DRAW);
+}
+
+void GraphicsViewer::verify_shader_compilation(const GLuint& shaderToVerify)
 {
     GLint success;
     char infoLog[512];
@@ -221,7 +221,7 @@ void GraphicsViewer::verify_shader_compilation(GLuint& shaderToVerify)
     }
 }
 
-void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
+void GraphicsViewer::verify_program_linking(const GLuint &programToVerify)
 {
     GLint success;
     char infoLog[512];
@@ -234,7 +234,7 @@ void GraphicsViewer::verify_program_linking(GLuint& programToVerify)
     }
 }
 
-void GraphicsViewer::set_viewer_extents(Ball container)
+void GraphicsViewer::set_viewer_extents(const Ball& container)
 {
     viewerExtents.minimumX = container.position.x - container.radius * (1 + borderWidthAsFraction);
     viewerExtents.maximumX = container.position.x + container.radius * (1 + borderWidthAsFraction);
@@ -242,7 +242,7 @@ void GraphicsViewer::set_viewer_extents(Ball container)
     viewerExtents.maximumY = container.position.z + container.radius * (1 + borderWidthAsFraction);
 }
 
-QString GraphicsViewer::read_shader_source(QString filepath)
+QString GraphicsViewer::read_shader_source(const QString& filepath)
 {
     QString data;
     QFile file(filepath);

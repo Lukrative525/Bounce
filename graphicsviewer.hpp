@@ -25,6 +25,13 @@ protected:
     void paintGL() override;
     void resizeGL(int width, int height) override;
 
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    glm::vec3 convert_screen_to_world(const QPointF& screen_coordinates);
+    glm::vec2 convert_screen_to_normalized(const glm::vec2& screen_coordinates);
+    glm::vec3 convert_normalized_to_world(const glm::vec2& normalized_coordinates);
+
 private:
     void initialize_shader_program();
     void initialize_texture();
@@ -49,13 +56,18 @@ private:
     GLuint instanceScaleBuffer{0};
     GLuint textureBuffer{0};
     GLuint instanceColorBuffer{0};
-    GLint modelViewProjection{0};
+    GLint modelViewProjectionAddress{0};
+    glm::mat4x4 modelViewProjectionMatrix{0};
     GLint textureMap{0};
     QSize frameSize{0, 0};
     float imageExpansionRatio;
     float borderWidthAsFraction;
     const std::array<float, 20> boxVertices;
     const std::array<GLuint, 6> vertexIndices;
+    QPointF mousePressPosition;
+    QPointF mouseCurrentPosition;
+    bool mousePressed{false};
+    bool mouseMoved{false};
 };
 
 #endif // GRAPHICSVIEWER_HPP

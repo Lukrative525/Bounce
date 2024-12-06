@@ -1,5 +1,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <QFile>
+#include <QDebug>
+#include <QMouseEvent>
 #include <vector>
 #include "ball.hpp"
 #include "camera.hpp"
@@ -35,7 +37,7 @@ void GraphicsViewer::initializeGL()
     initialize_shader_program();
     initialize_texture();
 
-    modelViewProjection = glGetUniformLocation(shaderProgram, "modelViewProjection");
+    modelViewProjectionAddress = glGetUniformLocation(shaderProgram, "modelViewProjection");
     textureMap = glGetUniformLocation(shaderProgram, "textureMap");
 
     initialize_vertex_array(vertexArray);
@@ -67,7 +69,8 @@ void GraphicsViewer::paintGL()
     camera.center_camera(frameSize, viewerExtents);
     camera.regenerate_projection_matrix();
     camera.regenerate_view_matrix();
-    glUniformMatrix4fv(modelViewProjection, 1, GL_FALSE, glm::value_ptr(camera.get_projection_matrix() * camera.get_view_matrix()));
+    modelViewProjectionMatrix = camera.get_projection_matrix() * camera.get_view_matrix();
+    glUniformMatrix4fv(modelViewProjectionAddress, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 
     glBindVertexArray(vertexArray);
     glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, ballCollectionSize);
@@ -80,6 +83,67 @@ void GraphicsViewer::resizeGL(int width, int height)
 {
     frameSize.setWidth(width);
     frameSize.setHeight(height);
+}
+
+void GraphicsViewer::mouseMoveEvent(QMouseEvent* event)
+{
+    if(mousePressed)
+    {
+        mouseCurrentPosition = event->scenePosition();
+
+        if(mousePressPosition != mouseCurrentPosition)
+        {
+            mouseMoved=true;
+            update();
+        }
+    }
+}
+
+void GraphicsViewer::mousePressEvent(QMouseEvent* event)
+{
+    mousePressed=true;
+    mousePressPosition = event->position();
+
+    glm::vec3 test = convert_screen_to_world(mousePressPosition);
+
+    qDebug() << test.x << ", " << test.y << "," << test.z;
+}
+
+void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
+{
+    mousePressed=false;
+}
+
+glm::vec3 GraphicsViewer::convert_screen_to_world(const QPointF& screen_coordinates)
+{
+    glm::vec2 screen{screen_coordinates.x(), screen_coordinates.y()};
+
+    glm::vec2 normalized_coordinates = convert_screen_to_normalized(screen);
+
+    glm::vec3 world_coordinates = convert_normalized_to_world(normalized_coordinates);
+
+    return world_coordinates;
+}
+
+glm::vec2 GraphicsViewer::convert_screen_to_normalized(const glm::vec2& screen_coordinates)
+{
+    glm::vec2 normalized_coordinates;
+
+    normalized_coordinates.x = (2 * screen_coordinates.x / frameSize.width()) - 1;
+    normalized_coordinates.y = 1 - (2 * screen_coordinates.y / frameSize.height());
+
+    return normalized_coordinates;
+}
+
+glm::vec3 GraphicsViewer::convert_normalized_to_world(const glm::vec2& normalized_coordinates)
+{
+    glm::vec4 normalized_coordinates_4D{normalized_coordinates.x, normalized_coordinates.y, 0.0, 1.0};
+
+    glm::vec4 world_coordinates_4D = glm::inverse(modelViewProjectionMatrix) * normalized_coordinates_4D;
+
+    glm::vec3 world_coordinates{world_coordinates_4D.x, world_coordinates_4D.y, world_coordinates_4D.z};
+
+    return world_coordinates;
 }
 
 void GraphicsViewer::refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container)

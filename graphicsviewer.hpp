@@ -16,7 +16,7 @@ class GraphicsViewer: public QOpenGLWidget, protected QOpenGLExtraFunctions
 public:
     explicit GraphicsViewer(QWidget* parent = nullptr);
     void refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container);
-    void initialize_camera(Ball container);
+    void initialize_camera(const Ball& container);
 
     Camera camera;
 
@@ -36,8 +36,8 @@ private:
     void load_vertex_indices_into_element_buffer(GLuint& elementBuffer);
     void verify_shader_compilation(const GLuint& objectToVerify);
     void verify_program_linking(const GLuint& objectToVerify);
-    void set_viewer_extents(const Ball &container);
-    QString read_shader_source(const QString &filepath);
+    void set_viewer_extents(const Ball& container);
+    QString read_shader_source(const QString& filepath);
 
     Extrema viewerExtents;
     GLuint ballCollectionSize{0};

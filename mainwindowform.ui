@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Bounce</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="centralWidgetHorizontalLayout">
     <item>
      <layout class="QVBoxLayout" name="propertiesLayout">

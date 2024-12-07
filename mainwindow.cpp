@@ -60,6 +60,7 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
 
 void MainWindow::on_escape_pressed()
 {
+    mainWindowUI->centralWidget->setFocus();
     update_ball_selection(nullptr);
 }
 

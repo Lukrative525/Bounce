@@ -15,14 +15,9 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    void request_add_ball(const glm::vec3& coordinates);
 
-private slots:
-    void on_timer();
-    void start_timer();
-    void stop_timer();
-    void open_file();
-    void save_as_file();
+public slots:
+    void request_add_ball(const glm::vec3& coordinates);
 
 private:
     void setup_timer();
@@ -35,6 +30,13 @@ private:
     Simulation simulation;
     double framesPerSecond;
     int subSteps;
+
+private slots:
+    void on_timer();
+    void start_timer();
+    void stop_timer();
+    void open_file();
+    void save_as_file();
 };
 
 #endif // MAINWINDOW_HPP

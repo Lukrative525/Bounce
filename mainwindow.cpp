@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget* parent):
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
+    connect(graphicsViewer, &GraphicsViewer::send_request_add_ball, this, &MainWindow::request_add_ball);
 
     setup_timer();
     setup_menu();
@@ -24,7 +25,9 @@ MainWindow::MainWindow(QWidget* parent):
 
 void MainWindow::request_add_ball(const glm::vec3& coordinates)
 {
-    qDebug() << coordinates.x << ", " << coordinates.y << "," << coordinates.z;
+    simulation.add_ball(coordinates.x, coordinates.y, coordinates.z);
+    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
+    graphicsViewer->update();
 }
 
 void MainWindow::on_timer()

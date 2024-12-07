@@ -20,6 +20,9 @@ public:
 
     Camera camera;
 
+signals:
+    void send_request_add_ball(glm::vec3 coordinates);
+
 protected:
     void initializeGL() override;
     void paintGL() override;

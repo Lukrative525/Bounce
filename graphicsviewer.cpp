@@ -106,7 +106,7 @@ void GraphicsViewer::mousePressEvent(QMouseEvent* event)
 
     glm::vec3 coordinates = convert_screen_to_world(mousePressPosition);
 
-    qDebug() << coordinates.x << ", " << coordinates.y << "," << coordinates.z;
+    emit send_request_add_ball(coordinates);
 }
 
 void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)

@@ -7,6 +7,7 @@
 #include "camera.hpp"
 #include "extrema.hpp"
 #include "graphicsviewer.hpp"
+#include "vector3d.hpp"
 
 GraphicsViewer::GraphicsViewer(QWidget *parent):
     QOpenGLWidget{parent},
@@ -85,33 +86,18 @@ void GraphicsViewer::resizeGL(int width, int height)
     frameSize.setHeight(height);
 }
 
-void GraphicsViewer::mouseMoveEvent(QMouseEvent* event)
-{
-    if(mousePressed)
-    {
-        mouseCurrentPosition = event->scenePosition();
-
-        if(mousePressPosition != mouseCurrentPosition)
-        {
-            mouseMoved=true;
-            update();
-        }
-    }
-}
-
 void GraphicsViewer::mousePressEvent(QMouseEvent* event)
 {
     mousePressed=true;
-    mousePressPosition = event->position();
-
-    glm::vec3 coordinates = convert_screen_to_world(mousePressPosition);
-
-    emit send_request_add_ball(coordinates);
+    mousePressPosition = convert_screen_to_world(event->position());
 }
 
 void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
 {
     mousePressed=false;
+    mouseReleasePosition = convert_screen_to_world(event->position());
+
+    emit request_process_mouse_click(mousePressPosition, mouseReleasePosition);
 }
 
 glm::vec3 GraphicsViewer::convert_screen_to_world(const QPointF& screenCoordinates)

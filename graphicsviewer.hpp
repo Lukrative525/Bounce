@@ -6,6 +6,7 @@
 #include <QOpenGLWidget>
 #include "camera.hpp"
 #include "extrema.hpp"
+#include "vector3d.hpp"
 
 class Ball;
 class MainWindow;
@@ -21,14 +22,13 @@ public:
     Camera camera;
 
 signals:
-    void send_request_add_ball(glm::vec3 coordinates);
+    void request_process_mouse_click(glm::vec3& pressCoordinates, glm::vec3& releaseCoordinates);
 
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int width, int height) override;
 
-    void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     glm::vec3 convert_screen_to_world(const QPointF& screenCoordinates);
@@ -67,10 +67,9 @@ private:
     float borderWidthAsFraction;
     const std::array<float, 20> boxVertices;
     const std::array<GLuint, 6> vertexIndices;
-    QPointF mousePressPosition;
-    QPointF mouseCurrentPosition;
+    glm::vec3 mousePressPosition;
+    glm::vec3 mouseReleasePosition;
     bool mousePressed{false};
-    bool mouseMoved{false};
 };
 
 #endif // GRAPHICSVIEWER_HPP

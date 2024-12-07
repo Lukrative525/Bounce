@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "simulation.hpp"
 class GraphicsViewer;
+class Ball;
 
 namespace Ui
 {
@@ -17,7 +18,10 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
 
 public slots:
-    void request_add_ball(const glm::vec3& coordinates);
+    void process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates);
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     void setup_timer();
@@ -28,6 +32,7 @@ private:
     GraphicsViewer* graphicsViewer;
     QTimer* timer;
     Simulation simulation;
+    Ball* selectedBall;
     double framesPerSecond;
     int subSteps;
 

@@ -126,20 +126,20 @@ void Simulation::set_time_step(double timeStep)
     this->timeStep = timeStep;
 }
 
-const std::vector<Ball>& Simulation::readBallCollection() const
-{
-    return ballCollection;
-}
+// const std::vector<Ball>& Simulation::readBallCollection() const
+// {
+//     return ballCollection;
+// }
 
-const std::vector<Link>& Simulation::readLinkCollection() const
-{
-    return linkCollection;
-}
+// const std::vector<Link>& Simulation::readLinkCollection() const
+// {
+//     return linkCollection;
+// }
 
-const Ball& Simulation::readContainer() const
-{
-    return container;
-}
+// const Ball& Simulation::readContainer() const
+// {
+//     return container;
+// }
 
 void Simulation::update()
 {

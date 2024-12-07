@@ -19,9 +19,9 @@ public:
     void set_container(double x = 0, double y = 0, double z = 0, double radius = 10);
     void set_gravity(double x = 0, double y = 0, double z = -9.81);
     void set_time_step(double timeStep);
-    const std::vector<Ball>& readBallCollection() const;
-    const std::vector<Link>& readLinkCollection() const;
-    const Ball& readContainer() const;
+    std::vector<Ball> ballCollection;
+    std::vector<Link> linkCollection;
+    Ball container;
     void update();
 
     int maxNumberBalls;
@@ -32,9 +32,6 @@ private:
     void resolve_all_collisions_between_balls();
     void resolve_links();
 
-    std::vector<Ball> ballCollection;
-    std::vector<Link> linkCollection;
-    Ball container;
     Vector3D gravity;
     double timeStep;
 };

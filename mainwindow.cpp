@@ -1,8 +1,10 @@
 #include <QFileDialog>
 #include <QJsonDocument>
+#include <QKeyEvent>
 #include <QTimer>
 #include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
+#include "physicsfunctions.hpp"
 #include "ui_mainwindowform.h"
 
 MainWindow::MainWindow(QWidget* parent):
@@ -17,17 +19,54 @@ MainWindow::MainWindow(QWidget* parent):
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
-    connect(graphicsViewer, &GraphicsViewer::send_request_add_ball, this, &MainWindow::request_add_ball);
+    connect(graphicsViewer, &GraphicsViewer::request_process_mouse_click, this, &MainWindow::process_mouse_click);
 
     setup_timer();
     setup_menu();
+
+    selectedBall = nullptr;
 }
 
-void MainWindow::request_add_ball(const glm::vec3& coordinates)
+void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
 {
-    simulation.add_ball(coordinates.x, coordinates.y, coordinates.z);
-    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
-    graphicsViewer->update();
+    selectedBall = nullptr;
+    Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
+
+    if (phys::detect_collision_with_container(candidateBall, simulation.container))
+    {
+        selectedBall = &simulation.container;
+    }
+
+    for (Ball& ball: simulation.ballCollection)
+    {
+        if (phys::detect_collision_between_balls(candidateBall, ball))
+        {
+            selectedBall = &ball;
+            break;
+        }
+    }
+
+    if (selectedBall == nullptr)
+    {
+        simulation.add_ball(candidateBall);
+        selectedBall = &simulation.ballCollection.back();
+        graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+        graphicsViewer->update();
+    }
+
+    qDebug() << selectedBall;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Escape)
+    {
+        selectedBall = nullptr;
+        qDebug() << selectedBall;
+    }
+    else {
+        QMainWindow::keyPressEvent(event); // Call the base class implementation for other keys.
+    }
 }
 
 void MainWindow::on_timer()
@@ -37,7 +76,7 @@ void MainWindow::on_timer()
         simulation.update();
     }
 
-    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
+    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
     graphicsViewer->update();
 }
 
@@ -72,8 +111,8 @@ void MainWindow::open_file()
         fileToOpen.close();
     }
 
-    graphicsViewer->initialize_camera(simulation.readContainer());
-    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
+    graphicsViewer->initialize_camera(simulation.container);
+    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
     graphicsViewer->update();
 
     mainWindowUI->actionPause->setEnabled(true);

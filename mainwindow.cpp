@@ -1,6 +1,6 @@
 #include <QFileDialog>
 #include <QJsonDocument>
-#include <QKeyEvent>
+#include <QShortcut>
 #include <QTimer>
 #include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
@@ -23,29 +23,34 @@ MainWindow::MainWindow(QWidget* parent):
 
     setup_timer();
     setup_menu();
+
+    QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(escapeShortcut, &QShortcut::activated, this, &MainWindow::on_escape_pressed);
 }
 
 void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
 {
     update_ball_selection(nullptr);
-    Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
+    Vector3D impartedVelocity{};
+    impartedVelocity.x = inputVelocityScaleFactor * (releaseCoordinates.x - pressCoordinates.x);
+    impartedVelocity.y = inputVelocityScaleFactor * (releaseCoordinates.y - pressCoordinates.y);
+    impartedVelocity.z = inputVelocityScaleFactor * (releaseCoordinates.z - pressCoordinates.z);
 
-    if (phys::detect_collision_with_container(candidateBall, simulation.container))
-    {
-        update_ball_selection(&simulation.container);
-    }
+    Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
 
     for (Ball& ball: simulation.ballCollection)
     {
         if (phys::detect_collision_between_balls(candidateBall, ball))
         {
+            ball.velocity = ball.velocity + impartedVelocity;
             update_ball_selection(&ball);
             break;
         }
     }
 
-    if (selectedBall == nullptr)
+    if (selectedBall == nullptr && !phys::detect_collision_with_container(candidateBall, simulation.container))
     {
+        candidateBall.velocity = candidateBall.velocity + impartedVelocity;
         simulation.add_ball(candidateBall);
         update_ball_selection(&simulation.ballCollection.back());
         graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
@@ -53,15 +58,9 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
     }
 }
 
-void MainWindow::keyPressEvent(QKeyEvent* event)
+void MainWindow::on_escape_pressed()
 {
-    if (event->key() == Qt::Key_Escape)
-    {
-        update_ball_selection(nullptr);
-    }
-    else {
-        QMainWindow::keyPressEvent(event); // Call the base class implementation for other keys.
-    }
+    update_ball_selection(nullptr);
 }
 
 void MainWindow::on_timer()
@@ -155,4 +154,8 @@ void MainWindow::update_ball_selection(Ball* ball_address)
 {
     selectedBall = ball_address;
     qDebug() << selectedBall;
+}
+
+void MainWindow::link_ball(Ball* ball_address)
+{
 }

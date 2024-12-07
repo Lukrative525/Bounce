@@ -20,14 +20,13 @@ public:
 public slots:
     void process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates);
 
-protected:
-    void keyPressEvent(QKeyEvent* event) override;
-
 private:
     void setup_timer();
     void setup_menu();
     void reset_simulation();
     void update_ball_selection(Ball* ball_address);
+    void link_ball(Ball* ball_address);
+    void on_escape_pressed();
 
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
@@ -35,6 +34,7 @@ private:
     Simulation simulation;
     Ball* selectedBall{nullptr};
     double framesPerSecond;
+    double inputVelocityScaleFactor{5};
     int subSteps;
 
 private slots:

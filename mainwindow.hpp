@@ -27,12 +27,13 @@ private:
     void setup_timer();
     void setup_menu();
     void reset_simulation();
+    void update_ball_selection(Ball* ball_address);
 
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
     QTimer* timer;
     Simulation simulation;
-    Ball* selectedBall;
+    Ball* selectedBall{nullptr};
     double framesPerSecond;
     int subSteps;
 

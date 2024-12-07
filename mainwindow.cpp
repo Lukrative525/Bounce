@@ -23,25 +23,23 @@ MainWindow::MainWindow(QWidget* parent):
 
     setup_timer();
     setup_menu();
-
-    selectedBall = nullptr;
 }
 
 void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
 {
-    selectedBall = nullptr;
+    update_ball_selection(nullptr);
     Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
 
     if (phys::detect_collision_with_container(candidateBall, simulation.container))
     {
-        selectedBall = &simulation.container;
+        update_ball_selection(&simulation.container);
     }
 
     for (Ball& ball: simulation.ballCollection)
     {
         if (phys::detect_collision_between_balls(candidateBall, ball))
         {
-            selectedBall = &ball;
+            update_ball_selection(&ball);
             break;
         }
     }
@@ -49,20 +47,17 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
     if (selectedBall == nullptr)
     {
         simulation.add_ball(candidateBall);
-        selectedBall = &simulation.ballCollection.back();
+        update_ball_selection(&simulation.ballCollection.back());
         graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
         graphicsViewer->update();
     }
-
-    qDebug() << selectedBall;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape)
     {
-        selectedBall = nullptr;
-        qDebug() << selectedBall;
+        update_ball_selection(nullptr);
     }
     else {
         QMainWindow::keyPressEvent(event); // Call the base class implementation for other keys.
@@ -154,4 +149,10 @@ void MainWindow::setup_menu()
 void MainWindow::reset_simulation()
 {
     simulation = Simulation();
+}
+
+void MainWindow::update_ball_selection(Ball* ball_address)
+{
+    selectedBall = ball_address;
+    qDebug() << selectedBall;
 }

@@ -15,6 +15,7 @@ class MainWindow: public QMainWindow
     Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
+    void request_add_ball(const glm::vec3& coordinates);
 
 private slots:
     void on_timer();

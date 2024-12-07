@@ -104,9 +104,9 @@ void GraphicsViewer::mousePressEvent(QMouseEvent* event)
     mousePressed=true;
     mousePressPosition = event->position();
 
-    glm::vec3 test = convert_screen_to_world(mousePressPosition);
+    glm::vec3 coordinates = convert_screen_to_world(mousePressPosition);
 
-    qDebug() << test.x << ", " << test.y << "," << test.z;
+    qDebug() << coordinates.x << ", " << coordinates.y << "," << coordinates.z;
 }
 
 void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
@@ -114,36 +114,36 @@ void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
     mousePressed=false;
 }
 
-glm::vec3 GraphicsViewer::convert_screen_to_world(const QPointF& screen_coordinates)
+glm::vec3 GraphicsViewer::convert_screen_to_world(const QPointF& screenCoordinates)
 {
-    glm::vec2 screen{screen_coordinates.x(), screen_coordinates.y()};
+    glm::vec2 screen{screenCoordinates.x(), screenCoordinates.y()};
 
-    glm::vec2 normalized_coordinates = convert_screen_to_normalized(screen);
+    glm::vec2 normalizedCoordinates = convert_screen_to_normalized(screen);
 
-    glm::vec3 world_coordinates = convert_normalized_to_world(normalized_coordinates);
+    glm::vec3 worldCoordinates = convert_normalized_to_world(normalizedCoordinates);
 
-    return world_coordinates;
+    return worldCoordinates;
 }
 
-glm::vec2 GraphicsViewer::convert_screen_to_normalized(const glm::vec2& screen_coordinates)
+glm::vec2 GraphicsViewer::convert_screen_to_normalized(const glm::vec2& screenCoordinates)
 {
-    glm::vec2 normalized_coordinates;
+    glm::vec2 normalizedCoordinates;
 
-    normalized_coordinates.x = (2 * screen_coordinates.x / frameSize.width()) - 1;
-    normalized_coordinates.y = 1 - (2 * screen_coordinates.y / frameSize.height());
+    normalizedCoordinates.x = (2 * screenCoordinates.x / frameSize.width()) - 1;
+    normalizedCoordinates.y = 1 - (2 * screenCoordinates.y / frameSize.height());
 
-    return normalized_coordinates;
+    return normalizedCoordinates;
 }
 
-glm::vec3 GraphicsViewer::convert_normalized_to_world(const glm::vec2& normalized_coordinates)
+glm::vec3 GraphicsViewer::convert_normalized_to_world(const glm::vec2& normalizedCoordinates)
 {
-    glm::vec4 normalized_coordinates_4D{normalized_coordinates.x, normalized_coordinates.y, 0.0, 1.0};
+    glm::vec4 normalizedCoordinates4D{normalizedCoordinates.x, normalizedCoordinates.y, 0.0, 1.0};
 
-    glm::vec4 world_coordinates_4D = glm::inverse(modelViewProjectionMatrix) * normalized_coordinates_4D;
+    glm::vec4 worldCoordinates4D = glm::inverse(modelViewProjectionMatrix) * normalizedCoordinates4D;
 
-    glm::vec3 world_coordinates{world_coordinates_4D.x, world_coordinates_4D.y, world_coordinates_4D.z};
+    glm::vec3 worldCoordinates{worldCoordinates4D.x, worldCoordinates4D.y, worldCoordinates4D.z};
 
-    return world_coordinates;
+    return worldCoordinates;
 }
 
 void GraphicsViewer::refresh_ball_positions(const std::vector<Ball>& ballCollection, const Ball& container)

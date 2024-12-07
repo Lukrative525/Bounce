@@ -22,6 +22,22 @@ MainWindow::MainWindow(QWidget* parent):
     setup_menu();
 }
 
+void MainWindow::request_add_ball(const glm::vec3& coordinates)
+{
+    qDebug() << coordinates.x << ", " << coordinates.y << "," << coordinates.z;
+}
+
+void MainWindow::on_timer()
+{
+    for (int i{0}; i < subSteps; i++)
+    {
+        simulation.update();
+    }
+
+    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
+    graphicsViewer->update();
+}
+
 void MainWindow::start_timer()
 {
     timer->start();
@@ -74,17 +90,6 @@ void MainWindow::save_as_file()
         fileToSave.write(jsonDocument.toJson());
         fileToSave.close();
     }
-}
-
-void MainWindow::on_timer()
-{
-    for (int i{0}; i < subSteps; i++)
-    {
-        simulation.update();
-    }
-
-    graphicsViewer->refresh_ball_positions(simulation.readBallCollection(), simulation.readContainer());
-    graphicsViewer->update();
 }
 
 void MainWindow::setup_timer()

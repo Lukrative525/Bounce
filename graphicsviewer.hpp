@@ -28,16 +28,16 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-    glm::vec3 convert_screen_to_world(const QPointF& screen_coordinates);
-    glm::vec2 convert_screen_to_normalized(const glm::vec2& screen_coordinates);
-    glm::vec3 convert_normalized_to_world(const glm::vec2& normalized_coordinates);
+    glm::vec3 convert_screen_to_world(const QPointF& screenCoordinates);
+    glm::vec2 convert_screen_to_normalized(const glm::vec2& screenCoordinates);
+    glm::vec3 convert_normalized_to_world(const glm::vec2& normalizedCoordinates);
 
 private:
     void initialize_shader_program();
     void initialize_texture();
     void initialize_vertex_array(GLuint& vertexArray);
-    void initialize_vertex_attribute_array(GLuint layout_location, GLuint length, GLuint stride, GLuint offset);
-    void initialize_instance_attribute_array(GLuint& instancePropertyBuffer, GLuint layout_location, GLuint length, GLuint stride, GLuint offset);
+    void initialize_vertex_attribute_array(GLuint layoutLocation, GLuint length, GLuint stride, GLuint offset);
+    void initialize_instance_attribute_array(GLuint& instancePropertyBuffer, GLuint layoutLocation, GLuint length, GLuint stride, GLuint offset);
     void unbind_all_buffers_and_vertex_arrays();
     void load_vertex_data_into_vertex_buffer(GLuint& vertexBuffer);
     void load_vertex_indices_into_element_buffer(GLuint& elementBuffer);

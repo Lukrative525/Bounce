@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="centralWidgetHorizontalLayout">
     <item>
-     <layout class="QVBoxLayout" name="controlsLayout">
+     <layout class="QVBoxLayout" name="propertiesLayout">
       <item>
        <widget class="QLabel" name="containerPropertiesLabel">
         <property name="sizePolicy">
@@ -504,5 +504,102 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>redHorizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>redSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>380</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>redSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>redHorizontalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>380</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>greenHorizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>greenSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>411</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>greenSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>greenHorizontalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>411</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blueHorizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>blueSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>442</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>blueSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>blueHorizontalSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>85</x>
+     <y>442</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

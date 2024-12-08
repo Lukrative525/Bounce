@@ -57,6 +57,11 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
     {
         Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
         candidateBall.velocity = impartedVelocity;
+        candidateBall.radius = mainWindowUI->ballRadiusDoubleSpinBox->value();
+        candidateBall.elasticity = mainWindowUI->ballElasticityDoubleSpinBox->value();
+        candidateBall.color.r = static_cast<float>(mainWindowUI->redSpinBox->value()) / 255;
+        candidateBall.color.g = static_cast<float>(mainWindowUI->greenSpinBox->value()) / 255;
+        candidateBall.color.b = static_cast<float>(mainWindowUI->blueSpinBox->value()) / 255;
         phys::update_next_state_implicit_euler(simulation.timeStep, candidateBall, simulation.gravity);
         bool noCollisionDetected{true};
 
@@ -96,15 +101,13 @@ void MainWindow::on_escape_pressed()
 
 void MainWindow::on_spacebar_pressed()
 {
-    if (isPaused && mainWindowUI->actionPlay->isEnabled())
-    {
-        emit mainWindowUI->actionPlay->triggered();
-        isPaused = false;
-    }
-    else if (mainWindowUI->actionPause->isEnabled())
+    if (timer->isActive() && mainWindowUI->actionPause->isEnabled())
     {
         emit mainWindowUI->actionPause->triggered();
-        isPaused = true;
+    }
+    else if (mainWindowUI->actionPlay->isEnabled())
+    {
+        emit mainWindowUI->actionPlay->triggered();
     }
 }
 
@@ -132,8 +135,6 @@ void MainWindow::stop_timer()
 void MainWindow::new_file()
 {
     reset_simulation();
-    simulation.container.position = {0, 0, 10};
-    simulation.container.radius = 10;
 
     graphicsViewer->initialize_camera(simulation.container);
     graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
@@ -216,6 +217,11 @@ void MainWindow::setup_shortcuts()
 void MainWindow::reset_simulation()
 {
     simulation = Simulation();
+    simulation.container.position.x = mainWindowUI->containerXDoubleSpinBox->value();
+    simulation.container.position.y = mainWindowUI->containerYDoubleSpinBox->value();
+    simulation.container.position.z = mainWindowUI->containerZDoubleSpinBox->value();
+    simulation.container.radius = mainWindowUI->containerRadiusDoubleSpinBox->value();
+    simulation.container.elasticity = mainWindowUI->containerElasticityDoubleSpinBox->value();
 }
 
 bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
@@ -231,6 +237,7 @@ void MainWindow::update_ball_selection(Ball* ball_address)
     qDebug() << selectedBall;
 }
 
-void MainWindow::link_ball(Ball* ball_address)
+void MainWindow::link_container()
 {
+
 }

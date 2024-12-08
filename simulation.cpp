@@ -33,6 +33,8 @@ QJsonObject Simulation::write_to_json() const
 
 void Simulation::read_from_json(const QJsonObject& json)
 {
+    container.read_from_json(json["container"].toObject());
+    maxNumberBalls = json["maxNumberBalls"].toInt();
     QJsonArray ballCollectionArray = json["ballCollection"].toArray();
     for (const QJsonValue& jsonValue: ballCollectionArray)
     {
@@ -49,8 +51,6 @@ void Simulation::read_from_json(const QJsonObject& json)
         newLink.read_from_json(linkJsonObject);
         add_link(newLink);
     }
-    container.read_from_json(json["container"].toObject());
-    maxNumberBalls = json["maxNumberBalls"].toDouble();
     gravity.read_from_json(json["gravity"].toObject());
     timeStep = json["timeStep"].toDouble();
 }
@@ -125,21 +125,6 @@ void Simulation::set_time_step(double timeStep)
 {
     this->timeStep = timeStep;
 }
-
-// const std::vector<Ball>& Simulation::readBallCollection() const
-// {
-//     return ballCollection;
-// }
-
-// const std::vector<Link>& Simulation::readLinkCollection() const
-// {
-//     return linkCollection;
-// }
-
-// const Ball& Simulation::readContainer() const
-// {
-//     return container;
-// }
 
 void Simulation::update()
 {

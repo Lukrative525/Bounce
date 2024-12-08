@@ -38,32 +38,6 @@
       </item>
       <item>
        <layout class="QGridLayout" name="containerControls">
-        <item row="1" column="0">
-         <widget class="QLabel" name="containerYLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="containerXLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>X</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="containerZLabel">
           <property name="sizePolicy">
@@ -77,37 +51,21 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="containerZDoubleSpinBox">
-          <property name="minimum">
-           <double>-100.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>100.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="containerYDoubleSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <double>-100.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>100.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="containerXDoubleSpinBox">
+        <item row="1" column="0">
+         <widget class="QLabel" name="containerYLabel">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="containerZDoubleSpinBox">
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -129,10 +87,75 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="containerYDoubleSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="containerRadiusDoubleSpinBox">
           <property name="maximum">
            <double>10.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="containerXDoubleSpinBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="containerXLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="containerElasticityLabel">
+          <property name="text">
+           <string>Elasticity</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="containerElasticityDoubleSpinBox">
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.950000000000000</double>
           </property>
          </widget>
         </item>
@@ -157,6 +180,29 @@
       </item>
       <item>
        <layout class="QGridLayout" name="ballPropertiesLayout">
+        <item row="2" column="0">
+         <widget class="QLabel" name="ballZLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="ballXDoubleSpinBox">
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="ballZDoubleSpinBox">
           <property name="minimum">
@@ -167,29 +213,13 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="ballYDoubleSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimum">
-           <double>-100.000000000000000</double>
-          </property>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="ballRadiusDoubleSpinBox">
           <property name="maximum">
-           <double>100.000000000000000</double>
+           <double>10.000000000000000</double>
           </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="ballXLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>X</string>
+          <property name="value">
+           <double>1.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -206,19 +236,6 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="ballZLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="ballYLabel">
           <property name="sizePolicy">
@@ -232,8 +249,24 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="ballXDoubleSpinBox">
+        <item row="0" column="0">
+         <widget class="QLabel" name="ballXLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="ballYDoubleSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -242,10 +275,23 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="ballRadiusDoubleSpinBox">
+        <item row="4" column="0">
+         <widget class="QLabel" name="ballElasticityLabel">
+          <property name="text">
+           <string>Elasticity</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="ballElasticityDoubleSpinBox">
           <property name="maximum">
-           <double>10.000000000000000</double>
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.950000000000000</double>
           </property>
          </widget>
         </item>
@@ -275,6 +321,9 @@
           <property name="maximum">
            <number>255</number>
           </property>
+          <property name="value">
+           <number>255</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -285,11 +334,17 @@
           <property name="maximum">
            <number>255</number>
           </property>
+          <property name="value">
+           <number>255</number>
+          </property>
          </widget>
         </item>
         <item row="3" column="1">
          <widget class="QSpinBox" name="blueSpinBox">
           <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
            <number>255</number>
           </property>
          </widget>
@@ -316,6 +371,9 @@
           <property name="maximum">
            <number>255</number>
           </property>
+          <property name="value">
+           <number>255</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -324,6 +382,9 @@
         <item row="2" column="1">
          <widget class="QSpinBox" name="greenSpinBox">
           <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
            <number>255</number>
           </property>
          </widget>
@@ -348,6 +409,9 @@
 }</string>
           </property>
           <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
            <number>255</number>
           </property>
           <property name="orientation">

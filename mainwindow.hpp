@@ -28,7 +28,7 @@ private:
     void reset_simulation();
     bool detect_ball_selected(Vector3D& selectionPoint, Ball& ball);
     void update_ball_selection(Ball* ball_address);
-    void link_ball(Ball* ball_address);
+    void link_container();
     void on_escape_pressed();
     void on_spacebar_pressed();
 
@@ -40,7 +40,6 @@ private:
     double framesPerSecond;
     double inputVelocityScaleFactor{5};
     int subSteps;
-    bool isPaused{true};
 
 private slots:
     void on_timer();

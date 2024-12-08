@@ -90,6 +90,8 @@ void GraphicsViewer::mousePressEvent(QMouseEvent* event)
 {
     mousePressed=true;
     mousePressPosition = convert_screen_to_world(event->position());
+
+    emit request_process_mouse_press(mousePressPosition);
 }
 
 void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
@@ -143,7 +145,7 @@ void GraphicsViewer::refresh_ball_positions(const std::vector<Ball>& ballCollect
     positions[0].y = container.position.y;
     positions[0].z = container.position.z;
     radii[0] = imageExpansionRatio * container.radius;
-    colors[0] = container.color;
+    colors[0] = {0, 0, 0, 1};
 
     for (int i{1}; i < ballCollectionSize; i++)
     {

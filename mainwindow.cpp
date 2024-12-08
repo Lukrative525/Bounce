@@ -15,46 +15,76 @@ MainWindow::MainWindow(QWidget* parent):
 {
     mainWindowUI->setupUi(this);
     mainWindowUI->actionPause->setEnabled(false);
-    mainWindowUI->actionStart->setEnabled(false);
+    mainWindowUI->actionPlay->setEnabled(false);
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
+    connect(graphicsViewer, &GraphicsViewer::request_process_mouse_press, this, &MainWindow::process_mouse_press);
     connect(graphicsViewer, &GraphicsViewer::request_process_mouse_click, this, &MainWindow::process_mouse_click);
 
     setup_timer();
     setup_menu();
+    setup_shortcuts();
 
-    QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(escapeShortcut, &QShortcut::activated, this, &MainWindow::on_escape_pressed);
+    on_escape_pressed();
+}
+
+void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
+{
+    update_ball_selection(nullptr);
+    mainWindowUI->centralWidget->setFocus();
+
+    Vector3D selectionPoint{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
+
+    for (Ball& ball: simulation.ballCollection)
+    {
+        if (detect_ball_selected(selectionPoint, ball))
+        {
+            update_ball_selection(&ball);
+            break;
+        }
+    }
 }
 
 void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
 {
-    update_ball_selection(nullptr);
     Vector3D impartedVelocity{};
     impartedVelocity.x = inputVelocityScaleFactor * (releaseCoordinates.x - pressCoordinates.x);
     impartedVelocity.y = inputVelocityScaleFactor * (releaseCoordinates.y - pressCoordinates.y);
     impartedVelocity.z = inputVelocityScaleFactor * (releaseCoordinates.z - pressCoordinates.z);
 
-    Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
-
-    for (Ball& ball: simulation.ballCollection)
+    if (selectedBall == nullptr)
     {
-        if (phys::detect_collision_between_balls(candidateBall, ball))
+        Ball candidateBall{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
+        candidateBall.velocity = impartedVelocity;
+        phys::update_next_state_implicit_euler(simulation.timeStep, candidateBall, simulation.gravity);
+        bool noCollisionDetected{true};
+
+        for (Ball& ball: simulation.ballCollection)
         {
-            ball.velocity = ball.velocity + impartedVelocity;
-            update_ball_selection(&ball);
-            break;
+            if (phys::detect_collision_between_balls(candidateBall, ball))
+            {
+                noCollisionDetected = false;
+                break;
+            }
+        }
+
+        if (phys::detect_collision_with_container(candidateBall, simulation.container))
+        {
+            noCollisionDetected = false;
+        }
+
+        if (noCollisionDetected)
+        {
+            simulation.add_ball(candidateBall);
+            update_ball_selection(&simulation.ballCollection.back());
+            graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+            graphicsViewer->update();
         }
     }
-
-    if (selectedBall == nullptr && !phys::detect_collision_with_container(candidateBall, simulation.container))
+    else
     {
-        candidateBall.velocity = candidateBall.velocity + impartedVelocity;
-        simulation.add_ball(candidateBall);
-        update_ball_selection(&simulation.ballCollection.back());
-        graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
-        graphicsViewer->update();
+        selectedBall->velocity = selectedBall->velocity + impartedVelocity;
     }
 }
 
@@ -62,6 +92,20 @@ void MainWindow::on_escape_pressed()
 {
     mainWindowUI->centralWidget->setFocus();
     update_ball_selection(nullptr);
+}
+
+void MainWindow::on_spacebar_pressed()
+{
+    if (isPaused && mainWindowUI->actionPlay->isEnabled())
+    {
+        emit mainWindowUI->actionPlay->triggered();
+        isPaused = false;
+    }
+    else if (mainWindowUI->actionPause->isEnabled())
+    {
+        emit mainWindowUI->actionPause->triggered();
+        isPaused = true;
+    }
 }
 
 void MainWindow::on_timer()
@@ -83,6 +127,20 @@ void MainWindow::start_timer()
 void MainWindow::stop_timer()
 {
     timer->stop();
+}
+
+void MainWindow::new_file()
+{
+    reset_simulation();
+    simulation.container.position = {0, 0, 10};
+    simulation.container.radius = 10;
+
+    graphicsViewer->initialize_camera(simulation.container);
+    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+    graphicsViewer->update();
+
+    mainWindowUI->actionPause->setEnabled(true);
+    mainWindowUI->actionPlay->setEnabled(true);
 }
 
 void MainWindow::open_file()
@@ -111,7 +169,7 @@ void MainWindow::open_file()
     graphicsViewer->update();
 
     mainWindowUI->actionPause->setEnabled(true);
-    mainWindowUI->actionStart->setEnabled(true);
+    mainWindowUI->actionPlay->setEnabled(true);
 }
 
 void MainWindow::save_as_file()
@@ -141,14 +199,30 @@ void MainWindow::setup_timer()
 void MainWindow::setup_menu()
 {
     connect(mainWindowUI->actionPause, SIGNAL(triggered()), this, SLOT(stop_timer()));
-    connect(mainWindowUI->actionStart, SIGNAL(triggered()), this, SLOT(start_timer()));
+    connect(mainWindowUI->actionPlay, SIGNAL(triggered()), this, SLOT(start_timer()));
+    connect(mainWindowUI->actionNew, SIGNAL(triggered()), this, SLOT(new_file()));
     connect(mainWindowUI->actionOpen, SIGNAL(triggered()), this, SLOT(open_file()));
     connect(mainWindowUI->actionSaveAs, SIGNAL(triggered()), this, SLOT(save_as_file()));
+}
+
+void MainWindow::setup_shortcuts()
+{
+    QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(escapeShortcut, &QShortcut::activated, this, &MainWindow::on_escape_pressed);
+    QShortcut* spacebarShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    connect(spacebarShortcut, &QShortcut::activated, this, &MainWindow::on_spacebar_pressed);
 }
 
 void MainWindow::reset_simulation()
 {
     simulation = Simulation();
+}
+
+bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
+{
+    bool ballSelected = phys::calculate_distance_between(selectionPoint, ball.position) < ball.radius;
+
+    return ballSelected;
 }
 
 void MainWindow::update_ball_selection(Ball* ball_address)

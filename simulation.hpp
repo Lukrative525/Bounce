@@ -25,15 +25,14 @@ public:
     void update();
 
     int maxNumberBalls;
+    Vector3D gravity{0, 0, -9.81};
+    double timeStep{1.0 / 600.0};
 
 private:
     void resolve_collisions();
     void resolve_all_collisions_with_container();
     void resolve_all_collisions_between_balls();
     void resolve_links();
-
-    Vector3D gravity;
-    double timeStep;
 };
 
 #endif // SIMULATION_HPP

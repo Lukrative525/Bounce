@@ -6,7 +6,6 @@
 #include <QOpenGLWidget>
 #include "camera.hpp"
 #include "extrema.hpp"
-#include "vector3d.hpp"
 
 class Ball;
 class MainWindow;
@@ -22,6 +21,7 @@ public:
     Camera camera;
 
 signals:
+    void request_process_mouse_press(glm::vec3& pressCoordinates);
     void request_process_mouse_click(glm::vec3& pressCoordinates, glm::vec3& releaseCoordinates);
 
 protected:

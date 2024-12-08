@@ -427,6 +427,7 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
     <addaction name="actionSaveAs"/>
    </widget>
@@ -434,7 +435,7 @@
     <property name="title">
      <string>Simulation</string>
     </property>
-    <addaction name="actionStart"/>
+    <addaction name="actionPlay"/>
     <addaction name="actionPause"/>
    </widget>
    <addaction name="menuFile"/>
@@ -448,19 +449,16 @@
    <property name="text">
     <string>Pause</string>
    </property>
-   <property name="shortcut">
-    <string>P</string>
-   </property>
   </action>
-  <action name="actionStart">
+  <action name="actionPlay">
    <property name="icon">
     <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
    </property>
    <property name="text">
-    <string>Start</string>
+    <string>Play</string>
    </property>
-   <property name="shortcut">
-    <string>S</string>
+   <property name="toolTip">
+    <string>Play</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -480,6 +478,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
    </property>
   </action>
  </widget>

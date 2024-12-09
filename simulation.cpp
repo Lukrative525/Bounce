@@ -234,7 +234,7 @@ void Simulation::resolve_links()
     {
         if (phys::calculate_distance_between(ballCollection[link.index1].nextPosition, ballCollection[link.index2].nextPosition) > (ballCollection[link.index1].radius + ballCollection[link.index2].radius))
         {
-            phys::resolve_collision(ballCollection[link.index1], ballCollection[link.index2]);
+            phys::resolve_link(ballCollection[link.index1], ballCollection[link.index2]);
         }
     }
 }

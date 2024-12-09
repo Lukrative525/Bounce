@@ -207,11 +207,6 @@ void MainWindow::reset_simulation()
     simulation->container.elasticity = mainWindowUI->containerElasticityDoubleSpinBox->value();
 }
 
-void MainWindow::setup_push_buttons()
-{
-    connect(mainWindowUI->deleteBallPushButton, &QPushButton::clicked, this, &MainWindow::delete_selected_ball);
-}
-
 void MainWindow::setup_menu()
 {
     connect(mainWindowUI->actionPause, &QAction::triggered, this, &MainWindow::stop_timer);
@@ -226,6 +221,12 @@ void MainWindow::setup_mouse()
     connect(graphicsViewer, &GraphicsViewer::request_process_mouse_press, this, &MainWindow::process_mouse_press);
     connect(graphicsViewer, &GraphicsViewer::request_process_left_click, this, &MainWindow::process_left_click);
     connect(graphicsViewer, &GraphicsViewer::request_process_right_click, this, &MainWindow::process_right_click);
+}
+
+void MainWindow::setup_push_buttons()
+{
+    connect(mainWindowUI->deleteBallPushButton, &QPushButton::clicked, this, &MainWindow::delete_selected_ball);
+    connect(mainWindowUI->deleteLinksPushButton, &QPushButton::clicked, this, &MainWindow::delete_links_on_selected_ball);
 }
 
 void MainWindow::setup_properties_editor()
@@ -275,6 +276,11 @@ void MainWindow::delete_selected_ball()
     simulation->remove_ball(selectedBall);
     update_selected_ball(nullptr);
     update(false);
+}
+
+void MainWindow::delete_links_on_selected_ball()
+{
+    simulation->remove_links_on_ball(selectedBall);
 }
 
 void MainWindow::new_file()

@@ -37,9 +37,9 @@ private:
     void on_spacebar_pressed();
     void reset_simulation();
 
-    void setup_push_buttons();
     void setup_menu();
     void setup_mouse();
+    void setup_push_buttons();
     void setup_properties_editor();
     void setup_shortcuts();
     void setup_timer();
@@ -58,6 +58,7 @@ private:
 
 private slots:
     void delete_selected_ball();
+    void delete_links_on_selected_ball();
 
     void new_file();
     void open_file();

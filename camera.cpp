@@ -5,16 +5,6 @@
 
 Camera::Camera() {}
 
-void Camera::set_width(float width)
-{
-    this->width = width;
-}
-
-void Camera::set_height(float height)
-{
-    this->height = height;
-}
-
 void Camera::set_near_plane(float nearPlane)
 {
     this->nearPlane = nearPlane;
@@ -30,13 +20,6 @@ void Camera::set_camera_position(float x, float y, float z)
     cameraPosition.x = x;
     cameraPosition.y = y;
     cameraPosition.z = z;
-}
-
-void Camera::set_camera_target(float dx, float dy, float dz)
-{
-    cameraTarget.x = cameraPosition.x + dx;
-    cameraTarget.y = cameraPosition.y + dy;
-    cameraTarget.z = cameraPosition.z + dz;
 }
 
 void Camera::set_camera_target(Vector3D target)
@@ -99,16 +82,6 @@ float Camera::get_width()
 float Camera::get_height()
 {
     return height;
-}
-
-float Camera::get_near_plane()
-{
-    return nearPlane;
-}
-
-float Camera::get_far_plane()
-{
-    return farPlane;
 }
 
 glm::mat4 Camera::get_projection_matrix()

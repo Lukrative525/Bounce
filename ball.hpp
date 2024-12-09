@@ -11,8 +11,6 @@ public:
     QJsonObject write_to_json() const override;
     void read_from_json(const QJsonObject& json) override;
     void make_next_state_current();
-    void set_color(float brightness, float opacity);
-    void set_color(float R, float G, float B, float a);
 
     Vector3D position;
     Vector3D nextPosition;

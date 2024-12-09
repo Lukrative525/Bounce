@@ -159,21 +159,6 @@ bool Simulation::is_new_link_unique(int index1, int index2)
     return isNewLinkUnique;
 }
 
-void Simulation::set_container(double x, double y, double z, double radius)
-{
-    container.position.x = x;
-    container.position.y = y;
-    container.position.z = z;
-    container.radius = radius;
-}
-
-void Simulation::set_gravity(double x, double y, double z)
-{
-    gravity.x = x;
-    gravity.y = y;
-    gravity.z = z;
-}
-
 void Simulation::set_max_number_balls(int newMaxNumberBalls)
 {
     maxNumberBalls = newMaxNumberBalls;

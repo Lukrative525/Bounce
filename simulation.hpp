@@ -21,8 +21,6 @@ public:
     void remove_links_on_ball(int ballIndex);
     void remove_links_on_ball(Ball* ball);
     bool is_new_link_unique(int index1, int index2);
-    void set_container(double, double, double, double radius);
-    void set_gravity(double, double, double z);
     void set_max_number_balls(int newMaxNumberBalls);
     void reset();
     void update();

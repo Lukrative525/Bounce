@@ -38,21 +38,3 @@ void Ball::make_next_state_current()
     position = nextPosition;
     velocity = nextVelocity;
 }
-
-void Ball::set_color(float brightness, float opacity)
-{
-    for (int i{0}; i < 3; i++)
-    {
-        color[i] = brightness;
-    }
-
-    color.a = opacity;
-}
-
-void Ball::set_color(float R, float G, float B, float a)
-{
-    color.r = R;
-    color.g = G;
-    color.b = B;
-    color.a = a;
-}

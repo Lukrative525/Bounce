@@ -4,6 +4,7 @@
 #include <QWidget>
 class Ball;
 class MainWindow;
+class Vector3D;
 
 class PropertiesEditor: public QObject
 {
@@ -12,6 +13,10 @@ public:
     explicit PropertiesEditor(MainWindow* parentMainWindow);
 
 public slots:
+    void set_gravity(Vector3D* newGravity);
+    void set_gravity_x(double newValue);
+    void set_gravity_y(double newValue);
+    void set_gravity_z(double newValue);
     void set_container(Ball* newContainer);
     void set_container_x(double newValue);
     void set_container_y(double newValue);
@@ -31,6 +36,7 @@ public slots:
 
 private:
     MainWindow* parentMainWindow;
+    Vector3D* gravity;
     Ball* container;
     Ball* selectedBall;
 };

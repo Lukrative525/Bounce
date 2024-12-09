@@ -129,6 +129,13 @@ bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
     return ballSelected;
 }
 
+void MainWindow::update_gravity_properties()
+{
+    mainWindowUI->gravityXDoubleSpinBox->setValue(simulation->gravity.x);
+    mainWindowUI->gravityYDoubleSpinBox->setValue(simulation->gravity.y);
+    mainWindowUI->gravityZDoubleSpinBox->setValue(simulation->gravity.z);
+}
+
 void MainWindow::update_container_properties()
 {
     mainWindowUI->containerXDoubleSpinBox->setValue(simulation->container.position.x);
@@ -208,6 +215,11 @@ void MainWindow::setup_mouse()
 
 void MainWindow::setup_properties_editor()
 {
+    propertiesEditor->set_gravity(&simulation->gravity);
+    connect(mainWindowUI->gravityXDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_gravity_x);
+    connect(mainWindowUI->gravityYDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_gravity_y);
+    connect(mainWindowUI->gravityZDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_gravity_z);
+
     propertiesEditor->set_container(&simulation->container);
     connect(mainWindowUI->containerXDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_x);
     connect(mainWindowUI->containerYDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_y);
@@ -279,6 +291,7 @@ void MainWindow::open_file()
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionPlay->setEnabled(true);
 
+    update_gravity_properties();
     update_container_properties();
 }
 

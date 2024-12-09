@@ -8,6 +8,26 @@ PropertiesEditor::PropertiesEditor(MainWindow* parent):
     parentMainWindow = parent;
 }
 
+void PropertiesEditor::set_gravity(Vector3D* newGravity)
+{
+    gravity = newGravity;
+}
+
+void PropertiesEditor::set_gravity_x(double newValue)
+{
+    gravity->x = newValue;
+}
+
+void PropertiesEditor::set_gravity_y(double newValue)
+{
+    gravity->y = newValue;
+}
+
+void PropertiesEditor::set_gravity_z(double newValue)
+{
+    gravity->z = newValue;
+}
+
 void PropertiesEditor::set_container(Ball* newContainer)
 {
     container = newContainer;

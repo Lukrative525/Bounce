@@ -30,6 +30,7 @@ public slots:
 
 private:
     bool detect_ball_selected(Vector3D& selectionPoint, Ball& ball);
+    void update_gravity_properties();
     void update_container_properties();
     void update_ball_selection(Ball* ball_address);
     void on_escape_pressed();

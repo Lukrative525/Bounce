@@ -180,6 +180,9 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="containerRadiusDoubleSpinBox">
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
           <property name="maximum">
            <double>100.000000000000000</double>
           </property>
@@ -293,6 +296,9 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="ballRadiusDoubleSpinBox">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
           <property name="maximum">
            <double>10.000000000000000</double>
           </property>

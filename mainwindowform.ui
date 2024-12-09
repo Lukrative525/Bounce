@@ -48,6 +48,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QDoubleSpinBox" name="gravityXDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit acceleration from gravity</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -60,6 +63,9 @@
          <widget class="QDoubleSpinBox" name="gravityYDoubleSpinBox">
           <property name="enabled">
            <bool>false</bool>
+          </property>
+          <property name="statusTip">
+           <string>edit acceleration from gravity</string>
           </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
@@ -78,6 +84,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="gravityZDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit acceleration from gravity</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -144,6 +153,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="containerZDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit container properties</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -170,6 +182,9 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="statusTip">
+           <string>edit container properties</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -180,6 +195,9 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="containerRadiusDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit container properties</string>
+          </property>
           <property name="minimum">
            <double>1.000000000000000</double>
           </property>
@@ -198,6 +216,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="statusTip">
+           <string>edit container properties</string>
           </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
@@ -229,6 +250,9 @@
         </item>
         <item row="4" column="1">
          <widget class="QDoubleSpinBox" name="containerElasticityDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit container properties</string>
+          </property>
           <property name="maximum">
            <double>1.000000000000000</double>
           </property>
@@ -276,6 +300,9 @@
         </item>
         <item row="0" column="1">
          <widget class="QDoubleSpinBox" name="ballXDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit ball properties</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -286,6 +313,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="ballZDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit ball properties</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -296,6 +326,9 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="ballRadiusDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit ball properties</string>
+          </property>
           <property name="minimum">
            <double>0.010000000000000</double>
           </property>
@@ -351,6 +384,9 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="statusTip">
+           <string>edit ball properties</string>
+          </property>
           <property name="minimum">
            <double>-100.000000000000000</double>
           </property>
@@ -368,6 +404,9 @@
         </item>
         <item row="4" column="1">
          <widget class="QDoubleSpinBox" name="ballElasticityDoubleSpinBox">
+          <property name="statusTip">
+           <string>edit ball properties</string>
+          </property>
           <property name="maximum">
            <double>1.000000000000000</double>
           </property>
@@ -385,6 +424,9 @@
        <layout class="QGridLayout" name="ballColorLayout">
         <item row="0" column="1">
          <widget class="QSpinBox" name="ballRedSpinBox">
+          <property name="statusTip">
+           <string>edit ball color</string>
+          </property>
           <property name="maximum">
            <number>255</number>
           </property>
@@ -406,6 +448,9 @@
             <width>150</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="statusTip">
+           <string>edit ball color</string>
           </property>
           <property name="styleSheet">
            <string notr="true">QSlider::handle:horizontal {
@@ -437,6 +482,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="statusTip">
+           <string>edit ball color</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">QSlider::handle:horizontal {
     background: #00FF00;
@@ -455,6 +503,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="ballGreenSpinBox">
+          <property name="statusTip">
+           <string>edit ball color</string>
+          </property>
           <property name="maximum">
            <number>255</number>
           </property>
@@ -477,6 +528,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="statusTip">
+           <string>edit ball color</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">QSlider::handle:horizontal {
     background: #0000FF;
@@ -495,6 +549,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QSpinBox" name="ballBlueSpinBox">
+          <property name="statusTip">
+           <string>edit ball color</string>
+          </property>
           <property name="maximum">
            <number>255</number>
           </property>
@@ -507,6 +564,9 @@
       </item>
       <item>
        <widget class="QCheckBox" name="ballMovableCheckBox">
+        <property name="statusTip">
+         <string>edit ball mobility</string>
+        </property>
         <property name="text">
          <string>Movable</string>
         </property>
@@ -526,9 +586,12 @@
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="pushButtonsLayout">
         <item row="1" column="0">
          <widget class="QPushButton" name="addLinkPushButton">
+          <property name="statusTip">
+           <string>add link between two selected balls; ctrl + click to select</string>
+          </property>
           <property name="text">
            <string>Add Link</string>
           </property>
@@ -536,6 +599,9 @@
         </item>
         <item row="0" column="0">
          <widget class="QPushButton" name="deleteBallPushButton">
+          <property name="statusTip">
+           <string>delete currently selected ball</string>
+          </property>
           <property name="text">
            <string>Delete Ball</string>
           </property>
@@ -546,6 +612,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QPushButton" name="deleteLinksPushButton">
+          <property name="statusTip">
+           <string>delete all links associated with currently selected ball</string>
+          </property>
           <property name="text">
            <string>Delete Links</string>
           </property>
@@ -577,7 +646,7 @@
        </sizepolicy>
       </property>
       <property name="statusTip">
-       <string>left click to drag ball; right click to add new ball</string>
+       <string>left click to select ball; right click to place new ball; click and drag for speed</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::Shape::NoFrame</enum>

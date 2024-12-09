@@ -175,6 +175,7 @@ void MainWindow::update_selected_ball(Ball* ballAddress)
     if (selectedBall != nullptr)
     {
         mainWindowUI->deleteBallPushButton->setEnabled(true);
+        mainWindowUI->addLinkPushButton->setEnabled(true);
         mainWindowUI->deleteLinksPushButton->setEnabled(true);
 
         mainWindowUI->ballXDoubleSpinBox->setValue(selectedBall->position.x);
@@ -190,6 +191,7 @@ void MainWindow::update_selected_ball(Ball* ballAddress)
     else
     {
         mainWindowUI->deleteBallPushButton->setEnabled(false);
+        mainWindowUI->addLinkPushButton->setEnabled(false);
         mainWindowUI->deleteLinksPushButton->setEnabled(false);
     }
 }

@@ -110,13 +110,15 @@ void Simulation::add_link(Link newLink)
     }
 }
 
-void Simulation::add_link(int index1, int index2)
+void Simulation::add_link(Ball* ball1, Ball* ball2)
 {
-    if (linkCollection.size() < maxNumberBalls * (maxNumberBalls - 1) / 2)
+    int ballIndex1 = get_ball_index(ball1);
+    int ballIndex2 = get_ball_index(ball2);
+    if (linkCollection.size() < get_max_number_links())
     {
-        if (is_new_link_unique(index1, index2))
+        if (is_new_link_unique(ballIndex1, ballIndex2))
         {
-            linkCollection.emplace_back(index1, index2);
+            linkCollection.emplace_back(ballIndex1, ballIndex2);
         }
     }
 }
@@ -163,7 +165,14 @@ void Simulation::set_max_number_balls(int newMaxNumberBalls)
 {
     maxNumberBalls = newMaxNumberBalls;
     ballCollection.reserve(maxNumberBalls);
-    linkCollection.reserve(maxNumberBalls * (maxNumberBalls - 1) / 2);
+    linkCollection.reserve(get_max_number_links());
+}
+
+int Simulation::get_max_number_links()
+{
+    int maxNumberLinks = maxNumberBalls * (maxNumberBalls - 1) / 2;
+
+    return maxNumberLinks;
 }
 
 void Simulation::reset()
@@ -190,8 +199,8 @@ void Simulation::update()
 
 void Simulation::resolve_collisions()
 {
-    resolve_all_collisions_with_container();
     resolve_all_collisions_between_balls();
+    resolve_all_collisions_with_container();
 }
 
 void Simulation::resolve_all_collisions_with_container()
@@ -235,6 +244,14 @@ std::vector<Ball>::iterator Simulation::get_ball_iterator(Ball* ball)
     std::vector<Ball>::iterator ballIterator = ballCollection.begin() + (ball - &ballCollection[0]);
 
     return ballIterator;
+}
+
+int Simulation::get_ball_index(Ball* ball)
+{
+    std::vector<Ball>::iterator ballIterator = get_ball_iterator(ball);
+    int ballIndex = get_ball_index(ballIterator);
+
+    return ballIndex;
 }
 
 int Simulation::get_ball_index(std::vector<Ball>::iterator ballIterator)

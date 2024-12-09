@@ -12,7 +12,7 @@
             "nextPosition": {
                 "x": 0,
                 "y": 0,
-                "z": 8
+                "z": 5
             },
             "nextVelocity": {
                 "x": 0,
@@ -43,7 +43,7 @@
             "nextPosition": {
                 "x": 2,
                 "y": 0,
-                "z": 12
+                "z": 9
             },
             "nextVelocity": {
                 "x": 0,
@@ -74,7 +74,7 @@
             "nextPosition": {
                 "x": -2,
                 "y": 0,
-                "z": 12
+                "z": 9
             },
             "nextVelocity": {
                 "x": 0,
@@ -103,9 +103,9 @@
             "elasticity": 0.95,
             "isMovable": false,
             "nextPosition": {
-                "x": -1,
+                "x": 0,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -136,7 +136,7 @@
             "nextPosition": {
                 "x": 0,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -167,7 +167,7 @@
             "nextPosition": {
                 "x": 1,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -196,9 +196,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 2,
+                "x": 3,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -212,9 +212,9 @@
             },
             "radius": 0.5,
             "velocity": {
-                "x": 0.10669350624084473,
+                "x": 0,
                 "y": 0,
-                "z": 0.10669708251953125
+                "z": 0
             }
         },
         {
@@ -227,9 +227,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 3,
+                "x": 4,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -258,9 +258,9 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "x": 4.5,
+                "x": 5.5,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,

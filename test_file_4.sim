@@ -10,9 +10,9 @@
             "elasticity": 0.95,
             "isMovable": false,
             "nextPosition": {
-                "x": -1,
+                "x": 0,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -41,9 +41,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 0,
+                "x": 1,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -72,9 +72,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 1,
+                "x": 2,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -103,9 +103,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 2,
+                "x": 3,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -134,9 +134,9 @@
             "elasticity": 0.95,
             "isMovable": true,
             "nextPosition": {
-                "x": 3,
+                "x": 4,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,
@@ -165,9 +165,9 @@
             "elasticity": 1,
             "isMovable": true,
             "nextPosition": {
-                "x": 4.5,
+                "x": 5.5,
                 "y": 0,
-                "z": 14
+                "z": 12
             },
             "nextVelocity": {
                 "x": 0,

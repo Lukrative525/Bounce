@@ -17,11 +17,12 @@ public:
     void remove_ball(Ball* ballToRemove);
     const std::vector<Link>& get_link_collection() const;
     void add_link(Link newLink);
-    void add_link(int index1, int index2);
+    void add_link(Ball* ball1, Ball* ball2);
     void remove_links_on_ball(int ballIndex);
     void remove_links_on_ball(Ball* ball);
     bool is_new_link_unique(int index1, int index2);
     void set_max_number_balls(int newMaxNumberBalls);
+    int get_max_number_links();
     void reset();
     void update();
 
@@ -38,6 +39,7 @@ private:
     std::vector<Ball> ballCollection;
     std::vector<Link> linkCollection;
     std::vector<Ball>::iterator get_ball_iterator(Ball* ball);
+    int get_ball_index(Ball* ball);
     int get_ball_index(std::vector<Ball>::iterator ballIterator);
 
     int maxNumberBalls;

@@ -28,6 +28,10 @@ public slots:
     void process_left_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates);
     void process_right_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates);
 
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
+
 private:
     bool detect_ball_selected(const Vector3D& selectionPoint, const Ball& ball);
     void update_gravity_properties();
@@ -49,15 +53,18 @@ private:
     PropertiesEditor* propertiesEditor;
     QTimer* timer;
     Simulation* simulation;
+    Ball* previousSelectedBall{nullptr};
     Ball* selectedBall{nullptr};
 
     double inputVelocityScaleFactor{5};
     double framesPerSecond{60};
     int subSteps{10};
     int timerInterval;
+    bool isControlPressed{false};
 
 private slots:
     void delete_selected_ball();
+    void add_link_on_selected_balls();
     void delete_links_on_selected_ball();
 
     void new_file();

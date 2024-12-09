@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QJsonDocument>
+#include <QKeyEvent>
 #include <QShortcut>
 #include <QTimer>
 #include "graphicsviewer.hpp"
@@ -52,6 +53,15 @@ void MainWindow::update(bool refreshCamera)
 
 void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
 {
+    if (isControlPressed)
+    {
+        previousSelectedBall = selectedBall;
+    }
+    else
+    {
+        previousSelectedBall = nullptr;
+    }
+
     update_selected_ball(nullptr);
     mainWindowUI->centralWidget->setFocus();
 
@@ -99,28 +109,39 @@ void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const gl
         candidateBall.color.b = (mainWindowUI->ballBlueSpinBox->value()) / 255.0;
         candidateBall.isMovable = mainWindowUI->ballMovableCheckBox->isChecked();
         phys::update_next_state_implicit_euler(simulation->timeStep, candidateBall, simulation->gravity);
-        bool noCollisionDetected{true};
 
         for (const Ball& ball: simulation->get_ball_collection())
         {
             if (phys::detect_collision_between_balls(candidateBall, ball))
             {
-                noCollisionDetected = false;
-                break;
+                return;
             }
         }
 
         if (phys::detect_collision_with_container(candidateBall, simulation->container))
         {
-            noCollisionDetected = false;
+            return;
         }
 
-        if (noCollisionDetected)
-        {
-            simulation->add_ball(candidateBall);
-            update_selected_ball(&simulation->get_ball(simulation->get_ball_collection().size() - 1));
-            update(false);
-        }
+        simulation->add_ball(candidateBall);
+        update_selected_ball(&simulation->get_ball(simulation->get_ball_collection().size() - 1));
+        update(false);
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control)
+    {
+        isControlPressed = true;
+    }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control)
+    {
+        isControlPressed = false;
     }
 }
 
@@ -226,6 +247,7 @@ void MainWindow::setup_mouse()
 void MainWindow::setup_push_buttons()
 {
     connect(mainWindowUI->deleteBallPushButton, &QPushButton::clicked, this, &MainWindow::delete_selected_ball);
+    connect(mainWindowUI->addLinkPushButton, &QPushButton::clicked, this, &MainWindow::add_link_on_selected_balls);
     connect(mainWindowUI->deleteLinksPushButton, &QPushButton::clicked, this, &MainWindow::delete_links_on_selected_ball);
 }
 
@@ -276,6 +298,14 @@ void MainWindow::delete_selected_ball()
     simulation->remove_ball(selectedBall);
     update_selected_ball(nullptr);
     update(false);
+}
+
+void MainWindow::add_link_on_selected_balls()
+{
+    if (selectedBall != nullptr && previousSelectedBall != nullptr)
+    {
+        simulation->add_link(selectedBall, previousSelectedBall);
+    }
 }
 
 void MainWindow::delete_links_on_selected_ball()

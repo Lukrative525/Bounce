@@ -46,7 +46,7 @@ void MainWindow::update(bool refreshCamera)
     {
         graphicsViewer->refresh_camera(simulation->container);
     }
-    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
+    graphicsViewer->refresh_ball_positions(simulation->get_ball_collection(), simulation->container);
     graphicsViewer->update();
 }
 
@@ -57,8 +57,9 @@ void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
 
     Vector3D selectionPoint{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
 
-    for (Ball& ball: simulation->ballCollection)
+    for (int i{0}; i < simulation->get_ball_collection().size(); i++)
     {
+        Ball& ball = simulation->get_ball(i);
         if (detect_ball_selected(selectionPoint, ball))
         {
             update_selected_ball(&ball);
@@ -100,7 +101,7 @@ void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const gl
         phys::update_next_state_implicit_euler(simulation->timeStep, candidateBall, simulation->gravity);
         bool noCollisionDetected{true};
 
-        for (Ball& ball: simulation->ballCollection)
+        for (const Ball& ball: simulation->get_ball_collection())
         {
             if (phys::detect_collision_between_balls(candidateBall, ball))
             {
@@ -117,13 +118,13 @@ void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const gl
         if (noCollisionDetected)
         {
             simulation->add_ball(candidateBall);
-            update_selected_ball(&simulation->ballCollection.back());
+            update_selected_ball(&simulation->get_ball(simulation->get_ball_collection().size() - 1));
             update(false);
         }
     }
 }
 
-bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
+bool MainWindow::detect_ball_selected(const Vector3D& selectionPoint, const Ball& ball)
 {
     bool ballSelected = phys::calculate_distance_between(selectionPoint, ball.position) < ball.radius;
 
@@ -146,9 +147,9 @@ void MainWindow::update_container_properties()
     mainWindowUI->containerElasticityDoubleSpinBox->setValue(simulation->container.elasticity);
 }
 
-void MainWindow::update_selected_ball(Ball* ball_address)
+void MainWindow::update_selected_ball(Ball* ballAddress)
 {
-    selectedBall = ball_address;
+    selectedBall = ballAddress;
     propertiesEditor->set_selected_ball(selectedBall);
     if (selectedBall != nullptr)
     {

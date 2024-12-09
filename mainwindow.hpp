@@ -29,10 +29,10 @@ public slots:
     void process_right_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates);
 
 private:
-    bool detect_ball_selected(Vector3D& selectionPoint, Ball& ball);
+    bool detect_ball_selected(const Vector3D& selectionPoint, const Ball& ball);
     void update_gravity_properties();
     void update_container_properties();
-    void update_selected_ball(Ball* ball_address);
+    void update_selected_ball(Ball* ballAddress);
     void on_escape_pressed();
     void on_spacebar_pressed();
     void reset_simulation();

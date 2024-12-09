@@ -54,6 +54,16 @@ void Simulation::read_from_json(const QJsonObject& json)
     timeStep = json["timeStep"].toDouble();
 }
 
+Ball& Simulation::get_ball(int ballIndex)
+{
+    return ballCollection.at(ballIndex);
+}
+
+const std::vector<Ball>& Simulation::get_ball_collection() const
+{
+    return ballCollection;
+}
+
 void Simulation::add_ball(Ball newBall)
 {
     if (ballCollection.size() < maxNumberBalls)
@@ -64,22 +74,12 @@ void Simulation::add_ball(Ball newBall)
 
 void Simulation::remove_ball(Ball* ballToRemove)
 {
-    std::vector<Ball>::iterator ballIterator = ballCollection.begin() + (ballToRemove - &ballCollection[0]);
-    int ballIndex = static_cast<int>(std::distance(ballCollection.begin(), ballIterator));
+    std::vector<Ball>::iterator ballIterator = get_ball_iterator(ballToRemove);
+    int ballIndex = get_ball_index(ballIterator);
 
     ballCollection.erase(ballIterator);
 
-    for (std::vector<Link>::iterator linkIterator = linkCollection.begin(); linkIterator != linkCollection.end();)
-    {
-        if (linkIterator->index1 == ballIndex || linkIterator->index2 == ballIndex)
-        {
-            linkIterator = linkCollection.erase(linkIterator);
-        }
-        else
-        {
-            ++linkIterator;
-        }
-    }
+    remove_links_on_ball(ballIndex);
 
     for (Link& link: linkCollection)
     {
@@ -92,6 +92,11 @@ void Simulation::remove_ball(Ball* ballToRemove)
             link.index2--;
         }
     }
+}
+
+const std::vector<Link>& Simulation::get_link_collection() const
+{
+    return linkCollection;
 }
 
 void Simulation::add_link(Link newLink)
@@ -114,6 +119,29 @@ void Simulation::add_link(int index1, int index2)
             linkCollection.emplace_back(index1, index2);
         }
     }
+}
+
+void Simulation::remove_links_on_ball(int ballIndex)
+{
+    for (std::vector<Link>::iterator linkIterator = linkCollection.begin(); linkIterator != linkCollection.end();)
+    {
+        if (linkIterator->index1 == ballIndex || linkIterator->index2 == ballIndex)
+        {
+            linkIterator = linkCollection.erase(linkIterator);
+        }
+        else
+        {
+            ++linkIterator;
+        }
+    }
+}
+
+void Simulation::remove_links_on_ball(Ball* ball)
+{
+    std::vector<Ball>::iterator ballIterator = get_ball_iterator(ball);
+    int ballIndex = get_ball_index(ballIterator);
+
+    remove_links_on_ball(ballIndex);
 }
 
 bool Simulation::is_new_link_unique(int index1, int index2)
@@ -215,4 +243,18 @@ void Simulation::resolve_links()
             phys::resolve_collision(ballCollection[link.index1], ballCollection[link.index2]);
         }
     }
+}
+
+std::vector<Ball>::iterator Simulation::get_ball_iterator(Ball* ball)
+{
+    std::vector<Ball>::iterator ballIterator = ballCollection.begin() + (ball - &ballCollection[0]);
+
+    return ballIterator;
+}
+
+int Simulation::get_ball_index(std::vector<Ball>::iterator ballIterator)
+{
+    int ballIndex = static_cast<int>(std::distance(ballCollection.begin(), ballIterator));
+
+    return ballIndex;
 }

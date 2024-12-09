@@ -3,10 +3,9 @@
 #include "physicsfunctions.hpp"
 #include "simulation.hpp"
 
-Simulation::Simulation(int maxNumberBalls):maxNumberBalls{maxNumberBalls}
+Simulation::Simulation()
 {
-    ballCollection.reserve(maxNumberBalls);
-    linkCollection.reserve(maxNumberBalls * (maxNumberBalls - 1) / 2);
+    container.isMovable = false;
 }
 
 QJsonObject Simulation::write_to_json() const
@@ -63,14 +62,6 @@ void Simulation::add_ball(Ball newBall)
     }
 }
 
-void Simulation::add_ball(double x, double y, double z, double radius)
-{
-    if (ballCollection.size() < maxNumberBalls)
-    {
-        ballCollection.emplace_back(x, y, z, radius);
-    }
-}
-
 void Simulation::add_link(Link newLink)
 {
     if (linkCollection.size() < maxNumberBalls * (maxNumberBalls - 1) / 2)
@@ -118,12 +109,22 @@ void Simulation::set_container(double x, double y, double z, double radius)
 
 void Simulation::set_gravity(double x, double y, double z)
 {
-    this->gravity = Vector3D{x, y, z};
+    gravity.x = x;
+    gravity.y = y;
+    gravity.z = z;
 }
 
-void Simulation::set_time_step(double timeStep)
+void Simulation::set_max_number_balls(int newMaxNumberBalls)
 {
-    this->timeStep = timeStep;
+    maxNumberBalls = newMaxNumberBalls;
+    ballCollection.reserve(maxNumberBalls);
+    linkCollection.reserve(maxNumberBalls * (maxNumberBalls - 1) / 2);
+}
+
+void Simulation::reset()
+{
+    ballCollection.clear();
+    linkCollection.clear();
 }
 
 void Simulation::update()

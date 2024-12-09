@@ -7,7 +7,7 @@
 class Ball: public ISaveableObject
 {
 public:
-    Ball(double x = 0, double y = 0, double z = 0, double radius = 1);
+    Ball(double = 0, double = 0, double = 0);
     QJsonObject write_to_json() const override;
     void read_from_json(const QJsonObject& json) override;
     void make_next_state_current();

@@ -22,7 +22,8 @@ public:
 
 signals:
     void request_process_mouse_press(glm::vec3& pressCoordinates);
-    void request_process_mouse_click(glm::vec3& pressCoordinates, glm::vec3& releaseCoordinates);
+    void request_process_left_click(glm::vec3& pressCoordinates, glm::vec3& releaseCoordinates);
+    void request_process_right_click(glm::vec3& pressCoordinates, glm::vec3& releaseCoordinates);
 
 protected:
     void initializeGL() override;

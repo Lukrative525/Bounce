@@ -6,12 +6,12 @@
 #include "mainwindow.hpp"
 #include "physicsfunctions.hpp"
 #include "ui_mainwindowform.h"
+#include "simulation.hpp"
+#include "vector3d.hpp"
 
 MainWindow::MainWindow(QWidget* parent):
     QMainWindow{parent},
-    mainWindowUI{new Ui::MainWindowForm},
-    framesPerSecond{60},
-    subSteps{10}
+    mainWindowUI{new Ui::MainWindowForm}
 {
     mainWindowUI->setupUi(this);
     mainWindowUI->actionPause->setEnabled(false);
@@ -19,14 +19,20 @@ MainWindow::MainWindow(QWidget* parent):
 
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
-    connect(graphicsViewer, &GraphicsViewer::request_process_mouse_press, this, &MainWindow::process_mouse_press);
-    connect(graphicsViewer, &GraphicsViewer::request_process_mouse_click, this, &MainWindow::process_mouse_click);
 
-    setup_timer();
+    simulation = new Simulation;
+
     setup_menu();
+    setup_mouse();
     setup_shortcuts();
+    setup_timer();
 
     on_escape_pressed();
+}
+
+MainWindow::~MainWindow()
+{
+    delete simulation;
 }
 
 void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
@@ -36,7 +42,7 @@ void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
 
     Vector3D selectionPoint{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
 
-    for (Ball& ball: simulation.ballCollection)
+    for (Ball& ball: simulation->ballCollection)
     {
         if (detect_ball_selected(selectionPoint, ball))
         {
@@ -46,7 +52,20 @@ void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
     }
 }
 
-void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
+void MainWindow::process_left_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
+{
+    Vector3D impartedVelocity{};
+    impartedVelocity.x = inputVelocityScaleFactor * (releaseCoordinates.x - pressCoordinates.x);
+    impartedVelocity.y = inputVelocityScaleFactor * (releaseCoordinates.y - pressCoordinates.y);
+    impartedVelocity.z = inputVelocityScaleFactor * (releaseCoordinates.z - pressCoordinates.z);
+
+    if (selectedBall != nullptr)
+    {
+        selectedBall->velocity = selectedBall->velocity + impartedVelocity;
+    }
+}
+
+void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const glm::vec3& releaseCoordinates)
 {
     Vector3D impartedVelocity{};
     impartedVelocity.x = inputVelocityScaleFactor * (releaseCoordinates.x - pressCoordinates.x);
@@ -59,13 +78,14 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
         candidateBall.velocity = impartedVelocity;
         candidateBall.radius = mainWindowUI->ballRadiusDoubleSpinBox->value();
         candidateBall.elasticity = mainWindowUI->ballElasticityDoubleSpinBox->value();
-        candidateBall.color.r = static_cast<float>(mainWindowUI->redSpinBox->value()) / 255;
-        candidateBall.color.g = static_cast<float>(mainWindowUI->greenSpinBox->value()) / 255;
-        candidateBall.color.b = static_cast<float>(mainWindowUI->blueSpinBox->value()) / 255;
-        phys::update_next_state_implicit_euler(simulation.timeStep, candidateBall, simulation.gravity);
+        candidateBall.color.r = (mainWindowUI->ballRedSpinBox->value()) / 255.0;
+        candidateBall.color.g = (mainWindowUI->ballGreenSpinBox->value()) / 255.0;
+        candidateBall.color.b = (mainWindowUI->ballBlueSpinBox->value()) / 255.0;
+        candidateBall.isMovable = mainWindowUI->ballMovableCheckBox->isChecked();
+        phys::update_next_state_implicit_euler(simulation->timeStep, candidateBall, simulation->gravity);
         bool noCollisionDetected{true};
 
-        for (Ball& ball: simulation.ballCollection)
+        for (Ball& ball: simulation->ballCollection)
         {
             if (phys::detect_collision_between_balls(candidateBall, ball))
             {
@@ -74,22 +94,51 @@ void MainWindow::process_mouse_click(const glm::vec3& pressCoordinates, const gl
             }
         }
 
-        if (phys::detect_collision_with_container(candidateBall, simulation.container))
+        if (phys::detect_collision_with_container(candidateBall, simulation->container))
         {
             noCollisionDetected = false;
         }
 
         if (noCollisionDetected)
         {
-            simulation.add_ball(candidateBall);
-            update_ball_selection(&simulation.ballCollection.back());
-            graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+            simulation->add_ball(candidateBall);
+            update_ball_selection(&simulation->ballCollection.back());
+            graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
             graphicsViewer->update();
         }
     }
-    else
+}
+
+bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
+{
+    bool ballSelected = phys::calculate_distance_between(selectionPoint, ball.position) < ball.radius;
+
+    return ballSelected;
+}
+
+void MainWindow::update_container_properties()
+{
+    mainWindowUI->containerXDoubleSpinBox->setValue(simulation->container.position.x);
+    mainWindowUI->containerYDoubleSpinBox->setValue(simulation->container.position.y);
+    mainWindowUI->containerZDoubleSpinBox->setValue(simulation->container.position.z);
+    mainWindowUI->containerRadiusDoubleSpinBox->setValue(simulation->container.radius);
+    mainWindowUI->containerElasticityDoubleSpinBox->setValue(simulation->container.elasticity);
+}
+
+void MainWindow::update_ball_selection(Ball* ball_address)
+{
+    selectedBall = ball_address;
+    if (selectedBall != nullptr)
     {
-        selectedBall->velocity = selectedBall->velocity + impartedVelocity;
+        mainWindowUI->ballXDoubleSpinBox->setValue(selectedBall->position.x);
+        mainWindowUI->ballYDoubleSpinBox->setValue(selectedBall->position.y);
+        mainWindowUI->ballZDoubleSpinBox->setValue(selectedBall->position.z);
+        mainWindowUI->ballRadiusDoubleSpinBox->setValue(selectedBall->radius);
+        mainWindowUI->ballElasticityDoubleSpinBox->setValue(selectedBall->elasticity);
+        mainWindowUI->ballRedSpinBox->setValue(selectedBall->color.r * 255);
+        mainWindowUI->ballGreenSpinBox->setValue(selectedBall->color.g * 255);
+        mainWindowUI->ballBlueSpinBox->setValue(selectedBall->color.b * 255);
+        mainWindowUI->ballMovableCheckBox->setChecked(selectedBall->isMovable);
     }
 }
 
@@ -111,33 +160,61 @@ void MainWindow::on_spacebar_pressed()
     }
 }
 
-void MainWindow::on_timer()
+void MainWindow::reset_simulation()
 {
-    for (int i{0}; i < subSteps; i++)
-    {
-        simulation.update();
-    }
-
-    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
-    graphicsViewer->update();
+    selectedBall = nullptr;
+    simulation->reset();
+    simulation->timeStep = 1.0 / (framesPerSecond * subSteps);
+    simulation->set_max_number_balls(200);
+    simulation->gravity.x = mainWindowUI->gravityXDoubleSpinBox->value();
+    simulation->gravity.y = mainWindowUI->gravityYDoubleSpinBox->value();
+    simulation->gravity.z = mainWindowUI->gravityZDoubleSpinBox->value();
+    simulation->container.position.x = mainWindowUI->containerXDoubleSpinBox->value();
+    simulation->container.position.y = mainWindowUI->containerYDoubleSpinBox->value();
+    simulation->container.position.z = mainWindowUI->containerZDoubleSpinBox->value();
+    simulation->container.radius = mainWindowUI->containerRadiusDoubleSpinBox->value();
+    simulation->container.elasticity = mainWindowUI->containerElasticityDoubleSpinBox->value();
 }
 
-void MainWindow::start_timer()
+void MainWindow::setup_menu()
 {
-    timer->start();
+    connect(mainWindowUI->actionPause, &QAction::triggered, this, &MainWindow::stop_timer);
+    connect(mainWindowUI->actionPlay, &QAction::triggered, this, &MainWindow::start_timer);
+    connect(mainWindowUI->actionNew, &QAction::triggered, this, &MainWindow::new_file);
+    connect(mainWindowUI->actionOpen, &QAction::triggered, this, &MainWindow::open_file);
+    connect(mainWindowUI->actionSaveAs, &QAction::triggered, this, &MainWindow::save_as_file);
 }
 
-void MainWindow::stop_timer()
+void MainWindow::setup_mouse()
 {
-    timer->stop();
+    connect(graphicsViewer, &GraphicsViewer::request_process_mouse_press, this, &MainWindow::process_mouse_press);
+    connect(graphicsViewer, &GraphicsViewer::request_process_left_click, this, &MainWindow::process_left_click);
+    connect(graphicsViewer, &GraphicsViewer::request_process_right_click, this, &MainWindow::process_right_click);
+}
+
+void MainWindow::setup_shortcuts()
+{
+    QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+    connect(escapeShortcut, &QShortcut::activated, this, &MainWindow::on_escape_pressed);
+    QShortcut* spacebarShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
+    connect(spacebarShortcut, &QShortcut::activated, this, &MainWindow::on_spacebar_pressed);
+}
+
+void MainWindow::setup_timer()
+{
+    timer = new QTimer(this);
+    double secToMilliSeconds{1000};
+    timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
+    timer->setInterval(timerInterval);
+    connect(timer, &QTimer::timeout, this, &MainWindow::on_timer);
 }
 
 void MainWindow::new_file()
 {
     reset_simulation();
 
-    graphicsViewer->initialize_camera(simulation.container);
-    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+    graphicsViewer->initialize_camera(simulation->container);
+    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
     graphicsViewer->update();
 
     mainWindowUI->actionPause->setEnabled(true);
@@ -160,17 +237,19 @@ void MainWindow::open_file()
     {
         QJsonDocument jsonDocument = QJsonDocument::fromJson(fileToOpen.readAll());
         if (!jsonDocument.isNull()) {
-            simulation.read_from_json(jsonDocument.object());
+            simulation->read_from_json(jsonDocument.object());
         }
         fileToOpen.close();
     }
 
-    graphicsViewer->initialize_camera(simulation.container);
-    graphicsViewer->refresh_ball_positions(simulation.ballCollection, simulation.container);
+    graphicsViewer->initialize_camera(simulation->container);
+    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
     graphicsViewer->update();
 
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionPlay->setEnabled(true);
+
+    update_container_properties();
 }
 
 void MainWindow::save_as_file()
@@ -181,63 +260,37 @@ void MainWindow::save_as_file()
 
     if (fileToSave.open(QIODevice::WriteOnly))
     {
-        QJsonObject jsonObject = simulation.write_to_json();
+        QJsonObject jsonObject = simulation->write_to_json();
         QJsonDocument jsonDocument(jsonObject);
         fileToSave.write(jsonDocument.toJson());
         fileToSave.close();
     }
 }
 
-void MainWindow::setup_timer()
+void MainWindow::on_timer()
 {
-    timer = new QTimer(this);
-    double secToMilliSeconds{1000};
-    int timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
-    timer->setInterval(timerInterval);
-    connect(timer, SIGNAL(timeout()), this, SLOT(on_timer()));
+    for (int i{0}; i < subSteps; i++)
+    {
+        simulation->update();
+    }
+
+    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
+    graphicsViewer->update();
 }
 
-void MainWindow::setup_menu()
+void MainWindow::start_timer()
 {
-    connect(mainWindowUI->actionPause, SIGNAL(triggered()), this, SLOT(stop_timer()));
-    connect(mainWindowUI->actionPlay, SIGNAL(triggered()), this, SLOT(start_timer()));
-    connect(mainWindowUI->actionNew, SIGNAL(triggered()), this, SLOT(new_file()));
-    connect(mainWindowUI->actionOpen, SIGNAL(triggered()), this, SLOT(open_file()));
-    connect(mainWindowUI->actionSaveAs, SIGNAL(triggered()), this, SLOT(save_as_file()));
+    timer->start();
 }
 
-void MainWindow::setup_shortcuts()
+void MainWindow::stop_timer()
 {
-    QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
-    connect(escapeShortcut, &QShortcut::activated, this, &MainWindow::on_escape_pressed);
-    QShortcut* spacebarShortcut = new QShortcut(QKeySequence(Qt::Key_Space), this);
-    connect(spacebarShortcut, &QShortcut::activated, this, &MainWindow::on_spacebar_pressed);
+    timer->stop();
 }
 
-void MainWindow::reset_simulation()
-{
-    simulation = Simulation();
-    simulation.container.position.x = mainWindowUI->containerXDoubleSpinBox->value();
-    simulation.container.position.y = mainWindowUI->containerYDoubleSpinBox->value();
-    simulation.container.position.z = mainWindowUI->containerZDoubleSpinBox->value();
-    simulation.container.radius = mainWindowUI->containerRadiusDoubleSpinBox->value();
-    simulation.container.elasticity = mainWindowUI->containerElasticityDoubleSpinBox->value();
-}
 
-bool MainWindow::detect_ball_selected(Vector3D& selectionPoint, Ball& ball)
-{
-    bool ballSelected = phys::calculate_distance_between(selectionPoint, ball.position) < ball.radius;
 
-    return ballSelected;
-}
 
-void MainWindow::update_ball_selection(Ball* ball_address)
-{
-    selectedBall = ball_address;
-    qDebug() << selectedBall;
-}
 
-void MainWindow::link_container()
-{
 
-}
+

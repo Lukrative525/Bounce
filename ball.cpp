@@ -1,10 +1,9 @@
 #include "ball.hpp"
 #include "jsonreadwritefunctions.hpp"
 
-Ball::Ball(double x, double y, double z, double radius):
+Ball::Ball(double x, double y, double z):
     position{x, y, z},
-    nextPosition{x, y, z},
-    radius{radius}
+    nextPosition{x, y, z}
 {
 }
 

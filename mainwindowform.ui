@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>675</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,6 +23,84 @@
    <layout class="QHBoxLayout" name="centralWidgetHorizontalLayout">
     <item>
      <layout class="QVBoxLayout" name="propertiesLayout">
+      <item>
+       <widget class="QLabel" name="gravityLabel">
+        <property name="text">
+         <string>Gravity</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gravityLayout">
+        <item row="1" column="0">
+         <widget class="QLabel" name="gravityYLabel">
+          <property name="text">
+           <string>Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="gravityXLabel">
+          <property name="text">
+           <string>X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="gravityXDoubleSpinBox">
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="gravityYDoubleSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="gravityZLabel">
+          <property name="text">
+           <string>Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="gravityZDoubleSpinBox">
+          <property name="minimum">
+           <double>-100.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>-9.810000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="lineWidth">
+         <number>3</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="containerPropertiesLabel">
         <property name="sizePolicy">
@@ -162,7 +240,7 @@
        </layout>
       </item>
       <item>
-       <widget class="Line" name="line">
+       <widget class="Line" name="line_2">
         <property name="lineWidth">
          <number>3</number>
         </property>
@@ -299,88 +377,8 @@
       </item>
       <item>
        <layout class="QGridLayout" name="ballColorLayout">
-        <item row="3" column="0">
-         <widget class="QSlider" name="blueHorizontalSlider">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QSlider::handle:horizontal {
-    background: #0000FF;
-}</string>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="value">
-           <number>255</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
-         <widget class="QSpinBox" name="redSpinBox">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="value">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QSpinBox" name="blueSpinBox">
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="value">
-           <number>255</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QSlider" name="greenHorizontalSlider">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QSlider::handle:horizontal {
-    background: #00FF00;
-}</string>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="value">
-           <number>255</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSpinBox" name="greenSpinBox">
+         <widget class="QSpinBox" name="ballRedSpinBox">
           <property name="maximum">
            <number>255</number>
           </property>
@@ -390,7 +388,7 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QSlider" name="redHorizontalSlider">
+         <widget class="QSlider" name="ballRedHorizontalSlider">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -419,10 +417,97 @@
           </property>
          </widget>
         </item>
+        <item row="1" column="0">
+         <widget class="QSlider" name="ballGreenHorizontalSlider">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QSlider::handle:horizontal {
+    background: #00FF00;
+}</string>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>255</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="ballGreenSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QSlider" name="ballBlueHorizontalSlider">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QSlider::handle:horizontal {
+    background: #0000FF;
+}</string>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>255</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="ballBlueSpinBox">
+          <property name="maximum">
+           <number>255</number>
+          </property>
+          <property name="value">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
-       <widget class="Line" name="line_2">
+       <widget class="QCheckBox" name="ballMovableCheckBox">
+        <property name="text">
+         <string>Movable</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line_3">
         <property name="lineWidth">
          <number>3</number>
         </property>
@@ -453,6 +538,9 @@
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="statusTip">
+       <string>left click to drag ball; right click to add new ball</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::Shape::NoFrame</enum>
@@ -513,6 +601,9 @@
    <property name="text">
     <string>Pause</string>
    </property>
+   <property name="statusTip">
+    <string>use spacebar to toggle play/pause</string>
+   </property>
   </action>
   <action name="actionPlay">
    <property name="icon">
@@ -523,6 +614,9 @@
    </property>
    <property name="toolTip">
     <string>Play</string>
+   </property>
+   <property name="statusTip">
+    <string>use spacebar to toggle play/pause</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -553,9 +647,9 @@
  <resources/>
  <connections>
   <connection>
-   <sender>redHorizontalSlider</sender>
+   <sender>ballRedHorizontalSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>redSpinBox</receiver>
+   <receiver>ballRedSpinBox</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -569,9 +663,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>redSpinBox</sender>
+   <sender>ballRedSpinBox</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>redHorizontalSlider</receiver>
+   <receiver>ballRedHorizontalSlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -585,9 +679,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>greenHorizontalSlider</sender>
+   <sender>ballGreenHorizontalSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>greenSpinBox</receiver>
+   <receiver>ballGreenSpinBox</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -601,9 +695,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>greenSpinBox</sender>
+   <sender>ballGreenSpinBox</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>greenHorizontalSlider</receiver>
+   <receiver>ballGreenHorizontalSlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -617,9 +711,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>blueHorizontalSlider</sender>
+   <sender>ballBlueHorizontalSlider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>blueSpinBox</receiver>
+   <receiver>ballBlueSpinBox</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -633,9 +727,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>blueSpinBox</sender>
+   <sender>ballBlueSpinBox</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>blueHorizontalSlider</receiver>
+   <receiver>ballBlueHorizontalSlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">

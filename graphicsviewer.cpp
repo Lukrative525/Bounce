@@ -99,7 +99,14 @@ void GraphicsViewer::mouseReleaseEvent(QMouseEvent* event)
     mousePressed=false;
     mouseReleasePosition = convert_screen_to_world(event->position());
 
-    emit request_process_mouse_click(mousePressPosition, mouseReleasePosition);
+    if (event->button() == Qt::LeftButton)
+    {
+        emit request_process_left_click(mousePressPosition, mouseReleasePosition);
+    }
+    else if (event->button() == Qt::RightButton)
+    {
+        emit request_process_right_click(mousePressPosition, mouseReleasePosition);
+    }
 }
 
 glm::vec3 GraphicsViewer::convert_screen_to_world(const QPointF& screenCoordinates)

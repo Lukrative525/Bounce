@@ -62,6 +62,38 @@ void Simulation::add_ball(Ball newBall)
     }
 }
 
+void Simulation::remove_ball(Ball* ballToRemove)
+{
+    std::vector<Ball>::iterator ballIterator = ballCollection.begin() + (ballToRemove - &ballCollection[0]);
+    int ballIndex = static_cast<int>(std::distance(ballCollection.begin(), ballIterator));
+
+    ballCollection.erase(ballIterator);
+
+    for (std::vector<Link>::iterator linkIterator = linkCollection.begin(); linkIterator != linkCollection.end();)
+    {
+        if (linkIterator->index1 == ballIndex || linkIterator->index2 == ballIndex)
+        {
+            linkIterator = linkCollection.erase(linkIterator);
+        }
+        else
+        {
+            ++linkIterator;
+        }
+    }
+
+    for (Link& link: linkCollection)
+    {
+        if (link.index1 > ballIndex)
+        {
+            link.index1--;
+        }
+        if (link.index2 > ballIndex)
+        {
+            link.index2--;
+        }
+    }
+}
+
 void Simulation::add_link(Link newLink)
 {
     if (linkCollection.size() < maxNumberBalls * (maxNumberBalls - 1) / 2)

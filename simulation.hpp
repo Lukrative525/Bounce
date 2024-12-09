@@ -12,6 +12,7 @@ public:
     QJsonObject write_to_json() const override;
     void read_from_json(const QJsonObject& json) override;
     void add_ball(Ball newBall);
+    void remove_ball(Ball* ballToRemove);
     void add_link(Link newLink);
     void add_link(int index1, int index2);
     bool is_new_link_unique(int index1, int index2);

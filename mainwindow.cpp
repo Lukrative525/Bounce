@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget* parent):
 
     simulation = new Simulation;
 
+    setup_push_buttons();
     setup_menu();
     setup_mouse();
     setup_properties_editor();
@@ -51,7 +52,7 @@ void MainWindow::update(bool refreshCamera)
 
 void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
 {
-    update_ball_selection(nullptr);
+    update_selected_ball(nullptr);
     mainWindowUI->centralWidget->setFocus();
 
     Vector3D selectionPoint{pressCoordinates.x, pressCoordinates.y, pressCoordinates.z};
@@ -60,7 +61,7 @@ void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
     {
         if (detect_ball_selected(selectionPoint, ball))
         {
-            update_ball_selection(&ball);
+            update_selected_ball(&ball);
             break;
         }
     }
@@ -116,7 +117,7 @@ void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const gl
         if (noCollisionDetected)
         {
             simulation->add_ball(candidateBall);
-            update_ball_selection(&simulation->ballCollection.back());
+            update_selected_ball(&simulation->ballCollection.back());
             update(false);
         }
     }
@@ -145,12 +146,15 @@ void MainWindow::update_container_properties()
     mainWindowUI->containerElasticityDoubleSpinBox->setValue(simulation->container.elasticity);
 }
 
-void MainWindow::update_ball_selection(Ball* ball_address)
+void MainWindow::update_selected_ball(Ball* ball_address)
 {
     selectedBall = ball_address;
     propertiesEditor->set_selected_ball(selectedBall);
     if (selectedBall != nullptr)
     {
+        mainWindowUI->deleteBallPushButton->setEnabled(true);
+        mainWindowUI->deleteLinksPushButton->setEnabled(true);
+
         mainWindowUI->ballXDoubleSpinBox->setValue(selectedBall->position.x);
         mainWindowUI->ballYDoubleSpinBox->setValue(selectedBall->position.y);
         mainWindowUI->ballZDoubleSpinBox->setValue(selectedBall->position.z);
@@ -161,12 +165,17 @@ void MainWindow::update_ball_selection(Ball* ball_address)
         mainWindowUI->ballBlueSpinBox->setValue(selectedBall->color.b * 255);
         mainWindowUI->ballMovableCheckBox->setChecked(selectedBall->isMovable);
     }
+    else
+    {
+        mainWindowUI->deleteBallPushButton->setEnabled(false);
+        mainWindowUI->deleteLinksPushButton->setEnabled(false);
+    }
 }
 
 void MainWindow::on_escape_pressed()
 {
     mainWindowUI->centralWidget->setFocus();
-    update_ball_selection(nullptr);
+    update_selected_ball(nullptr);
 }
 
 void MainWindow::on_spacebar_pressed()
@@ -195,6 +204,11 @@ void MainWindow::reset_simulation()
     simulation->container.position.z = mainWindowUI->containerZDoubleSpinBox->value();
     simulation->container.radius = mainWindowUI->containerRadiusDoubleSpinBox->value();
     simulation->container.elasticity = mainWindowUI->containerElasticityDoubleSpinBox->value();
+}
+
+void MainWindow::setup_push_buttons()
+{
+    connect(mainWindowUI->deleteBallPushButton, &QPushButton::clicked, this, &MainWindow::delete_selected_ball);
 }
 
 void MainWindow::setup_menu()
@@ -253,6 +267,13 @@ void MainWindow::setup_timer()
     timerInterval = (1.0 / framesPerSecond) * secToMilliSeconds;
     timer->setInterval(timerInterval);
     connect(timer, &QTimer::timeout, this, &MainWindow::on_timer);
+}
+
+void MainWindow::delete_selected_ball()
+{
+    simulation->remove_ball(selectedBall);
+    update_selected_ball(nullptr);
+    update(false);
 }
 
 void MainWindow::new_file()

@@ -32,11 +32,12 @@ private:
     bool detect_ball_selected(Vector3D& selectionPoint, Ball& ball);
     void update_gravity_properties();
     void update_container_properties();
-    void update_ball_selection(Ball* ball_address);
+    void update_selected_ball(Ball* ball_address);
     void on_escape_pressed();
     void on_spacebar_pressed();
     void reset_simulation();
 
+    void setup_push_buttons();
     void setup_menu();
     void setup_mouse();
     void setup_properties_editor();
@@ -56,6 +57,8 @@ private:
     int timerInterval;
 
 private slots:
+    void delete_selected_ball();
+
     void new_file();
     void open_file();
     void save_as_file();

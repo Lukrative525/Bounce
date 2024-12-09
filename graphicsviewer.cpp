@@ -174,7 +174,7 @@ void GraphicsViewer::refresh_ball_positions(const std::vector<Ball>& ballCollect
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void GraphicsViewer::initialize_camera(const Ball& container)
+void GraphicsViewer::refresh_camera(const Ball& container)
 {
     camera.set_camera_position(container.position.x, container.position.y - container.radius * (1 + borderWidthAsFraction), container.position.z);
     camera.set_camera_target(container.position);

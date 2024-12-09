@@ -13,6 +13,10 @@ namespace phys
             ball.nextVelocity = ball.velocity + acceleration * timeStep;
             ball.nextPosition = ball.position + ball.nextVelocity * timeStep;
         }
+        else
+        {
+            ball.nextPosition = ball.position;
+        }
     }
 
     void reflect_vector(Vector3D& vectorToReflect, const Vector3D& normal)
@@ -57,15 +61,15 @@ namespace phys
         }
     }
 
-    void resolve_collision_with_container(Ball& movingBall, const Ball& container)
+    void resolve_collision_with_container(Ball& ball, const Ball& container)
     {
-        Vector3D contactNormal = container.position - movingBall.nextPosition;
+        Vector3D contactNormal = container.position - ball.nextPosition;
         contactNormal.normalize();
-        double maximumAllowedDistanceFromCenter = container.radius - movingBall.radius;
-        double ballShiftAmount = calculate_distance_between(movingBall.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
-        movingBall.nextPosition = movingBall.nextPosition + ballShiftAmount * contactNormal;
-        reflect_vector(movingBall.nextVelocity, contactNormal);
-        movingBall.nextVelocity = movingBall.elasticity * movingBall.nextVelocity;
+        double maximumAllowedDistanceFromCenter = container.radius - ball.radius;
+        double ballShiftAmount = calculate_distance_between(ball.nextPosition, container.position) - maximumAllowedDistanceFromCenter;
+        ball.nextPosition = ball.nextPosition + ballShiftAmount * contactNormal;
+        reflect_vector(ball.nextVelocity, contactNormal);
+        ball.nextVelocity = ((ball.elasticity + container.elasticity) / 2) * ball.nextVelocity;
     }
 
     void resolve_collision_between_movable_balls(Ball& ball1, Ball& ball2)
@@ -93,6 +97,6 @@ namespace phys
         double ballShiftAmount = calculate_distance_between(movableBall.nextPosition, immovableBall.position) - maximumAllowedDistanceBetween;
         movableBall.nextPosition = movableBall.nextPosition + ballShiftAmount * contactNormal;
         reflect_vector(movableBall.nextVelocity, contactNormal);
-        movableBall.nextVelocity = movableBall.elasticity * movableBall.nextVelocity;
+        movableBall.nextVelocity = ((movableBall.elasticity + immovableBall.elasticity) / 2) * movableBall.nextVelocity;
     }
 }

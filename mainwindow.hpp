@@ -6,6 +6,7 @@
 
 class Ball;
 class GraphicsViewer;
+class PropertiesEditor;
 class Simulation;
 class Vector3D;
 
@@ -20,6 +21,7 @@ class MainWindow: public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
+    void update(bool refreshCamera);
 
 public slots:
     void process_mouse_press(const glm::vec3& pressCoordinates);
@@ -36,11 +38,13 @@ private:
 
     void setup_menu();
     void setup_mouse();
+    void setup_properties_editor();
     void setup_shortcuts();
     void setup_timer();
 
     Ui::MainWindowForm* mainWindowUI;
     GraphicsViewer* graphicsViewer;
+    PropertiesEditor* propertiesEditor;
     QTimer* timer;
     Simulation* simulation;
     Ball* selectedBall{nullptr};

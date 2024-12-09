@@ -5,8 +5,9 @@
 #include "graphicsviewer.hpp"
 #include "mainwindow.hpp"
 #include "physicsfunctions.hpp"
-#include "ui_mainwindowform.h"
+#include "propertieseditor.hpp"
 #include "simulation.hpp"
+#include "ui_mainwindowform.h"
 #include "vector3d.hpp"
 
 MainWindow::MainWindow(QWidget* parent):
@@ -20,10 +21,13 @@ MainWindow::MainWindow(QWidget* parent):
     graphicsViewer = new GraphicsViewer(mainWindowUI->frame);
     mainWindowUI->frameGridLayout->addWidget(graphicsViewer);
 
+    propertiesEditor = new PropertiesEditor(this);
+
     simulation = new Simulation;
 
     setup_menu();
     setup_mouse();
+    setup_properties_editor();
     setup_shortcuts();
     setup_timer();
 
@@ -33,6 +37,16 @@ MainWindow::MainWindow(QWidget* parent):
 MainWindow::~MainWindow()
 {
     delete simulation;
+}
+
+void MainWindow::update(bool refreshCamera)
+{
+    if (refreshCamera)
+    {
+        graphicsViewer->refresh_camera(simulation->container);
+    }
+    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
+    graphicsViewer->update();
 }
 
 void MainWindow::process_mouse_press(const glm::vec3& pressCoordinates)
@@ -103,8 +117,7 @@ void MainWindow::process_right_click(const glm::vec3& pressCoordinates, const gl
         {
             simulation->add_ball(candidateBall);
             update_ball_selection(&simulation->ballCollection.back());
-            graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
-            graphicsViewer->update();
+            update(false);
         }
     }
 }
@@ -128,6 +141,7 @@ void MainWindow::update_container_properties()
 void MainWindow::update_ball_selection(Ball* ball_address)
 {
     selectedBall = ball_address;
+    propertiesEditor->set_selected_ball(selectedBall);
     if (selectedBall != nullptr)
     {
         mainWindowUI->ballXDoubleSpinBox->setValue(selectedBall->position.x);
@@ -192,6 +206,26 @@ void MainWindow::setup_mouse()
     connect(graphicsViewer, &GraphicsViewer::request_process_right_click, this, &MainWindow::process_right_click);
 }
 
+void MainWindow::setup_properties_editor()
+{
+    propertiesEditor->set_container(&simulation->container);
+    connect(mainWindowUI->containerXDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_x);
+    connect(mainWindowUI->containerYDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_y);
+    connect(mainWindowUI->containerZDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_z);
+    connect(mainWindowUI->containerRadiusDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_radius);
+    connect(mainWindowUI->containerElasticityDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_container_elasticity);
+
+    connect(mainWindowUI->ballXDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_x);
+    connect(mainWindowUI->ballYDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_y);
+    connect(mainWindowUI->ballZDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_z);
+    connect(mainWindowUI->ballRadiusDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_radius);
+    connect(mainWindowUI->ballElasticityDoubleSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_elasticity);
+    connect(mainWindowUI->ballRedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_red_component);
+    connect(mainWindowUI->ballGreenSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_green_component);
+    connect(mainWindowUI->ballBlueSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), propertiesEditor, &PropertiesEditor::set_ball_blue_component);
+    connect(mainWindowUI->ballMovableCheckBox, &QCheckBox::checkStateChanged, propertiesEditor, &PropertiesEditor::set_ball_movable);
+}
+
 void MainWindow::setup_shortcuts()
 {
     QShortcut* escapeShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), this);
@@ -213,9 +247,7 @@ void MainWindow::new_file()
 {
     reset_simulation();
 
-    graphicsViewer->initialize_camera(simulation->container);
-    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
-    graphicsViewer->update();
+    update(true);
 
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionPlay->setEnabled(true);
@@ -242,9 +274,7 @@ void MainWindow::open_file()
         fileToOpen.close();
     }
 
-    graphicsViewer->initialize_camera(simulation->container);
-    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
-    graphicsViewer->update();
+    update(true);
 
     mainWindowUI->actionPause->setEnabled(true);
     mainWindowUI->actionPlay->setEnabled(true);
@@ -274,8 +304,7 @@ void MainWindow::on_timer()
         simulation->update();
     }
 
-    graphicsViewer->refresh_ball_positions(simulation->ballCollection, simulation->container);
-    graphicsViewer->update();
+    update(false);
 }
 
 void MainWindow::start_timer()

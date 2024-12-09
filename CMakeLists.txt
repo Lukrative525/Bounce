@@ -73,6 +73,8 @@ target_sources(Bounce
         mainwindow.cpp
         mainwindow.hpp
         mainwindowform.ui
+        propertieseditor.cpp
+        propertieseditor.hpp
         resources.rc
         shaders.qrc
 )

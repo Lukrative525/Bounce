@@ -15,7 +15,6 @@ public:
     const std::vector<Ball>& get_ball_collection() const;
     void add_ball(Ball newBall);
     void remove_ball(Ball* ballToRemove);
-    const std::vector<Link>& get_link_collection() const;
     void add_link(Link newLink);
     void add_link(Ball* ball1, Ball* ball2);
     void remove_links_on_ball(int ballIndex);

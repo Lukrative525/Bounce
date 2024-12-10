@@ -94,11 +94,6 @@ void Simulation::remove_ball(Ball* ballToRemove)
     }
 }
 
-const std::vector<Link>& Simulation::get_link_collection() const
-{
-    return linkCollection;
-}
-
 void Simulation::add_link(Link newLink)
 {
     if (linkCollection.size() < maxNumberBalls * (maxNumberBalls - 1) / 2)

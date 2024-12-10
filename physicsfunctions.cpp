@@ -2,8 +2,6 @@
 #include "vector3d.hpp"
 #include "ball.hpp"
 
-// TODO: finish unit tests for these functions
-
 namespace phys
 {
     void update_next_state_implicit_euler(const double& timeStep, Ball& ball, const Vector3D& acceleration)
@@ -21,6 +19,11 @@ namespace phys
 
     void reflect_vector(Vector3D& vectorToReflect, const Vector3D& normal)
     {
+        if (normal.x == 0.0 && normal.y == 0.0 && normal.z == 0.0)
+        {
+            vectorToReflect = -1 * vectorToReflect;
+            return;
+        }
         vectorToReflect = vectorToReflect - 2 * (vectorToReflect.dot(normal / normal.calculate_magnitude()) * normal / normal.calculate_magnitude());
     }
 

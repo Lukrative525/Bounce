@@ -45,8 +45,19 @@ TEST(reflectVector, givenAVectorAndNormal_WhenVectorFlipped_ExpectCorrectResult)
 
     phys::reflect_vector(vector, normal);
 
-    EXPECT_NEAR(vector[0], -3, 0.000000001);
-    EXPECT_NEAR(vector[1], -4, 0.000000001);
+    EXPECT_NEAR(vector.x, -3, 0.000000001);
+    EXPECT_NEAR(vector.y, -4, 0.000000001);
+}
+
+TEST(reflectVector, givenAVectorAndZeroNormal_WhenVectorFlipped_ExpectVectorNegated)
+{
+    Vector3D vector{4, 3, 0};
+    Vector3D normal{0};
+
+    phys::reflect_vector(vector, normal);
+
+    EXPECT_TRUE(vector.x == -4);
+    EXPECT_TRUE(vector.y == -3);
 }
 
 TEST(calculateDistanceBetween, givenTwoVectors_WhenDistanceBetweenCalculated_ExpectCorrectResult)
@@ -134,7 +145,7 @@ protected:
 
         distanceToImpact = 4;
 
-        movingBall.nextPosition[0] = distanceToImpact + 1;
+        movingBall.nextPosition.x = distanceToImpact + 1;
     }
 };
 
@@ -142,17 +153,17 @@ TEST_F(CollisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunction
 {
     phys::resolve_collision_with_container(movingBall, container);
 
-    EXPECT_TRUE(movingBall.nextPosition[0] == distanceToImpact);
+    EXPECT_TRUE(movingBall.nextPosition.x == distanceToImpact);
 }
 
 TEST_F(CollisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunctionCalled_ExpectVelocityFlipped)
 {
     double velocity{5};
-    movingBall.nextVelocity[0] = velocity;
+    movingBall.nextVelocity.x = velocity;
 
     phys::resolve_collision_with_container(movingBall, container);
 
-    EXPECT_TRUE(movingBall.nextVelocity[0] == -velocity);
+    EXPECT_TRUE(movingBall.nextVelocity.x == -velocity);
 }
 
 class InteractionsBetweenMovableBalls : public ::testing::Test

@@ -154,3 +154,49 @@ TEST_F(CollisionsBetweenBallAndContainer, givenSuchCollision_WhenResolveFunction
 
     EXPECT_TRUE(movingBall.nextVelocity[0] == -velocity);
 }
+
+class InteractionsBetweenMovableBalls : public ::testing::Test
+{
+protected:
+    Ball ball1{0};
+    Ball ball2{0};
+
+    void SetUp() override
+    {
+        ball1.radius = 1;
+        ball2.radius = 2;
+
+        ball1.nextPosition.y = 0.5;
+        ball2.nextPosition.y = -1.5;
+
+        ball1.nextVelocity.y = -9;
+        ball2.nextVelocity.y = 0;
+    }
+};
+
+TEST_F(InteractionsBetweenMovableBalls, givenDifferentSizedOverlappingBalls_WhenInteractionResolvedWithShiftNotProportionalToMass_ExpectBallsShiftedEqualAmounts)
+{
+    phys::resolve_interaction_between_movable_balls(ball1, ball2, false);
+
+    EXPECT_TRUE(ball1.nextPosition.y == 1.0);
+    EXPECT_TRUE(ball2.nextPosition.y == -2.0);
+}
+
+TEST_F(InteractionsBetweenMovableBalls, givenDifferentSizedOverlappingBalls_WhenInteractionResolvedWithShiftProportionalToMass_ExpectBallsShiftedDependingOnRadius)
+{
+    phys::resolve_interaction_between_movable_balls(ball1, ball2, true);
+
+    double ball1FinalPosition = 0.5 + 8.0 / 9.0;
+    double ball2FinalPosition = -1.5 - 1.0 / 9.0;
+
+    EXPECT_TRUE(ball1.nextPosition.y == ball1FinalPosition);
+    EXPECT_TRUE(ball2.nextPosition.y == ball2FinalPosition);
+}
+
+TEST_F(InteractionsBetweenMovableBalls, givenDifferentSizedOverlappingBalls_WhenInteractionResolved_ExpectMomentumConserved)
+{
+    phys::resolve_interaction_between_movable_balls(ball1, ball2, true);
+
+    EXPECT_TRUE(ball1.nextVelocity.y == 7.0);
+    EXPECT_TRUE(ball2.nextVelocity.y == -2.0);
+}

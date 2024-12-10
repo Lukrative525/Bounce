@@ -73,6 +73,7 @@ void PropertiesEditor::set_ball_x(double newValue)
     if (selectedBall != nullptr)
     {
         selectedBall->position.x = newValue;
+        selectedBall->nextPosition.x = newValue;
         parentMainWindow->update(true);
     }
 }
@@ -82,6 +83,7 @@ void PropertiesEditor::set_ball_y(double newValue)
     if (selectedBall != nullptr)
     {
         selectedBall->position.y = newValue;
+        selectedBall->nextPosition.y = newValue;
         parentMainWindow->update(true);
     }
 }
@@ -91,6 +93,7 @@ void PropertiesEditor::set_ball_z(double newValue)
     if (selectedBall != nullptr)
     {
         selectedBall->position.z = newValue;
+        selectedBall->nextPosition.z = newValue;
         parentMainWindow->update(true);
     }
 }

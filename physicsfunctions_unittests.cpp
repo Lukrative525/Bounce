@@ -87,6 +87,39 @@ TEST_F(DetectCollisionWithContainer, givenOverlapping_WhenFunctionCalled_ExpectT
     EXPECT_TRUE(collisionDetected);
 }
 
+class DetectCollisionBetweenBalls : public ::testing::Test
+{
+protected:
+    Ball ball1{0};
+    Ball ball2{0};
+
+    void SetUp() override
+    {
+        ball1.radius = 1;
+        ball2.radius = 1;
+    }
+};
+
+TEST_F(DetectCollisionBetweenBalls, givenTwoNonOverlappingBalls_WhenCollisionChecked_ExpectFalse)
+{
+    ball1.nextPosition.x = 1.1;
+    ball2.nextPosition.x = -1.1;
+
+    bool collisionDetected = phys::detect_collision_between_balls(ball1, ball2);
+
+    EXPECT_FALSE(collisionDetected);
+}
+
+TEST_F(DetectCollisionBetweenBalls, givenTwoOverlappingBalls_WhenCollisionChecked_ExpectTrue)
+{
+    ball1.nextPosition.x = 0.9;
+    ball2.nextPosition.x = -0.9;
+
+    bool collisionDetected = phys::detect_collision_between_balls(ball1, ball2);
+
+    EXPECT_TRUE(collisionDetected);
+}
+
 class CollisionsBetweenBallAndContainer : public ::testing::Test
 {
 protected:

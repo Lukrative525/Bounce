@@ -200,3 +200,38 @@ TEST_F(InteractionsBetweenMovableBalls, givenDifferentSizedOverlappingBalls_When
     EXPECT_TRUE(ball1.nextVelocity.y == 7.0);
     EXPECT_TRUE(ball2.nextVelocity.y == -2.0);
 }
+
+class CollisionsWithImmovableBalls : public ::testing::Test
+{
+protected:
+    Ball ball1{0};
+    Ball ball2{0};
+
+    void SetUp() override
+    {
+        ball2.isMovable = false;
+
+        ball1.radius = 1;
+        ball2.radius = 2;
+
+        ball1.nextPosition.z = 0.5;
+        ball2.position.z = -2.0;
+
+        ball1.nextVelocity.z = -5.0;
+    }
+};
+
+TEST_F(CollisionsWithImmovableBalls, givenSuchCollision_WhenCollisionResolved_ExpectImmovableBallPositionUnchanged)
+{
+    phys::resolve_collision_with_immovable_ball(ball1, ball2);
+
+    EXPECT_TRUE(ball1.nextPosition.z == 1.0);
+    EXPECT_TRUE(ball2.position.z == -2.0);
+}
+
+TEST_F(CollisionsWithImmovableBalls, givenSuchCollision_WhenCollisionResolved_ExpectMovableBallVelocityFlipped)
+{
+    phys::resolve_collision_with_immovable_ball(ball1, ball2);
+
+    EXPECT_TRUE(ball1.nextVelocity.z == 5.0);
+}

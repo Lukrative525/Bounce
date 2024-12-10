@@ -151,5 +151,8 @@ void PropertiesEditor::set_ball_movable(bool isMovable)
         selectedBall->velocity.x = 0;
         selectedBall->velocity.y = 0;
         selectedBall->velocity.z = 0;
+        selectedBall->nextVelocity.x = 0;
+        selectedBall->nextVelocity.y = 0;
+        selectedBall->nextVelocity.z = 0;
     }
 }

@@ -64,7 +64,7 @@ target_link_libraries(UnitTests
 )
 
 # Bounce Application
-add_executable(Bounce)
+add_executable(Bounce WIN32)
 target_sources(Bounce
     PRIVATE
         graphicsviewer.cpp

@@ -39,3 +39,6 @@ build/
 
 # compiled resource file
 *.aps
+
+# Visual Studio
+.vs
